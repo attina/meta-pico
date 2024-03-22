@@ -1,0 +1,148 @@
+From 18165bef095609e4ec1ad87204a3ff0797b905be Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Fri, 22 Mar 2024 09:22:18 +0800
+Subject: [PATCH] picocom: add optee support for ls1046apscb and ls1012aprs314
+ board
+
+---
+ .azure-pipelines.yml                    |  2 ++
+ MAINTAINERS                             |  5 +++++
+ core/arch/arm/plat-ls/conf.mk           | 16 ++++++++++++++++
+ core/arch/arm/plat-ls/crypto_conf.mk    |  6 ++++++
+ core/arch/arm/plat-ls/platform_config.h | 11 ++++++++++-
+ scripts/nxp_build.sh                    |  2 ++
+ 6 files changed, 41 insertions(+), 1 deletion(-)
+
+diff --git a/.azure-pipelines.yml b/.azure-pipelines.yml
+index cbd0765c5..e0d30160d 100644
+--- a/.azure-pipelines.yml
++++ b/.azure-pipelines.yml
+@@ -136,8 +136,10 @@ jobs:
+           _make PLATFORM=ls-ls1021aqds
+           _make PLATFORM=ls-ls1043ardb
+           _make PLATFORM=ls-ls1046ardb
++          _make PLATFORM=ls-ls1046apscb
+           _make PLATFORM=ls-ls1012ardb
+           _make PLATFORM=ls-ls1012afrwy
++          _make PLATFORM=ls-ls1012aprs314
+           _make PLATFORM=ls-ls1028ardb
+           _make PLATFORM=ls-ls1088ardb
+           _make PLATFORM=ls-ls2088ardb
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 806df542d..0c03de0b6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -171,6 +171,11 @@ R:	Bryan O'Donoghue <bryan.odonoghue@linaro.org> [@bryanodonoghue]
+ S:	Maintained
+ F:	core/arch/arm/plat-imx/conf.mk
+ 
++Picocom LS1012A-based PRS-314 board
++R:	Simon Kingston <simon.kingston@picocom.com>
++S:	Maintained
++F:	core/arch/arm/plat-ls/
++
+ QEMU (32 and 64 bits)
+ R:	Linaro <op-tee@linaro.org> [@OP-TEE/linaro]
+ S:	Maintained
+diff --git a/core/arch/arm/plat-ls/conf.mk b/core/arch/arm/plat-ls/conf.mk
+index 9acc25fec..704051a13 100644
+--- a/core/arch/arm/plat-ls/conf.mk
++++ b/core/arch/arm/plat-ls/conf.mk
+@@ -51,6 +51,14 @@ CFG_DRAM0_SIZE ?= 0x20000000
+ CFG_SHMEM_SIZE ?= 0x00200000
+ endif
+ 
++ifeq ($(PLATFORM_FLAVOR),ls1012aprs314)
++include core/arch/arm/cpu/cortex-armv8-0.mk
++$(call force,CFG_TEE_CORE_NB_CORE,1)
++$(call force,CFG_DRAM0_SIZE,0x40000000)
++$(call force,CFG_CORE_CLUSTER_SHIFT,2)
++CFG_SHMEM_SIZE ?= 0x00200000
++endif
++
+ ifeq ($(PLATFORM_FLAVOR),ls1043ardb)
+ include core/arch/arm/cpu/cortex-armv8-0.mk
+ $(call force,CFG_TEE_CORE_NB_CORE,4)
+@@ -67,6 +75,14 @@ $(call force,CFG_CORE_CLUSTER_SHIFT,2)
+ CFG_SHMEM_SIZE ?= 0x00200000
+ endif
+ 
++ifeq ($(PLATFORM_FLAVOR),ls1046apscb)
++include core/arch/arm/cpu/cortex-armv8-0.mk
++$(call force,CFG_TEE_CORE_NB_CORE,4)
++$(call force,CFG_DRAM0_SIZE,0x80000000)
++$(call force,CFG_CORE_CLUSTER_SHIFT,2)
++CFG_SHMEM_SIZE ?= 0x00200000
++endif
++
+ ifeq ($(PLATFORM_FLAVOR),ls1088ardb)
+ include core/arch/arm/cpu/cortex-armv8-0.mk
+ $(call force,CFG_TEE_CORE_NB_CORE,8)
+diff --git a/core/arch/arm/plat-ls/crypto_conf.mk b/core/arch/arm/plat-ls/crypto_conf.mk
+index 47d746ee0..0417b17ce 100644
+--- a/core/arch/arm/plat-ls/crypto_conf.mk
++++ b/core/arch/arm/plat-ls/crypto_conf.mk
+@@ -45,6 +45,9 @@ $(call force,CFG_JR_INDEX,2)  # Default JR index used
+ ifneq (,$(filter $(PLATFORM_FLAVOR),ls1012afrwy))
+ $(call force,CFG_CAAM_BIG_ENDIAN,y)
+ $(call force,CFG_JR_INT,105)
++else ifneq (,$(filter $(PLATFORM_FLAVOR),ls1012aprs314))
++$(call force,CFG_CAAM_BIG_ENDIAN,y)
++$(call force,CFG_JR_INT,105)
+ else ifneq (,$(filter $(PLATFORM_FLAVOR),ls1012ardb))
+ $(call force,CFG_CAAM_BIG_ENDIAN,y)
+ $(call force,CFG_JR_INT,105)
+@@ -60,6 +63,9 @@ $(call force,CFG_JR_INT,105)
+ else ifneq (,$(filter $(PLATFORM_FLAVOR),ls1046ardb))
+ $(call force,CFG_CAAM_BIG_ENDIAN,y)
+ $(call force,CFG_JR_INT,137)
++else ifneq (,$(filter $(PLATFORM_FLAVOR),ls1046apscb))
++$(call force,CFG_CAAM_BIG_ENDIAN,y)
++$(call force,CFG_JR_INT,137)
+ else ifneq (,$(filter $(PLATFORM_FLAVOR),ls1088ardb))
+ $(call force,CFG_CAAM_LITTLE_ENDIAN,y)
+ $(call force,CFG_JR_INT,175)
+diff --git a/core/arch/arm/plat-ls/platform_config.h b/core/arch/arm/plat-ls/platform_config.h
+index 8a50c171e..f9875e849 100644
+--- a/core/arch/arm/plat-ls/platform_config.h
++++ b/core/arch/arm/plat-ls/platform_config.h
+@@ -65,7 +65,7 @@
+ #define CAAM_BASE			0x01700000
+ #endif
+ 
+-#if defined(PLATFORM_FLAVOR_ls1012ardb) || defined(PLATFORM_FLAVOR_ls1012afrwy)
++#if defined(PLATFORM_FLAVOR_ls1012ardb) || defined(PLATFORM_FLAVOR_ls1012afrwy) || defined(PLATFORM_FLAVOR_ls1012aprs314)
+ /*  DUART 1 */
+ #define UART0_BASE			0x021C0500
+ #define GIC_BASE			0x01400000
+@@ -95,6 +95,15 @@
+ #define CAAM_BASE			0x01700000
+ #endif
+ 
++#if defined(PLATFORM_FLAVOR_ls1046apscb)
++/*  DUART 1 */
++#define UART0_BASE			0x021C0500
++#define GIC_BASE			0x01400000
++#define GICC_OFFSET			0x20000
++#define GICD_OFFSET			0x10000
++#define CAAM_BASE			0x01700000
++#endif
++
+ #if defined(PLATFORM_FLAVOR_ls1088ardb)
+ /*  DUART 1 */
+ #define UART0_BASE			0x021C0500
+diff --git a/scripts/nxp_build.sh b/scripts/nxp_build.sh
+index b555ddead..e14b141fa 100755
+--- a/scripts/nxp_build.sh
++++ b/scripts/nxp_build.sh
+@@ -47,8 +47,10 @@ boards_list=(
+ 	ls-ls1021aqds \
+ 	ls-ls1012ardb \
+ 	ls-ls1012afrwy \
++	ls-1012aprs314 \
+ 	ls-ls1043ardb \
+ 	ls-ls1046ardb \
++	ls-ls1046apscb \
+ 	ls-ls1088ardb \
+ 	ls-ls2088ardb \
+ 	ls-lx2160ardb \
