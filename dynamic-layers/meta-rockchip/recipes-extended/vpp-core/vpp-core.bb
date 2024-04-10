@@ -12,7 +12,8 @@ SRC_URI = "git://github.com/FDio/vpp;protocol=https;branch=${BRANCH} \
 
 DEPENDS += "dpdk openssl numactl libpcap"
 
-inherit cmake
+inherit cmake python3native
+DEPENDS += "python3-ply-native"
 
 OECMAKE_SOURCEPATH = "${S}/src"
 EXTRA_OECMAKE += "-DCMAKE_SKIP_RPATH=TRUE"
