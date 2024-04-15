@@ -1,6 +1,6 @@
-From 9cb2ed3d16a23c0df7e05e297f96c905ac2b87ad Mon Sep 17 00:00:00 2001
+From ed4794a896a1a16fc4f3d9cae782b3990dab865e Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
-Date: Thu, 4 Apr 2024 21:50:26 +0800
+Date: Mon, 15 Apr 2024 10:18:01 +0800
 Subject: [PATCH] picocom: ls1046apscb patch for linux 6.6
 
 
@@ -318,7 +318,7 @@ index 000000000000..8613b05b7595
 +};
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscb-sdk_mac9.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscb-sdk_mac9.dts
 new file mode 100644
-index 000000000000..9cd057eeae82
+index 000000000000..e5c31ba48a01
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscb-sdk_mac9.dts
 @@ -0,0 +1,297 @@
@@ -576,7 +576,7 @@ index 000000000000..9cd057eeae82
 +	dma-coherent;
 +};
 +
-+&ftm0 {
++&ftm_alarm0 {
 +	dma-coherent;
 +};
 +
