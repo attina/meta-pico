@@ -1,0 +1,27 @@
+From 98ec2fd00c9edc1c0f3e7800a32133d19ca3762a Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Fri, 19 Apr 2024 23:27:30 +0800
+Subject: [PATCH] vpp-core:fix package_qa error
+
+---
+ src/CMakeLists.txt | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 2fb0703e174..64d6dc9449f 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -180,10 +180,6 @@ endif()
+ ##############################################################################
+ # install config
+ ##############################################################################
+-option(VPP_SET_RPATH "Set rpath for resulting binaries and libraries." ON)
+-if(VPP_SET_RPATH)
+-  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${VPP_LIBRARY_DIR}")
+-endif()
+ set(CMAKE_INSTALL_MESSAGE NEVER)
+ 
+ include_directories (
+-- 
+2.44.0
+
