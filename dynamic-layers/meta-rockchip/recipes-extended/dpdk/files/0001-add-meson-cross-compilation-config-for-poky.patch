@@ -1,0 +1,26 @@
+From cafe3eda8b7c1fb89d36866bc18037df287d7e5b Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Tue, 23 Apr 2024 17:08:32 +0800
+Subject: [PATCH] add meson cross-compilation config for poky
+
+
+diff --git a/config/arm/arm64_poky_linux_gcc b/config/arm/arm64_poky_linux_gcc
+new file mode 100644
+index 0000000000..c4bb1bc079
+--- /dev/null
++++ b/config/arm/arm64_poky_linux_gcc
+@@ -0,0 +1,11 @@
++[binaries]
++pcap-config = ''
++
++[host_machine]
++system = 'linux'
++cpu_family = 'aarch64'
++cpu = 'armv8-a'
++endian = 'little'
++
++[properties]
++platform = 'dpaa'
+-- 
+2.44.0
+
