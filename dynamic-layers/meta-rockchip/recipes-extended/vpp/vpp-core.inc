@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 require vpp-pkgs.inc
 SRC_URI = "git://github.com/FDio/vpp;protocol=https;branch=${BRANCH}"
 
-DEPENDS = "gcc-runtime dpdk openssl python3-ply util-linux python3-ply-native"
+DEPENDS = "gcc-runtime dpdk openssl python3-ply util-linux python3-ply-native numactl"
 
 S = "${WORKDIR}/git"
 
