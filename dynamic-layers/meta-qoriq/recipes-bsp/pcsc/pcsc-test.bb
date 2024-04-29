@@ -1,12 +1,7 @@
 # recipe for picocom pc802 pcie kernel driver and test program
 # Gavin Gao <attinagaoxu@gmail.com>
 
-require pcie-pcsc.inc
-
-do_compile() {
-    # build test application
-    oe_runmake examples
-}
+require pcsc.inc
 
 do_install:append(){
     # install test application
