@@ -6,8 +6,14 @@ MAINTAINER = "Gavin Gao <attinagaoxu@gmail.com>"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = ""
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/pc802-firmware:"
+
 BRANCH = "NDF-190-init-deinit"
-SRC_URI = "git://git@gitlab.attina.io/pico/pc802_pcie_driver.git;protocol=ssh;branch=${BRANCH}"
+SRC_URI = " \
+    git://git@gitlab.attina.io/pico/pc802_pcie_driver.git;protocol=ssh;branch=${BRANCH} \
+	file://pc802.img \
+	file://pc802.ssbl \
+    "
 
 # Modify these as desired
 PV = "2.5.3+git${SRCPV}"
