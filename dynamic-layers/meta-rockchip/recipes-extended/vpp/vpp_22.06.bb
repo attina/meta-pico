@@ -5,3 +5,4 @@ PV = "22.06.1"
 require vpp-core.inc
 
 SRC_URI += " file://0001-vpp-core-fix-package_qa-error.patch"
+SRC_URI += " file://0002-vpp-dpdk-fix-set_kni_mtu_err.patch"

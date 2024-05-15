@@ -1,0 +1,45 @@
+ src/plugins/dpdk/device/device.c | 3 ++-
+ src/plugins/dpdk/device/init.c   | 2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/plugins/dpdk/device/device.c b/src/plugins/dpdk/device/device.c
+index 1d97eee80..7d5904f02 100644
+--- a/src/plugins/dpdk/device/device.c
++++ b/src/plugins/dpdk/device/device.c
+@@ -45,6 +45,7 @@ static clib_error_t *
+ dpdk_add_del_mac_address (vnet_hw_interface_t * hi,
+ 			  const u8 * address, u8 is_add)
+ {
++#if 0  
+   int error;
+   dpdk_main_t *dm = &dpdk_main;
+   dpdk_device_t *xd = vec_elt_at_index (dm->devices, hi->dev_instance);
+@@ -60,7 +61,7 @@ dpdk_add_del_mac_address (vnet_hw_interface_t * hi,
+     {
+       return clib_error_return (0, "mac address add/del failed: %d", error);
+     }
+-
++#endif
+   return NULL;
+ }
+ 
+diff --git a/src/plugins/dpdk/device/init.c b/src/plugins/dpdk/device/init.c
+index 80a075f2b..52cf8fd5e 100644
+--- a/src/plugins/dpdk/device/init.c
++++ b/src/plugins/dpdk/device/init.c
+@@ -87,6 +87,7 @@ dpdk_set_max_frame_size (vnet_main_t *vnm, vnet_hw_interface_t *hi,
+     {
+       dpdk_log_err ("[%u] rte_eth_dev_set_mtu failed (mtu %u, rv %d)",
+ 		    xd->port_id, mtu, rv);
++#if 0
+       switch (rv)
+ 	{
+ 	case -ENOTSUP:
+@@ -102,6 +103,7 @@ dpdk_set_max_frame_size (vnet_main_t *vnm, vnet_hw_interface_t *hi,
+ 			     "rte_eth_dev_set_mtu(...)",
+ 			     rv);
+ 	}
++#endif
+     }
+   else
+     dpdk_log_debug ("[%u] max_frame_size set to %u by setting MTU to %u",
