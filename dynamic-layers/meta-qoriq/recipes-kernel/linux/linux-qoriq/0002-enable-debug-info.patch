@@ -1,0 +1,21 @@
+From cc0f2c0cb76da64304444ebd08d7178a9b43b230 Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Thu, 23 May 2024 16:36:33 +0800
+Subject: [PATCH 2/2] enable debug info
+
+
+diff --git a/arch/arm64/configs/picoscb.config b/arch/arm64/configs/picoscb.config
+index 5d061ab32415..30f5a97b8493 100644
+--- a/arch/arm64/configs/picoscb.config
++++ b/arch/arm64/configs/picoscb.config
+@@ -43,3 +43,6 @@ CONFIG_CONTEXT_TRACKING=y
+ # CONFIG_NO_HZ is not set
+ CONFIG_HIGH_RES_TIMERS=y
+ # end of Timers subsystem
++
++# Debug
++CONFIG_DEBUG_INFO=y
+\ No newline at end of file
+-- 
+2.45.0
+
