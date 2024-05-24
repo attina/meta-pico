@@ -10,7 +10,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/pc802-firmware:"
 
 BRANCH = "NDF-190-init-deinit"
 SRC_URI = " \
-    git://git@gitlab.attina.io/pico/pc802_pcie_driver.git;protocol=ssh;branch=${BRANCH} \
+    git://git@glhk.picocomtech.com/picocom_driver_team/pc802_pcie_driver.git;protocol=ssh;branch=${BRANCH} \
 	file://pc802.img \
 	file://pc802.ssbl \
     "
