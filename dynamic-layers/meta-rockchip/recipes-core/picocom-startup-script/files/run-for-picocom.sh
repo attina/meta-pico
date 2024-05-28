@@ -15,10 +15,11 @@ case "$1" in
 		echo "Creating hugepaga fs ..."
 		mkdir -p /mnt/huge32m
 		mount -t hugetlbfs none /mnt/huge32m -o pagesize=32MB
+		echo "Done"
 		;;
 	stop)
-		echo -n "Stopping qmanager_server: "
-		echo "done"
+		echo -n "Nothing to do here"
+		echo "Done"
 		;;
 	restart)
 		$0 stop
