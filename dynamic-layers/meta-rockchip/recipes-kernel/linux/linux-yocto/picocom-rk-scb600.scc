@@ -1,0 +1,6 @@
+define KFEATURE_DESCRIPTION "tweaks for the picocom scb600"
+define KMACHINE scb600
+define KTYPE standard
+define KARCH arm64
+
+patch bsp/0001-scb6xx-add-dts-file-for-scb600-and-scb605.patch
