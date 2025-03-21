@@ -4,3 +4,5 @@ define KTYPE standard
 define KARCH arm64
 
 patch bsp/0001-scb6xx-add-dts-file-for-scb600-and-scb605.patch
+
+include bsp/picocom-scbxx-hardware.scc
