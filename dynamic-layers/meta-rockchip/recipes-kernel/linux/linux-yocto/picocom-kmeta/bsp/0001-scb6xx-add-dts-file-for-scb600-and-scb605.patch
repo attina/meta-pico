@@ -1,4 +1,4 @@
-From 38c690039c1d171ad73b98b7b7e6e309d6339239 Mon Sep 17 00:00:00 2001
+From 8925cb342ce72bfd422348d4a164a19587f6063d Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Mon, 17 Mar 2025 09:19:40 +0800
 Subject: [PATCH] scb6xx: add dts file for scb600 and scb605
@@ -6,10 +6,10 @@ Subject: [PATCH] scb6xx: add dts file for scb600 and scb605
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-picocom-scb600.dts b/arch/arm64/boot/dts/rockchip/rk3399-picocom-scb600.dts
 new file mode 100644
-index 000000000000..9fdf0ccbf24c
+index 000000000000..3c4397782344
 --- /dev/null
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-picocom-scb600.dts
-@@ -0,0 +1,51 @@
+@@ -0,0 +1,42 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2025 picocom Ltd.
@@ -22,6 +22,54 @@ index 000000000000..9fdf0ccbf24c
 +/ {
 +	model = "Picocom SCB 600";
 +	compatible = "picocom,scb-600", "rockchip,rk3399";
++};
++
++&gmac {
++	phy-supply = <&vcc3v3_sys>;
++	phy-mode = "rgmii";
++	phy-handle = <&lan8840>;
++	clock_in_out = "input";
++
++	assigned-clocks = <&cru SCLK_RMII_SRC>;
++	assigned-clock-parents = <&clkin_gmac>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&rgmii_pins>, <&phy_intb>, <&phy_rstb>;
++	tx_delay = <0x27>;
++	rx_delay = <0x1a>;
++	status = "okay";
++
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		lan8840: ethernet-phy@3 {
++			reg = <0x03>;
++			snps,reset-gpio = <&gpio3 RK_PB7 GPIO_ACTIVE_LOW>;
++			snps,reset-active-low;
++			snps,reset-delays-us = <0 10000 50000>;
++			interrupt-parent = <&gpio1>;
++			interrupts = <RK_PC4 IRQ_TYPE_LEVEL_LOW>;
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-picocom-scb605.dts b/arch/arm64/boot/dts/rockchip/rk3399-picocom-scb605.dts
+new file mode 100644
+index 000000000000..58c1b050253c
+--- /dev/null
++++ b/arch/arm64/boot/dts/rockchip/rk3399-picocom-scb605.dts
+@@ -0,0 +1,50 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (c) 2025 picocom Ltd.
++ *
++ */
++
++/dts-v1/;
++#include "rk3399-picocom.dtsi"
++
++/ {
++	model = "Picocom SCB 605";
++	compatible = "picocom,scb-605", "rockchip,rk3399";
 +};
 +
 +&gmac {
@@ -57,55 +105,6 @@ index 000000000000..9fdf0ccbf24c
 +			reset-assert-us = <10000>;
 +			reset-deassert-us = <50000>;
 +			reset-gpios = <&gpio3 RK_PB7 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+};
-+
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-picocom-scb605.dts b/arch/arm64/boot/dts/rockchip/rk3399-picocom-scb605.dts
-new file mode 100644
-index 000000000000..7f517d10a0cb
---- /dev/null
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-picocom-scb605.dts
-@@ -0,0 +1,42 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (c) 2025 picocom Ltd.
-+ *
-+ */
-+
-+/dts-v1/;
-+#include "rk3399-picocom.dtsi"
-+
-+/ {
-+	model = "Picocom SCB 605";
-+	compatible = "picocom,scb-605", "rockchip,rk3399";
-+};
-+
-+&gmac {
-+	phy-supply = <&vcc3v3_sys>;
-+	phy-mode = "rgmii";
-+	phy-handle = <&lan8840>;
-+	clock_in_out = "input";
-+
-+	assigned-clocks = <&cru SCLK_RMII_SRC>;
-+	assigned-clock-parents = <&clkin_gmac>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&rgmii_pins>, <&phy_intb>, <&phy_rstb>;
-+	tx_delay = <0x27>;
-+	rx_delay = <0x1a>;
-+	status = "okay";
-+
-+	mdio {
-+		compatible = "snps,dwmac-mdio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		lan8840: ethernet-phy@3 {
-+			reg = <0x03>;
-+			snps,reset-gpio = <&gpio3 RK_PB7 GPIO_ACTIVE_LOW>;
-+			snps,reset-active-low;
-+			snps,reset-delays-us = <0 10000 50000>;
-+			interrupt-parent = <&gpio1>;
-+			interrupts = <RK_PC4 IRQ_TYPE_LEVEL_LOW>;
 +		};
 +	};
 +};
