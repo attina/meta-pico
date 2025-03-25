@@ -1,0 +1,65 @@
+From 1ac43cab96176e790c3916405988e27021fa4089 Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Mon, 24 Mar 2025 14:39:38 +0800
+Subject: [PATCH] enable emmc ethernet
+
+
+diff --git a/arch/arm/dts/rk3399-nanopi-r4s.dts b/arch/arm/dts/rk3399-nanopi-r4s.dts
+index cef4d18b59..2a9a3cf84e 100644
+--- a/arch/arm/dts/rk3399-nanopi-r4s.dts
++++ b/arch/arm/dts/rk3399-nanopi-r4s.dts
+@@ -65,7 +65,7 @@
+ };
+ 
+ &emmc_phy {
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ &i2c4 {
+@@ -105,7 +105,7 @@
+ };
+ 
+ &sdhci {
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ &sdio0 {
+diff --git a/arch/arm/dts/rk3399-nanopi4.dtsi b/arch/arm/dts/rk3399-nanopi4.dtsi
+index 8c0ff6c96e..4b9cebd9d5 100644
+--- a/arch/arm/dts/rk3399-nanopi4.dtsi
++++ b/arch/arm/dts/rk3399-nanopi4.dtsi
+@@ -176,7 +176,7 @@
+ 	clock_in_out = "input";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&rgmii_pins>, <&phy_intb>, <&phy_rstb>;
+-	phy-handle = <&rtl8211e>;
++	phy-handle = <&lan8840>;
+ 	phy-mode = "rgmii";
+ 	phy-supply = <&vcc3v3_s3>;
+ 	tx_delay = <0x28>;
+@@ -188,13 +188,13 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 
+-		rtl8211e: ethernet-phy@1 {
+-			reg = <1>;
+-			interrupt-parent = <&gpio3>;
+-			interrupts = <RK_PB2 IRQ_TYPE_LEVEL_LOW>;
+-			reset-assert-us = <10000>;
+-			reset-deassert-us = <30000>;
+-			reset-gpios = <&gpio3 RK_PB7 GPIO_ACTIVE_LOW>;
++		lan8840: ethernet-phy@3 {
++			reg = <0x03>;
++			snps,reset-gpio = <&gpio3 RK_PB7 GPIO_ACTIVE_LOW>;
++			snps,reset-active-low;
++			snps,reset-delays-us = <0 10000 50000>;
++			interrupt-parent = <&gpio1>;
++			interrupts = <RK_PC4 IRQ_TYPE_LEVEL_LOW>;
+ 		};
+ 	};
+ };
+-- 
+2.48.1
+

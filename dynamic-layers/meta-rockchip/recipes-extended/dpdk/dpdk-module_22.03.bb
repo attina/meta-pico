@@ -11,7 +11,7 @@ inherit module
 #kernel module needs 'rte_build_config.h', which is generated at buid time
 DEPENDS += "dpdk"
 
-COMPATIBLE_MACHINE = "scbxy"
+COMPATIBLE_MACHINE = "scb600"
 COMPATIBLE_HOST:libc-musl:class-target = "null"
 COMPATIBLE_HOST:linux-gnux32 = "null"
 
