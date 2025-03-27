@@ -1,6 +1,6 @@
-From 1fdd65424bd6184e2e79ae56387bb1aef941e45a Mon Sep 17 00:00:00 2001
+From 9ae030e60c34216b581af0c529582f9c27e74a8c Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
-Date: Thu, 27 Mar 2025 11:26:59 +0800
+Date: Thu, 27 Mar 2025 16:53:12 +0800
 Subject: [PATCH] picocom: add dts and config for scb600 and scb605
 
 
@@ -323,10 +323,10 @@ index 00000000000..f502f195621
 +};
 diff --git a/dts/upstream/src/arm64/rockchip/rk3399-picocom-scb605.dts b/dts/upstream/src/arm64/rockchip/rk3399-picocom-scb605.dts
 new file mode 100644
-index 00000000000..52eafbfc7e8
+index 00000000000..17882f28654
 --- /dev/null
 +++ b/dts/upstream/src/arm64/rockchip/rk3399-picocom-scb605.dts
-@@ -0,0 +1,50 @@
+@@ -0,0 +1,48 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2025 picocom Ltd.
@@ -346,14 +346,15 @@ index 00000000000..52eafbfc7e8
 +	phy-mode = "rgmii";
 +	phy-handle = <&yt8521s>;
 +	clock_in_out = "input";
-+
 +	assigned-clocks = <&cru SCLK_RMII_SRC>;
 +	assigned-clock-parents = <&clkin_gmac>;
-+	pinctrl-names = "default";
++	pinctrl-names = "default", "int", "reset";
 +	pinctrl-0 = <&rgmii_pins>, <&phy_intb>, <&phy_rstb>;
-+	rx_delay = <0x18>;
-+	snps,aal;
-+	tx_delay = <0x24>;
++	snps,reset-gpio = <&gpio3 RK_PB7 GPIO_ACTIVE_LOW>;
++	snps,reset-active-low;
++	snps,reset-delays-us = <0 10000 50000>;
++	tx_delay = <0x22>;
++	rx_delay = <0x12>;
 +	status = "okay";
 +
 +	mdio {
@@ -369,11 +370,8 @@ index 00000000000..52eafbfc7e8
 +			motorcomm,keep-pll-enabled;
 +			motorcomm,auto-sleep-disabled;
 +
-+			pinctrl-0 = <&phy_rstb>;
-+			pinctrl-names = "default";
-+			reset-assert-us = <10000>;
-+			reset-deassert-us = <50000>;
-+			reset-gpios = <&gpio3 RK_PB7 GPIO_ACTIVE_LOW>;
++			interrupt-parent = <&gpio1>;
++			interrupts = <RK_PC4 IRQ_TYPE_LEVEL_LOW>;
 +		};
 +	};
 +};
