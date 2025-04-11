@@ -1,4 +1,4 @@
-From 6fe434cb38a00a46dd133a6886ec5b8f49d18854 Mon Sep 17 00:00:00 2001
+From a7abcb1bcb6cfe7e59c20a88b3b117884f4aa69c Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Tue, 8 Apr 2025 11:46:28 +0800
 Subject: [PATCH] ls1046apscbc: add board init code
@@ -6,7 +6,7 @@ Subject: [PATCH] ls1046apscbc: add board init code
 
 diff --git a/plat/nxp/soc-ls1046a/ls1046apscbc/ddr_init.c b/plat/nxp/soc-ls1046a/ls1046apscbc/ddr_init.c
 new file mode 100644
-index 000000000..8da7ea5f8
+index 000000000..2c71ecea3
 --- /dev/null
 +++ b/plat/nxp/soc-ls1046a/ls1046apscbc/ddr_init.c
 @@ -0,0 +1,311 @@
@@ -236,16 +236,16 @@ index 000000000..8da7ea5f8
 +	return 0;
 +}
 +
-+/* DDR model number:  MT40A512M16JY-083E:B */
++/* DDR model number:  MT40A1G16RC-062E_BGA96 */
 +struct dimm_params ddr_raw_timing = {
 +		.n_ranks = 1,
-+		.rank_density = 4294967296u,
-+		.capacity = 4294967296u,
++		.rank_density = U(0x200000000),
++		.capacity = U(0x200000000),
 +		.primary_sdram_width = 64,
 +		.ec_sdram_width = 0,
 +		.rdimm = 0,
 +		.mirrored_dimm = 0,
-+		.n_row_addr = 16,
++		.n_row_addr = 17,
 +		.n_col_addr = 10,
 +		.bank_group_bits = 1,
 +		.edc_config = 0,
