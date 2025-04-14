@@ -1,4 +1,4 @@
-From 8da83e3c5507ebffd12261734e3f13c607f6b0b5 Mon Sep 17 00:00:00 2001
+From cc267e3b16d1349404ec392bd702fda27735520a Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Wed, 9 Apr 2025 17:14:35 +0800
 Subject: [PATCH] ls1046apscbc: add config and dts file
@@ -18,7 +18,7 @@ index 3b4404a251f..c14a42e26d8 100644
  	fsl-ls1012a-rdb.dtb \
 diff --git a/arch/arm/dts/fsl-ls1046a-pscbc.dts b/arch/arm/dts/fsl-ls1046a-pscbc.dts
 new file mode 100644
-index 00000000000..16c3918cdc9
+index 00000000000..1ed26cef09e
 --- /dev/null
 +++ b/arch/arm/dts/fsl-ls1046a-pscbc.dts
 @@ -0,0 +1,91 @@
@@ -102,17 +102,41 @@ index 00000000000..16c3918cdc9
 +	};
 +
 +	mdio@fc000 {
-+		status = "disabled";
-+	};
-+
-+	mdio@fd000 {
 +		yt8521_phy: ethernet-phy@1 {
 +			compatible = "ethernet-phy-ieee802.3-c45";
 +			interrupts = <0 131 4>;
 +			reg = <0x1>;
 +		};
 +	};
++
++	mdio@fd000 {
++		status = "disabled";
++	};
 +};
+diff --git a/board/freescale/ls1046apscb/MAINTAINERS b/board/freescale/ls1046apscb/MAINTAINERS
+index e47f34bcb81..a143d82959f 100644
+--- a/board/freescale/ls1046apscb/MAINTAINERS
++++ b/board/freescale/ls1046apscb/MAINTAINERS
+@@ -1,8 +1,16 @@
+-LS1046A BOARD
++LS1046A PSCB BOARD
+ M:	Gavin Gao <attinagaoxu@gmail.com>
+ S:	Maintained
+ F:	board/freescale/ls1046apscb/
+ F:	board/freescale/ls1046apscb/ls1046apscb.c
+ F:	include/configs/ls1046apscb.h
+ F:	configs/ls1046apscb_tfa_defconfig
+-F:	configs/ls1046apscb_tfa_SECURE_BOOT_defconfig
+\ No newline at end of file
++F:	configs/ls1046apscb_tfa_SECURE_BOOT_defconfig
++LS1046A PSCB (core) BOARD
++M:	Gavin Gao <attinagaoxu@gmail.com>
++S:	Maintained
++F:	board/freescale/ls1046apscb/
++F:	board/freescale/ls1046apscb/ls1046apscb.c
++F:	include/configs/ls1046apscb.h
++F:	configs/ls1046apscbc_tfa_defconfig
++F:	configs/ls1046apscbc_tfa_SECURE_BOOT_defconfig
 diff --git a/board/freescale/ls1046apscb/eth.c b/board/freescale/ls1046apscb/eth.c
 index 83add501891..10337a91583 100644
 --- a/board/freescale/ls1046apscb/eth.c
@@ -135,10 +159,10 @@ index 83add501891..10337a91583 100644
  
 diff --git a/configs/ls1046apscbc_tfa_SECURE_BOOT_defconfig b/configs/ls1046apscbc_tfa_SECURE_BOOT_defconfig
 new file mode 100644
-index 00000000000..8e2d0a3b133
+index 00000000000..559b0da2a18
 --- /dev/null
 +++ b/configs/ls1046apscbc_tfa_SECURE_BOOT_defconfig
-@@ -0,0 +1,89 @@
+@@ -0,0 +1,90 @@
 +CONFIG_ARM=y
 +CONFIG_COUNTER_FREQUENCY=25000000
 +CONFIG_TARGET_LS1046APSCB=y
@@ -187,7 +211,7 @@ index 00000000000..8e2d0a3b133
 +CONFIG_OF_CONTROL=y
 +CONFIG_ENV_OVERWRITE=y
 +CONFIG_USE_ETHPRIME=y
-+CONFIG_ETHPRIME="FM1@DTSEC3"
++CONFIG_ETHPRIME="FM1@DTSEC4"
 +CONFIG_SATA=y
 +CONFIG_SATA_CEVA=y
 +CONFIG_DDR_ECC=y
@@ -203,6 +227,7 @@ index 00000000000..8e2d0a3b133
 +CONFIG_SYS_NAND_ONFI_DETECTION=y
 +# CONFIG_SPI_FLASH_BAR is not set
 +CONFIG_SPI_FLASH_SPANSION=y
++CONFIG_SPI_FLASH_STMICRO=y
 +# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
 +CONFIG_PHYLIB=y
 +CONFIG_PHY_AQUANTIA=y
@@ -230,10 +255,10 @@ index 00000000000..8e2d0a3b133
 +CONFIG_EFI_LOADER_BOUNCE_BUFFER=y
 diff --git a/configs/ls1046apscbc_tfa_defconfig b/configs/ls1046apscbc_tfa_defconfig
 new file mode 100644
-index 00000000000..4ab03eaa69b
+index 00000000000..1a71667bc95
 --- /dev/null
 +++ b/configs/ls1046apscbc_tfa_defconfig
-@@ -0,0 +1,96 @@
+@@ -0,0 +1,97 @@
 +CONFIG_ARM=y
 +CONFIG_COUNTER_FREQUENCY=25000000
 +CONFIG_TARGET_LS1046APSCB=y
@@ -289,7 +314,7 @@ index 00000000000..4ab03eaa69b
 +CONFIG_ENV_IS_IN_SPI_FLASH=y
 +CONFIG_SYS_RELOC_GD_ENV_ADDR=y
 +CONFIG_USE_ETHPRIME=y
-+CONFIG_ETHPRIME="FM1@DTSEC3"
++CONFIG_ETHPRIME="FM1@DTSEC4"
 +CONFIG_SATA=y
 +CONFIG_SATA_CEVA=y
 +CONFIG_FSL_CAAM=y
@@ -305,6 +330,7 @@ index 00000000000..4ab03eaa69b
 +CONFIG_SYS_NAND_ONFI_DETECTION=y
 +# CONFIG_SPI_FLASH_BAR is not set
 +CONFIG_SPI_FLASH_SPANSION=y
++CONFIG_SPI_FLASH_STMICRO=y
 +# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
 +CONFIG_PHYLIB=y
 +CONFIG_PHY_AQUANTIA=y
