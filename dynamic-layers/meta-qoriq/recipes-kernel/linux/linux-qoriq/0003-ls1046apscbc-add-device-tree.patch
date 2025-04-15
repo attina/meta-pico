@@ -1,4 +1,4 @@
-From 7438551925e7b163e4003201e8597048cacd08e2 Mon Sep 17 00:00:00 2001
+From df31b9296f98ffd94c561679c633dbcd7e8698a6 Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Fri, 11 Apr 2025 09:46:07 +0800
 Subject: [PATCH] ls1046apscbc: add device tree
@@ -20,7 +20,7 @@ index dd226ddf3f70..1c882a015eca 100644
  dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1088a-ten64.dtb
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-sdk.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-sdk.dts
 new file mode 100644
-index 000000000000..ceb54e1439fd
+index 000000000000..64e33ac92cba
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-sdk.dts
 @@ -0,0 +1,289 @@
@@ -70,7 +70,7 @@ index 000000000000..ceb54e1439fd
 + *     OTHER DEALINGS IN THE SOFTWARE.
 + */
 +
-+#include "fsl-ls1046a-pscb.dts"
++#include "fsl-ls1046a-pscbc.dts"
 +#include "qoriq-qman-portals-sdk.dtsi"
 +#include "qoriq-bman-portals-sdk.dtsi"
 +
@@ -121,7 +121,7 @@ index 000000000000..ceb54e1439fd
 +	ethernet@3 {
 +		status = "disabled";
 +	};
-+	ethernet@5 {
++	ethernet@4 {
 +		status = "disabled";
 +	};
 +	ethernet@6 {
@@ -315,7 +315,7 @@ index 000000000000..ceb54e1439fd
 +};
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-usdpaa.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-usdpaa.dts
 new file mode 100755
-index 000000000000..b75213eb6698
+index 000000000000..29dfa4afe9d7
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-usdpaa.dts
 @@ -0,0 +1,99 @@
@@ -329,7 +329,7 @@ index 000000000000..b75213eb6698
 + * warranty of any kind, whether express or implied.
 + */
 +
-+#include "fsl-ls1046a-pscb-sdk.dts"
++#include "fsl-ls1046a-pscbc-sdk.dts"
 +
 +&soc {
 +	bp7: buffer-pool@7 {
@@ -420,10 +420,10 @@ index 000000000000..b75213eb6698
 +};
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc.dts
 new file mode 100644
-index 000000000000..7891d66266fa
+index 000000000000..3be8e3f45314
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc.dts
-@@ -0,0 +1,164 @@
+@@ -0,0 +1,165 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Device Tree Include file for Freescale Layerscape-1046A family SoC.
@@ -574,14 +574,15 @@ index 000000000000..7891d66266fa
 +	};
 +
 +	mdio@fc000 {
-+	};
-+
-+	mdio@fd000 {
 +		yt8521_phy: ethernet-phy@1 {
 +			compatible = "ethernet-phy-ieee802.3-c45";
 +			interrupts = <0 131 4>;
 +			reg = <0x1>;
 +		};
++	};
++
++	mdio@fd000 {
++		status = "disabled";
 +	};
 +};
 +
