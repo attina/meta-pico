@@ -11,11 +11,13 @@ Picocom-specific packages."
 LICENSE = "MIT"
 
 IMAGE_INSTALL:append = " \
-    packagegroup-core-ssh-openssh \
-    packagegroup-pico-base \
+    packagegroup-core-ssh-openssh packagegroup-pico-base \
+    kernel-modules e2fsprogs-mke2fs python3 python3-pip \
+    cjson libpcap \
 "
 
 DEPENDS:append:qoriq = " \
+    secure-boot-qoriq \
     flex-installer \
     qoriq-composite-firmware \
     generate-boottgz \
