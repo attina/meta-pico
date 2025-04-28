@@ -1,4 +1,4 @@
-From a7abcb1bcb6cfe7e59c20a88b3b117884f4aa69c Mon Sep 17 00:00:00 2001
+From 7e05534a8e446735950928e835e5e00d9f7918c3 Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Tue, 8 Apr 2025 11:46:28 +0800
 Subject: [PATCH] ls1046apscbc: add board init code
@@ -445,10 +445,10 @@ index 000000000..3186cc9a1
 +
 diff --git a/plat/nxp/soc-ls1046a/ls1046apscbc/platform.mk b/plat/nxp/soc-ls1046a/ls1046apscbc/platform.mk
 new file mode 100644
-index 000000000..de9fd5f6e
+index 000000000..dd8352271
 --- /dev/null
 +++ b/plat/nxp/soc-ls1046a/ls1046apscbc/platform.mk
-@@ -0,0 +1,39 @@
+@@ -0,0 +1,40 @@
 +#
 +# Copyright 2018-2020 NXP
 +#
@@ -481,7 +481,8 @@ index 000000000..de9fd5f6e
 +			${BOARD_PATH}/platform.c
 +
 +SUPPORTED_BOOT_MODE	:=	qspi	\
-+				sd
++				sd \
++				emmc
 +
 +# Adding platform board build info
 +include plat/nxp/common/plat_make_helper/plat_common_def.mk
