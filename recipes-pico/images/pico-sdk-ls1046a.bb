@@ -13,7 +13,7 @@ LICENSE = "MIT"
 IMAGE_INSTALL:append = " \
     packagegroup-core-ssh-openssh packagegroup-pico-base \
     kernel-modules e2fsprogs-mke2fs python3 python3-pip \
-    cjson libpcap \
+    cjson libpcap dpdk-devbind \
 "
 
 DEPENDS:append:qoriq = " \
