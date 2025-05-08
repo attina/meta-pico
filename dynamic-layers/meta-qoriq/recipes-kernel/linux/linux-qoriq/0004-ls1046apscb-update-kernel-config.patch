@@ -1,14 +1,14 @@
-From 76d919bfbfa8d9be9411af1babc482a6034fe33d Mon Sep 17 00:00:00 2001
+From 163a7f6f7d9a39651277dbe45c4d8a7a47d8b753 Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Fri, 25 Apr 2025 16:32:17 +0800
 Subject: [PATCH] ls1046apscb: update kernel config
 
 
 diff --git a/arch/arm64/configs/picoscb.config b/arch/arm64/configs/picoscb.config
-index 8511517d9940..77344845f12d 100644
+index 8511517d9940..f70f37834125 100644
 --- a/arch/arm64/configs/picoscb.config
 +++ b/arch/arm64/configs/picoscb.config
-@@ -33,4 +33,6 @@ CONFIG_NO_HZ_FULL=y
+@@ -33,4 +33,9 @@ CONFIG_NO_HZ_FULL=y
  CONFIG_CONTEXT_TRACKING=y
  
  # Ethernet PHY
@@ -17,6 +17,9 @@ index 8511517d9940..77344845f12d 100644
 +CONFIG_MOTORCOMM_PHY=y
 +CONFIG_FSL_PQ_MDIO=y
 +CONFIG_SPI_SPIDEV=y
++
++# PCI-e
++CONFIG_HOTPLUG_PCI_PCIE=y
 \ No newline at end of file
 -- 
 2.49.0
