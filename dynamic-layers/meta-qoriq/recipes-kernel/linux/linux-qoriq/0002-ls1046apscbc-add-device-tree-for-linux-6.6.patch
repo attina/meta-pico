@@ -1,7 +1,7 @@
-From aecfd557ed73479b8f5e61637616022a80878dc1 Mon Sep 17 00:00:00 2001
+From 21ad0fdff63f70cf0f2bd18b9dee804d5685b6f6 Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Wed, 23 Apr 2025 22:45:54 +0800
-Subject: [PATCH 2/2] ls1046apscbc: add device tree
+Subject: [PATCH] ls1046apscbc: add device tree
 
 
 diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
@@ -20,10 +20,10 @@ index dd226ddf3f70..1c882a015eca 100644
  dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1088a-ten64.dtb
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-sdk.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-sdk.dts
 new file mode 100644
-index 000000000000..64e33ac92cba
+index 000000000000..036821c2ac85
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-sdk.dts
-@@ -0,0 +1,289 @@
+@@ -0,0 +1,292 @@
 +/*
 + * Device Tree Include file for Freescale Layerscape-1046A family SoC.
 + *
@@ -131,7 +131,10 @@ index 000000000000..64e33ac92cba
 +		status = "disabled";
 +	};
 +	ethernet@8 {
-+		status = "disabled";
++		compatible = "fsl,dpa-ethernet";
++		fsl,fman-mac = <&enet6>;
++		dma-coherent;
++		phy-connection-type = "xgmii";
 +	};
 +	ethernet@9 {
 +		status = "disabled";
@@ -315,10 +318,10 @@ index 000000000000..64e33ac92cba
 +};
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-usdpaa.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-usdpaa.dts
 new file mode 100755
-index 000000000000..29dfa4afe9d7
+index 000000000000..43f8c0758d02
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc-usdpaa.dts
-@@ -0,0 +1,99 @@
+@@ -0,0 +1,98 @@
 +/*
 + * Device Tree Include file for Freescale Layerscape-1046A family SoC.
 + *
@@ -360,12 +363,11 @@ index 000000000000..29dfa4afe9d7
 +		compatible = "fsl,ls1046a", "fsl,dpaa", "simple-bus";
 +		dma-coherent;
 +
-+
-+		ethernet@9 {
++		ethernet@8 {
 +			compatible = "fsl,dpa-ethernet-init";
 +			fsl,bman-buffer-pools = <&bp7 &bp8 &bp9>;
-+			fsl,qman-frame-queues-rx = <0x5e 1 0x5f 1>;
-+			fsl,qman-frame-queues-tx = <0x7e 1 0x7f 1>;
++			fsl,qman-frame-queues-rx = <0x5c 1 0x5d 1>;
++			fsl,qman-frame-queues-tx = <0x7c 1 0x7d 1>;
 +		};
 +
 +		dpa-fman0-oh@2 {
@@ -420,10 +422,10 @@ index 000000000000..29dfa4afe9d7
 +};
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc.dts
 new file mode 100644
-index 000000000000..4a97b159c9a8
+index 000000000000..6bdb2c0bc741
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pscbc.dts
-@@ -0,0 +1,166 @@
+@@ -0,0 +1,167 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Device Tree Include file for Freescale Layerscape-1046A family SoC.
@@ -567,7 +569,8 @@ index 000000000000..4a97b159c9a8
 +	};
 +
 +	ethernet@f0000 { /* 10GEC1 */
-+		status = "disabled";
++		fixed-link = <1 1 10000 0 0>;
++		phy-connection-type = "xgmii";
 +	};
 +
 +	ethernet@f2000 { /* 10GEC2 */
