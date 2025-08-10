@@ -2,16 +2,17 @@
 machine=ls1046apscbc
 
 # [firmware_images]
-rcw_qspi=rcw/ls1046apscb/NN_FNSNPPPP_3333_8888/rcw_1600_qspiboot.bin
-rcw_qspi_sec=rcw/ls1046apscb/NN_FNSNPPPP_3333_8888/rcw_1600_qspiboot_sben.bin
-rcw_sd=rcw/ls1046apscb/NN_FNSNPPPP_3333_8888/rcw_1600_sdboot.bin
-rcw_sd_sec=rcw/ls1046apscb/NN_FNSNPPPP_3333_8888/rcw_1600_sdboot_sben.bin
-rcw_emmc=rcw/ls1046apscb/NN_FNSNPPPP_3333_8888/rcw_1600_emmcboot.bin
-rcw_emmc_sec=rcw/ls1046apscb/NN_FNSNPPPP_3333_8888/rcw_1600_emmcboot_sben.bin
+rcw_qspi=rcw/ls1046apscbc/NN_FNSNPPPP_3333_8888/rcw_1600_qspiboot.bin
+rcw_qspi_sec=rcw/ls1046apscbc/NN_FNSNPPPP_3333_8888/rcw_1600_qspiboot_sben.bin
+rcw_sd=rcw/ls1046apscbc/NN_FNSNPPPP_3333_8888/rcw_1600_sdboot.bin
+rcw_sd_sec=rcw/ls1046apscbc/NN_FNSNPPPP_3333_8888/rcw_1600_sdboot_sben.bin
+rcw_emmc=rcw/ls1046apscbc/NN_FNSNPPPP_3333_8888/rcw_1600_emmcboot.bin
+rcw_emmc_sec=rcw/ls1046apscbc/NN_FNSNPPPP_3333_8888/rcw_1600_emmcboot_sben.bin
 atf_bl2_qspi=atf/bl2_qspi.pbl
 atf_bl2_qspi_sec=atf/bl2_qspi_sec.pbl
 atf_bl2_sd=atf/bl2_sd.pbl
 atf_bl2_sd_sec=atf/bl2_sd_sec.pbl
+atf_bl2_emmc=atf/bl2_emmc.pbl
 atf_fip_uboot=atf/fip_uboot.bin
 atf_fip_uboot_sec=atf/fip_uboot_sec.bin
 secureboot_headers_qspi=secboot_hdrs/secboot_hdrs_qspiboot.bin
