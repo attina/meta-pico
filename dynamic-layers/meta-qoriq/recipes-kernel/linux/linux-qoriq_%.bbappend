@@ -6,6 +6,7 @@ python __anonymous () {
         d.appendVar('SRC_URI', ' file://patch-6.12.28-rt10.patch')
         d.appendVar('SRC_URI', ' file://0001-picocom-ls1046apscb-patch-for-linux-6.12.patch')
         d.appendVar('SRC_URI', ' file://0002-ls1046apscbc-add-device-tree-for-linux-6.12.patch')
+        d.appendVar('SRC_URI', ' file://0003-ls1046apxcp-add-device-tree-for-linux-6.12.patch')
     elif pv.startswith("6.6"):
         d.appendVar('SRC_URI', ' file://patch-6.6.52-rt43.patch')
         d.appendVar('SRC_URI', ' file://0001-picocom-ls1046apscb-patch-for-linux-6.6.patch')

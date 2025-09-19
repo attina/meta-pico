@@ -13,7 +13,6 @@ python __anonymous () {
     else:
         raise bb.parse.SkipRecipe("Unsupported version %s" % pv)
 
-    m = d.getVar("MACHINE")
-    if m == "ls1046apscbc":
-        d.appendVar('SRC_URI', ' file://0002-ls1046apscbc-add-config-and-dts-file.patch')
+    d.appendVar('SRC_URI', ' file://0002-ls1046apscbc-add-config-and-dts-file.patch')
+    d.appendVar('SRC_URI', ' file://0003-ls1046apxcp-add-config-and-dts-file.patch')
 }
