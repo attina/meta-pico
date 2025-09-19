@@ -1,4 +1,4 @@
-From 7e05534a8e446735950928e835e5e00d9f7918c3 Mon Sep 17 00:00:00 2001
+From 7e80c993256ebcec7a971a6aeb79985c641a9287 Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Tue, 8 Apr 2025 11:46:28 +0800
 Subject: [PATCH] ls1046apscbc: add board init code
@@ -445,7 +445,7 @@ index 000000000..3186cc9a1
 +
 diff --git a/plat/nxp/soc-ls1046a/ls1046apscbc/platform.mk b/plat/nxp/soc-ls1046a/ls1046apscbc/platform.mk
 new file mode 100644
-index 000000000..dd8352271
+index 000000000..ae24fe298
 --- /dev/null
 +++ b/plat/nxp/soc-ls1046a/ls1046apscbc/platform.mk
 @@ -0,0 +1,40 @@
@@ -470,8 +470,8 @@ index 000000000..dd8352271
 +CONFIG_STATIC_DDR := 0
 +
 + # On-Board Flash Details
-+QSPI_FLASH_SZ	:=	0x20000000
-+NOR_FLASH_SZ	:=	0x20000000
++QSPI_FLASH_SZ	:=	0x8000000
++NOR_FLASH_SZ	:=	0x8000000
 +
 + # Platform specific features.
 +WARM_BOOT	:=	no
@@ -548,5 +548,5 @@ index 000000000..7daa15007
 +
 +#endif /* _POLICY_H */
 -- 
-2.49.0
+2.51.0
 
