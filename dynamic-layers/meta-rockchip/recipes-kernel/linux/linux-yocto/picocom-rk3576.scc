@@ -1,0 +1,11 @@
+define KFEATURE_DESCRIPTION "tweaks for the Forlinx ok3576"
+define KMACHINE rk3576
+define KTYPE standard
+define KARCH arm64
+
+patch rk3576/0001-arm64-dts-rockchip-Add-rk3576-SoC-base-DT.patch
+patch rk3576/0002-arm64-dts-rockchip-Add-rk3576-naneng-combphy-nodes.patch
+patch rk3576/0003-arm64-dts-rockchip-add-usb-related-nodes-for-rk3576.patch
+patch rk3576/0004-arm64-dts-rockchip-Add-rk3576-evb1-board.patch
+
+kconf hardware picocom-rockchip-hardware.cfg
