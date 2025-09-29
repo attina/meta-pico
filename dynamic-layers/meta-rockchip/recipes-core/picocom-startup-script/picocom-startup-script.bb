@@ -4,7 +4,7 @@ MAINTAINER = "Gavin Gao <attinagaoxu@gmail.com>"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = ""
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
@@ -18,5 +18,5 @@ INITSCRIPT_PARAMS = "start 99 2 3 4 5 ."
 inherit update-rc.d
 
 do_install() {
-    install -m 0755 ${WORKDIR}/run-for-picocom.sh -D ${D}${sysconfdir}/init.d/run-for-picocom.sh
+    install -m 0755 ${S}/run-for-picocom.sh -D ${D}${sysconfdir}/init.d/run-for-picocom.sh
 }
