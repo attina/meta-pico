@@ -1,8 +1,6 @@
-define KFEATURE_DESCRIPTION "tweaks for the picocom scb600"
+define KFEATURE_DESCRIPTION "tweaks for the picocom scb6xx board"
 define KMACHINE rk3399
 define KTYPE standard
 define KARCH arm64
-
-patch rk3399/0001-scb6xx-add-dts-file-for-scb600-and-scb605.patch
 
 kconf hardware picocom-rockchip-hardware.cfg
