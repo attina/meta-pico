@@ -1,12 +1,12 @@
-From dc6dc51d1b113467483fd54171ae9cee8b9a4646 Mon Sep 17 00:00:00 2001
-From: kas User <kas@example.com>
+From cf4712e0b7d8c38dd95036746fe2ba60436d31f7 Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Fri, 19 Sep 2025 16:17:57 +0800
 Subject: [PATCH] ls1046apxcp: add board init code
 
 
 diff --git a/plat/nxp/soc-ls1046a/ls1046apxcp/ddr_init.c b/plat/nxp/soc-ls1046a/ls1046apxcp/ddr_init.c
 new file mode 100644
-index 000000000..aa500a5a5
+index 000000000..92aaa9af5
 --- /dev/null
 +++ b/plat/nxp/soc-ls1046a/ls1046apxcp/ddr_init.c
 @@ -0,0 +1,311 @@
@@ -245,7 +245,7 @@ index 000000000..aa500a5a5
 +		.ec_sdram_width = 0,
 +		.rdimm = 0,
 +		.mirrored_dimm = 0,
-+		.n_row_addr = 16,
++		.n_row_addr = 17,
 +		.n_col_addr = 10,
 +		.bank_group_bits = 1,
 +		.edc_config = 0,
