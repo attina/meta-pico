@@ -1,5 +1,5 @@
-From 2f3ca5b1edc7f824e90966ddefca5a736d87cc55 Mon Sep 17 00:00:00 2001
-From: kas User <kas@example.com>
+From 7021c02e982130d0f28b1b48f6740ededb85072a Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Fri, 19 Sep 2025 15:43:14 +0800
 Subject: [PATCH] ls1046apxcp: add device tree for linux 6.6
 
@@ -20,57 +20,20 @@ index 1c882a015eca..37b4e557395a 100644
  dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1088a-ten64.dtb
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-sdk.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-sdk.dts
 new file mode 100644
-index 000000000000..b5be40eaa6f0
+index 000000000000..78421d7fcf3c
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-sdk.dts
-@@ -0,0 +1,283 @@
+@@ -0,0 +1,246 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
-+ * Device Tree Include file for Freescale Layerscape-1046A family SoC.
++ * Device Tree file for Picocom LS1046A XCP board.
 + *
-+ * Copyright 2014-2015 Freescale Semiconductor, Inc.
++ * Copyright 2025 Picocom, Inc.
 + *
-+ * Mingkai Hu <Mingkai.hu@freescale.com>
-+ *
-+ * This file is dual-licensed: you can use it either under the terms
-+ * of the GPLv2 or the X11 license, at your option. Note that this dual
-+ * licensing only applies to this file, and not this project as a
-+ * whole.
-+ *
-+ *  a) This library is free software; you can redistribute it and/or
-+ *     modify it under the terms of the GNU General Public License as
-+ *     published by the Free Software Foundation; either version 2 of the
-+ *     License, or (at your option) any later version.
-+ *
-+ *     This library is distributed in the hope that it will be useful,
-+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *     GNU General Public License for more details.
-+ *
-+ * Or, alternatively,
-+ *
-+ *  b) Permission is hereby granted, free of charge, to any person
-+ *     obtaining a copy of this software and associated documentation
-+ *     files (the "Software"), to deal in the Software without
-+ *     restriction, including without limitation the rights to use,
-+ *     copy, modify, merge, publish, distribute, sublicense, and/or
-+ *     sell copies of the Software, and to permit persons to whom the
-+ *     Software is furnished to do so, subject to the following
-+ *     conditions:
-+ *
-+ *     The above copyright notice and this permission notice shall be
-+ *     included in all copies or substantial portions of the Software.
-+ *
-+ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-+ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-+ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-+ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-+ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ *     OTHER DEALINGS IN THE SOFTWARE.
++ * Gavin Gao <attinagaoxu@gmail.com>
 + */
 +
-+#include "fsl-ls1046a-pscbc.dts"
++#include "fsl-ls1046a-pxcp.dts"
 +#include "qoriq-qman-portals-sdk.dtsi"
 +#include "qoriq-bman-portals-sdk.dtsi"
 +
@@ -309,21 +272,20 @@ index 000000000000..b5be40eaa6f0
 +};
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-usdpaa.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-usdpaa.dts
 new file mode 100755
-index 000000000000..43f8c0758d02
+index 000000000000..655811aaeaad
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-usdpaa.dts
-@@ -0,0 +1,98 @@
+@@ -0,0 +1,97 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
-+ * Device Tree Include file for Freescale Layerscape-1046A family SoC.
++ * Device Tree file for Picocom LS1046A XCP board.
 + *
-+ * Copyright (C) 2016, Freescale Semiconductor
++ * Copyright 2025 Picocom, Inc.
 + *
-+ * This file is licensed under the terms of the GNU General Public
-+ * License version 2.  This program is licensed "as is" without any
-+ * warranty of any kind, whether express or implied.
++ * Gavin Gao <attinagaoxu@gmail.com>
 + */
 +
-+#include "fsl-ls1046a-pscbc-sdk.dts"
++#include "fsl-ls1046a-pxcp-sdk.dts"
 +
 +&soc {
 +	bp7: buffer-pool@7 {
@@ -413,18 +375,17 @@ index 000000000000..43f8c0758d02
 +};
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp.dts
 new file mode 100644
-index 000000000000..94a16479325e
+index 000000000000..0d3a7a0a6b26
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp.dts
-@@ -0,0 +1,176 @@
+@@ -0,0 +1,192 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
-+ * Device Tree Include file for Freescale Layerscape-1046A family SoC.
++ * Device Tree include file for Picocom LS1046A XCP board.
 + *
-+ * Copyright 2016 Freescale Semiconductor, Inc.
-+ * Copyright 2019-2020 NXP
++ * Copyright 2025 Picocom, Inc.
 + *
-+ * Gavin Gao <mingkai.hu@nxp.com>
++ * Gavin Gao <attinagaoxu@gmail.com>
 + */
 +
 +/dts-v1/;
@@ -462,7 +423,16 @@ index 000000000000..94a16479325e
 +	status = "okay";
 +};
 +
++&duart2 {
++	status = "okay";
++};
++
++&duart3 {
++	status = "okay";
++};
++
 +&esdhc {
++	status = "okay";
 +	mmc-ddr-3_3v;
 +	cap-mmc-highspeed;
 +	mmc-hs200-1_8v;
@@ -590,7 +560,15 @@ index 000000000000..94a16479325e
 +	};
 +};
 +
-+&pcie1{
++&pcie_ep1 {
++	status = "okay";
++};
++
++&pcie2 {
++	status = "okay";
++};
++
++&pcie3 {
 +	status = "okay";
 +};
 \ No newline at end of file
