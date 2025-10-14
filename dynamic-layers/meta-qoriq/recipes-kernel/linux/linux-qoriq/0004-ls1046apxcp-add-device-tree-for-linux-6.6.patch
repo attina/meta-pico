@@ -1,4 +1,4 @@
-From 7021c02e982130d0f28b1b48f6740ededb85072a Mon Sep 17 00:00:00 2001
+From c75e915743c4df2f9e3575031c467b3552b941a3 Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Fri, 19 Sep 2025 15:43:14 +0800
 Subject: [PATCH] ls1046apxcp: add device tree for linux 6.6
@@ -20,10 +20,10 @@ index 1c882a015eca..37b4e557395a 100644
  dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1088a-ten64.dtb
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-sdk.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-sdk.dts
 new file mode 100644
-index 000000000000..78421d7fcf3c
+index 000000000000..9ada355fee26
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-sdk.dts
-@@ -0,0 +1,246 @@
+@@ -0,0 +1,240 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Device Tree file for Picocom LS1046A XCP board.
@@ -76,12 +76,6 @@ index 000000000000..78421d7fcf3c
 +		status = "disabled";
 +	};
 +	ethernet@1 {
-+		status = "disabled";
-+	};
-+	ethernet@2 {
-+		status = "disabled";
-+	};
-+	ethernet@3 {
 +		status = "disabled";
 +	};
 +	ethernet@4 {
@@ -375,10 +369,10 @@ index 000000000000..655811aaeaad
 +};
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp.dts
 new file mode 100644
-index 000000000000..0d3a7a0a6b26
+index 000000000000..d16de283e7e1
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp.dts
-@@ -0,0 +1,192 @@
+@@ -0,0 +1,197 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Device Tree include file for Picocom LS1046A XCP board.
@@ -512,11 +506,13 @@ index 000000000000..0d3a7a0a6b26
 +
 +&fman0 {
 +	ethernet@e4000 {
-+		status = "disabled";
++		phy-handle = <&rgmii_phy1>;
++		phy-connection-type = "rgmii";
 +	};
 +
 +	ethernet@e6000 {
-+		status = "disabled";
++		phy-handle = <&rgmii_phy2>;
++		phy-connection-type = "rgmii";
 +	};
 +
 +	ethernet@e8000 {
@@ -530,13 +526,12 @@ index 000000000000..0d3a7a0a6b26
 +	};
 +
 +	ethernet@f0000 { /* 10GEC1 */
-+		phy-handle = <&rgmii_phy1>;
-+		phy-connection-type = "rgmii";
++		fixed-link = <1 1 10000 0 0>;
++		phy-connection-type = "xgmii";
 +	};
 +
 +	ethernet@f2000 { /* 10GEC2 */
-+		phy-handle = <&rgmii_phy2>;
-+		phy-connection-type = "rgmii";
++		status = "disabled";
 +	};
 +
 +	mdio@fc000 {
@@ -547,10 +542,14 @@ index 000000000000..0d3a7a0a6b26
 +		};
 +
 +		rgmii_phy1: ethernet-phy@1 {
++			/* MotorComm YT8521 */
++			compatible = "ethernet-phy-id0000.011a", "ethernet-phy-ieee802.3-c22";
 +			reg = <0x1>;
 +		};
 +
 +		rgmii_phy2: ethernet-phy@3 {
++			/* MotorComm YT8521 */
++			compatible = "ethernet-phy-id0000.011a", "ethernet-phy-ieee802.3-c22";
 +			reg = <0x3>;
 +		};
 +	};
