@@ -1,14 +1,14 @@
-From 595fb2b5565d0a117fbeb6c84f7fd01f07b8b7a4 Mon Sep 17 00:00:00 2001
-From: kas User <kas@example.com>
+From 7f6aeda9e3ad3c75ff39db7e006e98d266607a4b Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Fri, 19 Sep 2025 15:21:54 +0800
 Subject: [PATCH] ls1046apxcp: add config and dts file
 
 
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index ef417810b26..61d79b25018 100644
+index c14a42e26d8..867fd401d0d 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -505,6 +505,7 @@ dtb-$(CONFIG_FSL_LSCH2) += fsl-ls1043a-qds-duart.dtb \
+@@ -622,6 +622,7 @@ dtb-$(CONFIG_FSL_LSCH2) += fsl-ls1043a-qds-duart.dtb \
  	fsl-ls1046a-rdb.dtb \
  	fsl-ls1046a-pscb.dtb \
  	fsl-ls1046a-pscbc.dtb \
@@ -18,10 +18,10 @@ index ef417810b26..61d79b25018 100644
  	fsl-ls1012a-rdb.dtb \
 diff --git a/arch/arm/dts/fsl-ls1046a-pxcp.dts b/arch/arm/dts/fsl-ls1046a-pxcp.dts
 new file mode 100644
-index 00000000000..3980794f58d
+index 00000000000..bdd118e6f23
 --- /dev/null
 +++ b/arch/arm/dts/fsl-ls1046a-pxcp.dts
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,105 @@
 +// SPDX-License-Identifier: GPL-2.0+ OR X11
 +/*
 + * Device Tree Include file for Freescale Layerscape-1046A family SoC.
@@ -76,11 +76,15 @@ index 00000000000..3980794f58d
 +
 +&fman0 {
 +	ethernet@e4000 {
-+		status = "disabled";
++		status = "okay";
++		phy-handle = <&rgmii_phy1>;
++		phy-connection-type = "rgmii";
 +	};
 +
 +	ethernet@e6000 {
-+		status = "disabled";
++		status = "okay";
++		phy-handle = <&rgmii_phy2>;
++		phy-connection-type = "rgmii";
 +	};
 +
 +	ethernet@e8000 {
@@ -94,29 +98,27 @@ index 00000000000..3980794f58d
 +	};
 +
 +	ethernet@f0000 { /* 10GEC1 */
-+		phy-handle = <&rgmii_phy1>;
-+		phy-connection-type = "rgmii";
-+		status = "okay";
++		status = "disabled";
 +	};
 +
 +	ethernet@f2000 { /* 10GEC2 */
-+		phy-handle = <&rgmii_phy2>;
-+		phy-connection-type = "rgmii";
-+		status = "okay";
++		status = "disabled";
 +	};
 +
 +	mdio@fc000 {
 +		yt8521_phy: ethernet-phy@2 {
-+			compatible = "ethernet-phy-ieee802.3-c45";
++			compatible = "ethernet-phy-ieee802.3-c22";
 +			interrupts = <0 131 4>;
 +			reg = <0x2>;
 +		};
 +
 +		rgmii_phy1: ethernet-phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
 +			reg = <0x1>;
 +		};
 +
 +		rgmii_phy2: ethernet-phy@3 {
++			compatible = "ethernet-phy-ieee802.3-c22";
 +			reg = <0x3>;
 +		};
 +	};
@@ -143,7 +145,7 @@ index a143d82959f..3aade78776a 100644
 +F:	configs/ls1046apxcp_tfa_SECURE_BOOT_defconfig
 diff --git a/configs/ls1046apxcp_tfa_SECURE_BOOT_defconfig b/configs/ls1046apxcp_tfa_SECURE_BOOT_defconfig
 new file mode 100644
-index 00000000000..2a897503cb1
+index 00000000000..e2a0b6f2a4c
 --- /dev/null
 +++ b/configs/ls1046apxcp_tfa_SECURE_BOOT_defconfig
 @@ -0,0 +1,90 @@
@@ -195,7 +197,7 @@ index 00000000000..2a897503cb1
 +CONFIG_OF_CONTROL=y
 +CONFIG_ENV_OVERWRITE=y
 +CONFIG_USE_ETHPRIME=y
-+CONFIG_ETHPRIME="FM1@DTSEC4"
++CONFIG_ETHPRIME="FM1@DTSEC6"
 +CONFIG_SATA=y
 +CONFIG_SATA_CEVA=y
 +CONFIG_DDR_ECC=y
@@ -239,7 +241,7 @@ index 00000000000..2a897503cb1
 +CONFIG_EFI_LOADER_BOUNCE_BUFFER=y
 diff --git a/configs/ls1046apxcp_tfa_defconfig b/configs/ls1046apxcp_tfa_defconfig
 new file mode 100644
-index 00000000000..98161621774
+index 00000000000..3ca3c8d8bb0
 --- /dev/null
 +++ b/configs/ls1046apxcp_tfa_defconfig
 @@ -0,0 +1,97 @@
@@ -298,7 +300,7 @@ index 00000000000..98161621774
 +CONFIG_ENV_IS_IN_SPI_FLASH=y
 +CONFIG_SYS_RELOC_GD_ENV_ADDR=y
 +CONFIG_USE_ETHPRIME=y
-+CONFIG_ETHPRIME="FM1@DTSEC4"
++CONFIG_ETHPRIME="FM1@DTSEC6"
 +CONFIG_SATA=y
 +CONFIG_SATA_CEVA=y
 +CONFIG_FSL_CAAM=y
@@ -341,5 +343,5 @@ index 00000000000..98161621774
 +CONFIG_OF_LIBFDT_OVERLAY=y
 +CONFIG_EFI_LOADER_BOUNCE_BUFFER=y
 -- 
-2.51.0
+2.34.1
 
