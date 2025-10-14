@@ -1,14 +1,14 @@
-From 1c363736c4ff77e67b44b67528ae359da065b97a Mon Sep 17 00:00:00 2001
-From: kas User <kas@example.com>
-Date: Fri, 26 Sep 2025 09:51:56 +0800
-Subject: [PATCH] picocom: compatible code for pin mux of iic3/iic4
+From 29b6a1a0261125179dfd90b12cc930571bbeac97 Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Mon, 13 Oct 2025 14:35:34 +0800
+Subject: [PATCH 2/2] picocom: compatible code for pin mux of iic3/iic4
 
 
 diff --git a/board/freescale/ls1046apscb/ls1046apscb.c b/board/freescale/ls1046apscb/ls1046apscb.c
-index 190ce81a503..758396ee916 100644
+index 8a110109ccd..f0f08132c3c 100644
 --- a/board/freescale/ls1046apscb/ls1046apscb.c
 +++ b/board/freescale/ls1046apscb/ls1046apscb.c
-@@ -117,26 +117,34 @@ int power_init_board(void)
+@@ -118,26 +118,34 @@ int power_init_board(void)
  
  void config_board_mux(void)
  {
@@ -63,5 +63,5 @@ index 190ce81a503..758396ee916 100644
  
  #ifdef CONFIG_MISC_INIT_R
 -- 
-2.51.0
+2.34.1
 
