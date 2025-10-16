@@ -1,5 +1,5 @@
-From e2379342307e50d3f1bbc84929f2f4f1d7fbf2e2 Mon Sep 17 00:00:00 2001
-From: kas User <kas@example.com>
+From 658a7ca0868514b7aac26568647c9c2276815f2f Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Fri, 19 Sep 2025 12:23:47 +0800
 Subject: [PATCH] ls1046apxcp: add rcw configure
 
@@ -13,7 +13,7 @@ index 0000000..f77e46b
 +include ../Makefile.inc
 diff --git a/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_emmcboot.rcw b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_emmcboot.rcw
 new file mode 100644
-index 0000000..a76a6ce
+index 0000000..aa38688
 --- /dev/null
 +++ b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_emmcboot.rcw
 @@ -0,0 +1,129 @@
@@ -119,7 +119,7 @@ index 0000000..a76a6ce
 +USB_DRVVBUS=0
 +USB_PWRFAULT=0
 +DVDD_VSEL=0
-+EMI1_DMODE=1
++EMI1_DMODE=0
 +EVDD_VSEL=0
 +IIC2_EXT=2
 +SYSCLK_FREQ=600
@@ -148,7 +148,7 @@ index 0000000..a76a6ce
 +.end
 diff --git a/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_emmcboot_sben.rcw b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_emmcboot_sben.rcw
 new file mode 100644
-index 0000000..c699ee2
+index 0000000..dfe9fbe
 --- /dev/null
 +++ b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_emmcboot_sben.rcw
 @@ -0,0 +1,131 @@
@@ -256,7 +256,7 @@ index 0000000..c699ee2
 +USB_DRVVBUS=0
 +USB_PWRFAULT=0
 +DVDD_VSEL=0
-+EMI1_DMODE=1
++EMI1_DMODE=0
 +EVDD_VSEL=0
 +IIC2_EXT=2
 +SYSCLK_FREQ=600
@@ -285,7 +285,7 @@ index 0000000..c699ee2
 +.end
 diff --git a/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_qspiboot.rcw b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_qspiboot.rcw
 new file mode 100644
-index 0000000..90ccb0b
+index 0000000..004782d
 --- /dev/null
 +++ b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_qspiboot.rcw
 @@ -0,0 +1,124 @@
@@ -394,7 +394,7 @@ index 0000000..90ccb0b
 +USB_DRVVBUS=0
 +USB_PWRFAULT=0
 +DVDD_VSEL=0
-+EMI1_DMODE=1
++EMI1_DMODE=0
 +EVDD_VSEL=0
 +IIC2_EXT=2
 +SYSCLK_FREQ=600
@@ -415,7 +415,7 @@ index 0000000..90ccb0b
 +#include <../ls1046ardb/qspi_endianness.rcw>
 diff --git a/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_qspiboot_sben.rcw b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_qspiboot_sben.rcw
 new file mode 100644
-index 0000000..981426e
+index 0000000..28f1697
 --- /dev/null
 +++ b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_qspiboot_sben.rcw
 @@ -0,0 +1,126 @@
@@ -526,7 +526,7 @@ index 0000000..981426e
 +USB_DRVVBUS=0
 +USB_PWRFAULT=0
 +DVDD_VSEL=0
-+EMI1_DMODE=1
++EMI1_DMODE=0
 +EVDD_VSEL=0
 +IIC2_EXT=2
 +SYSCLK_FREQ=600
@@ -547,7 +547,7 @@ index 0000000..981426e
 +#include <../ls1046ardb/qspi_endianness.rcw>
 diff --git a/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_sdboot.rcw b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_sdboot.rcw
 new file mode 100644
-index 0000000..e01df50
+index 0000000..aa38688
 --- /dev/null
 +++ b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_sdboot.rcw
 @@ -0,0 +1,129 @@
@@ -653,7 +653,7 @@ index 0000000..e01df50
 +USB_DRVVBUS=0
 +USB_PWRFAULT=0
 +DVDD_VSEL=0
-+EVDD_VSEL=2
++EMI1_DMODE=0
 +EVDD_VSEL=0
 +IIC2_EXT=2
 +SYSCLK_FREQ=600
@@ -682,7 +682,7 @@ index 0000000..e01df50
 +.end
 diff --git a/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_sdboot_sben.rcw b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_sdboot_sben.rcw
 new file mode 100644
-index 0000000..812e5a7
+index 0000000..dfe9fbe
 --- /dev/null
 +++ b/ls1046apxcp/NN_FNSNPPPP_3333_5577/rcw_1600_sdboot_sben.rcw
 @@ -0,0 +1,131 @@
@@ -790,7 +790,7 @@ index 0000000..812e5a7
 +USB_DRVVBUS=0
 +USB_PWRFAULT=0
 +DVDD_VSEL=0
-+EVDD_VSEL=2
++EMI1_DMODE=0
 +EVDD_VSEL=0
 +IIC2_EXT=2
 +SYSCLK_FREQ=600
@@ -908,5 +908,5 @@ index 0000000..f98ec01
 +	Workaround:
 +		Write 0x00800401 to GEN3 Control Register (GEN3_RELATED_OFF)
 -- 
-2.51.0
+2.34.1
 
