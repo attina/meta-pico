@@ -1,4 +1,4 @@
-From c75e915743c4df2f9e3575031c467b3552b941a3 Mon Sep 17 00:00:00 2001
+From 63d350ce0d1a7923f9a053801ca42ba58c5df116 Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Fri, 19 Sep 2025 15:43:14 +0800
 Subject: [PATCH] ls1046apxcp: add device tree for linux 6.6
@@ -369,10 +369,10 @@ index 000000000000..655811aaeaad
 +};
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp.dts
 new file mode 100644
-index 000000000000..d16de283e7e1
+index 000000000000..7cf96df9a10d
 --- /dev/null
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp.dts
-@@ -0,0 +1,197 @@
+@@ -0,0 +1,196 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Device Tree include file for Picocom LS1046A XCP board.
@@ -507,12 +507,12 @@ index 000000000000..d16de283e7e1
 +&fman0 {
 +	ethernet@e4000 {
 +		phy-handle = <&rgmii_phy1>;
-+		phy-connection-type = "rgmii";
++		phy-connection-type = "rgmii-id";
 +	};
 +
 +	ethernet@e6000 {
 +		phy-handle = <&rgmii_phy2>;
-+		phy-connection-type = "rgmii";
++		phy-connection-type = "rgmii-id";
 +	};
 +
 +	ethernet@e8000 {
@@ -536,21 +536,20 @@ index 000000000000..d16de283e7e1
 +
 +	mdio@fc000 {
 +		yt8521_phy: ethernet-phy@2 {
-+			/* MotorComm YT8521 */
 +			compatible = "ethernet-phy-id0000.011a", "ethernet-phy-ieee802.3-c22";
 +			reg = <0x2>;
 +		};
 +
 +		rgmii_phy1: ethernet-phy@1 {
-+			/* MotorComm YT8521 */
 +			compatible = "ethernet-phy-id0000.011a", "ethernet-phy-ieee802.3-c22";
 +			reg = <0x1>;
++			tx-internal-delay-ps = <2000>;
 +		};
 +
 +		rgmii_phy2: ethernet-phy@3 {
-+			/* MotorComm YT8521 */
 +			compatible = "ethernet-phy-id0000.011a", "ethernet-phy-ieee802.3-c22";
 +			reg = <0x3>;
++			tx-internal-delay-ps = <2000>;
 +		};
 +	};
 +
