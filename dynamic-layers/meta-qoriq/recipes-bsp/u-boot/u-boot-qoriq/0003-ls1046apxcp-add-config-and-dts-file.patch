@@ -1,4 +1,4 @@
-From 7f6aeda9e3ad3c75ff39db7e006e98d266607a4b Mon Sep 17 00:00:00 2001
+From 54e0421ec77e1fa49cabff98ba02ec5f5ec1b06c Mon Sep 17 00:00:00 2001
 From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Fri, 19 Sep 2025 15:21:54 +0800
 Subject: [PATCH] ls1046apxcp: add config and dts file
@@ -18,10 +18,10 @@ index c14a42e26d8..867fd401d0d 100644
  	fsl-ls1012a-rdb.dtb \
 diff --git a/arch/arm/dts/fsl-ls1046a-pxcp.dts b/arch/arm/dts/fsl-ls1046a-pxcp.dts
 new file mode 100644
-index 00000000000..bdd118e6f23
+index 00000000000..39eb84500bb
 --- /dev/null
 +++ b/arch/arm/dts/fsl-ls1046a-pxcp.dts
-@@ -0,0 +1,105 @@
+@@ -0,0 +1,107 @@
 +// SPDX-License-Identifier: GPL-2.0+ OR X11
 +/*
 + * Device Tree Include file for Freescale Layerscape-1046A family SoC.
@@ -78,13 +78,13 @@ index 00000000000..bdd118e6f23
 +	ethernet@e4000 {
 +		status = "okay";
 +		phy-handle = <&rgmii_phy1>;
-+		phy-connection-type = "rgmii";
++		phy-connection-type = "rgmii-id";
 +	};
 +
 +	ethernet@e6000 {
 +		status = "okay";
 +		phy-handle = <&rgmii_phy2>;
-+		phy-connection-type = "rgmii";
++		phy-connection-type = "rgmii-id";
 +	};
 +
 +	ethernet@e8000 {
@@ -115,11 +115,13 @@ index 00000000000..bdd118e6f23
 +		rgmii_phy1: ethernet-phy@1 {
 +			compatible = "ethernet-phy-ieee802.3-c22";
 +			reg = <0x1>;
++			tx-internal-delay-ps = <2000>;
 +		};
 +
 +		rgmii_phy2: ethernet-phy@3 {
 +			compatible = "ethernet-phy-ieee802.3-c22";
 +			reg = <0x3>;
++			tx-internal-delay-ps = <2000>;
 +		};
 +	};
 +
@@ -145,10 +147,10 @@ index a143d82959f..3aade78776a 100644
 +F:	configs/ls1046apxcp_tfa_SECURE_BOOT_defconfig
 diff --git a/configs/ls1046apxcp_tfa_SECURE_BOOT_defconfig b/configs/ls1046apxcp_tfa_SECURE_BOOT_defconfig
 new file mode 100644
-index 00000000000..e2a0b6f2a4c
+index 00000000000..c3a0f4267e1
 --- /dev/null
 +++ b/configs/ls1046apxcp_tfa_SECURE_BOOT_defconfig
-@@ -0,0 +1,90 @@
+@@ -0,0 +1,91 @@
 +CONFIG_ARM=y
 +CONFIG_COUNTER_FREQUENCY=25000000
 +CONFIG_TARGET_LS1046APSCB=y
@@ -217,6 +219,7 @@ index 00000000000..e2a0b6f2a4c
 +# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
 +CONFIG_PHYLIB=y
 +CONFIG_PHY_AQUANTIA=y
++CONFIG_PHY_MOTORCOMM=y
 +CONFIG_PHY_REALTEK=y
 +CONFIG_PHY_FIXED=y
 +CONFIG_DM_MDIO=y
@@ -241,10 +244,10 @@ index 00000000000..e2a0b6f2a4c
 +CONFIG_EFI_LOADER_BOUNCE_BUFFER=y
 diff --git a/configs/ls1046apxcp_tfa_defconfig b/configs/ls1046apxcp_tfa_defconfig
 new file mode 100644
-index 00000000000..3ca3c8d8bb0
+index 00000000000..5f353d87eef
 --- /dev/null
 +++ b/configs/ls1046apxcp_tfa_defconfig
-@@ -0,0 +1,97 @@
+@@ -0,0 +1,98 @@
 +CONFIG_ARM=y
 +CONFIG_COUNTER_FREQUENCY=25000000
 +CONFIG_TARGET_LS1046APSCB=y
@@ -320,6 +323,7 @@ index 00000000000..3ca3c8d8bb0
 +# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
 +CONFIG_PHYLIB=y
 +CONFIG_PHY_AQUANTIA=y
++CONFIG_PHY_MOTORCOMM=y
 +CONFIG_PHY_REALTEK=y
 +CONFIG_PHY_FIXED=y
 +CONFIG_DM_MDIO=y
