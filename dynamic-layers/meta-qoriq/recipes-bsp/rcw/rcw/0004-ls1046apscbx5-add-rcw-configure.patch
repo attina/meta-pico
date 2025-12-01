@@ -1,0 +1,900 @@
+From 62b5184b02a7e779bc2b20d0d7faa822e5d99148 Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Tue, 25 Nov 2025 20:50:14 +0800
+Subject: [PATCH] ls1046apscbx5: add rcw configure
+
+
+diff --git a/ls1046apscbx5/Makefile b/ls1046apscbx5/Makefile
+new file mode 100644
+index 0000000..f77e46b
+--- /dev/null
++++ b/ls1046apscbx5/Makefile
+@@ -0,0 +1 @@
++include ../Makefile.inc
+diff --git a/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_emmcboot.rcw b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_emmcboot.rcw
+new file mode 100644
+index 0000000..2ac9bc9
+--- /dev/null
++++ b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_emmcboot.rcw
+@@ -0,0 +1,127 @@
++/*
++ * LS1046ARDB RCW for SerDes Protocol 0x1133_5559
++ *
++ * 24G configuration -- 2 RGMII + two XFI + 2 SGMII + 3 PCIe + SATA
++ *
++ * Frequencies:
++ *
++ * Sys Clock: 100 MHz
++ * DDR_Refclock: 100 MHz
++ *
++ * Core		-- 1600 MHz (Mul 16)
++ * Platform	-- 600 MHz (Mul 6)
++ * DDR		-- 2100 MT/s (Mul 21)
++ * FMan		-- 700 MHz (CGA2 /2)
++ * XFI		-- 156.25 MHz (10.3125G)
++ * SGMII	-- 100 MHz (5G)
++ * PCIE		-- 100 MHz (5G)
++ * eSDHC	-- 1400 MHz (CGA2 /1)
++ *
++ * Hardware Accelerator Block Cluster Group A Mux Clock:
++ *   FMan        - HWA_CGA_M1_CLK_SEL = 6 - Async mode, CGA PLL 2 /2 is clock
++ *   eSDHC, QSPI - HWA_CGA_M2_CLK_SEL = 1 - Async mode, CGA PLL 2 /1 is clock
++ *
++ * Serdes Lanes vs Slot information
++ *  Serdes1 Lane 0 (D) - XFI9, AQR107 PHY
++ *  Serdes1 Lane 1 (C) - XFI10, SFP cage
++ *  Serdes1 Lane 2 (B) - SGMII5, SGMII1 port
++ *  Serdes1 Lane 3 (A) - SGMII6, SGMII2 port
++ *
++ *  Serdes2 Lane 0 (A) - PCIe1 Gen3 x1, Slot 1, mPCIe
++ *  Serdes2 Lane 1 (B) - PCIe2 Gen3 x1, Slot 2
++ *  Serdes2 Lane 2 (C) - PCIe3 Gen3 x1, Slot 3
++ *  Serdes2 Lane 3 (D) - SATA
++ *
++ * PLL mapping: 2211_2221
++ *
++ * Serdes 1:
++ *  PLL mapping: 2211
++ *
++ *  SRDS_PLL_REF_CLK_SEL_S1 : 0b'01
++ *    SerDes 1, PLL1[160] : 0 - 100MHz for SGMII and PCIe
++ *    SerDes 1, PLL2[161] : 1 - 156.25MHz for XFI
++ *  SRDS_PLL_PD_S1 : 0b'0
++ *    SerDes 1, PLL1 : 0 - not power down
++ *    SerDes 1, PLL2 : 0 - not poewr down
++ *  HWA_CGA_M1_CLK_SEL[224-226] : 6 - Cluster Group A PLL 2 /2 to FMan
++ *
++ * Serdes 2:
++ *  PLL mapping: 2221
++ *  SRDS_PLL_REF_CLK_SEL_S2 : 0b'00
++ *    SerDes 2, PLL1[162] : 0 - 100MHz for SATA
++ *    SerDes 2, PLL2[163] : 0 - 100MHz for PCIe
++ *  SRDS_PLL_PD_S2 : 0b'00
++ *    SerDes 2, PLL1 : 0 - not power down
++ *    SerDes 2, PLL2 : 0 - not poewr down
++ *  SRDS_DIV_PEX_S2 : 0b'01
++ *    00 - train up to max rate of 8G
++ *    01 - train up to max rate of 5G
++ *    10 - train up to max rate of 2.5G
++ *
++ * DDR clock:
++ * DDR_REFCLK_SEL : 1 - DDRCLK pin provides the reference clock to the DDR PLL
++ *
++ */
++
++#include <../ls1046ardb/ls1046a.rcwi>
++
++SYS_PLL_RAT=6
++MEM_PLL_RAT=21
++CGA_PLL1_RAT=16
++CGA_PLL2_RAT=14
++SRDS_PRTCL_S1=4403
++SRDS_PRTCL_S2=34952
++SRDS_PLL_REF_CLK_SEL_S1=1
++SRDS_PLL_REF_CLK_SEL_S2=0
++DDR_REFCLK_SEL=1
++SRDS_REFCLK_SEL_S1=0
++SRDS_REFCLK_SEL_S2=1
++DDR_FDBK_MULT=2
++PBI_SRC=6
++IFC_MODE=64
++HWA_CGA_M1_CLK_SEL=6
++DRAM_LAT=1
++SPI_EXT=0
++UART_BASE=5
++RTC=0
++IRQ_OUT=1
++IRQ_BASE=112
++IFC_GRP_A_EXT=1
++IFC_GRP_F_EXT=1
++IFC_GRP_E1_BASE=1
++IFC_GRP_D_BASE=1
++IFC_GRP_A_BASE=1
++EC1=1
++EC2=1
++EM2=1
++EMI2_DMODE=1
++EMI2_CMODE=1
++USB_DRVVBUS=0
++USB_PWRFAULT=0
++DVDD_VSEL=2
++EVDD_VSEL=0
++IIC2_EXT=2
++SYSCLK_FREQ=600
++HWA_CGA_M2_CLK_SEL=1
++
++.pbi
++// Set the BOOTLOCPTR
++write 0x570600, 0x00000000
++write 0x570604, 0x10000000
++.end
++
++#include <../ls1046ardb/cci_barrier_disable.rcw>
++#include <../ls1046ardb/usb_phy_freq.rcw>
++#include <../ls1046ardb/serdes_sata.rcw>
++#include <../ls1046ardb/a009531.rcw>
++
++.pbi
++// Alt base register
++write 0x570158, 0x00001000
++flush
++.end
++
++.pbi
++// flush PBI data
++write 0x6100c0, 0x000fffff
++.end
+diff --git a/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_emmcboot_sben.rcw b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_emmcboot_sben.rcw
+new file mode 100644
+index 0000000..547deab
+--- /dev/null
++++ b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_emmcboot_sben.rcw
+@@ -0,0 +1,129 @@
++/*
++ * LS1046ARDB RCW for SerDes Protocol 0x1133_5559
++ *
++ * 24G configuration -- 2 RGMII + two XFI + 2 SGMII + 3 PCIe + SATA
++ *
++ * Frequencies:
++ *
++ * Sys Clock: 100 MHz
++ * DDR_Refclock: 100 MHz
++ *
++ * Core		-- 1600 MHz (Mul 16)
++ * Platform	-- 600 MHz (Mul 6)
++ * DDR		-- 2100 MT/s (Mul 21)
++ * FMan		-- 700 MHz (CGA2 /2)
++ * XFI		-- 156.25 MHz (10.3125G)
++ * SGMII	-- 100 MHz (5G)
++ * PCIE		-- 100 MHz (5G)
++ * eSDHC	-- 1400 MHz (CGA2 /1)
++ *
++ * Hardware Accelerator Block Cluster Group A Mux Clock:
++ *   FMan        - HWA_CGA_M1_CLK_SEL = 6 - Async mode, CGA PLL 2 /2 is clock
++ *   eSDHC, QSPI - HWA_CGA_M2_CLK_SEL = 1 - Async mode, CGA PLL 2 /1 is clock
++ *
++ * Serdes Lanes vs Slot information
++ *  Serdes1 Lane 0 (D) - XFI9, AQR107 PHY
++ *  Serdes1 Lane 1 (C) - XFI10, SFP cage
++ *  Serdes1 Lane 2 (B) - SGMII5, SGMII1 port
++ *  Serdes1 Lane 3 (A) - SGMII6, SGMII2 port
++ *
++ *  Serdes2 Lane 0 (A) - PCIe1 Gen3 x1, Slot 1, mPCIe
++ *  Serdes2 Lane 1 (B) - PCIe2 Gen3 x1, Slot 2
++ *  Serdes2 Lane 2 (C) - PCIe3 Gen3 x1, Slot 3
++ *  Serdes2 Lane 3 (D) - SATA
++ *
++ * PLL mapping: 2211_2221
++ *
++ * Serdes 1:
++ *  PLL mapping: 2211
++ *
++ *  SRDS_PLL_REF_CLK_SEL_S1 : 0b'01
++ *    SerDes 1, PLL1[160] : 0 - 100MHz for SGMII and PCIe
++ *    SerDes 1, PLL2[161] : 1 - 156.25MHz for XFI
++ *  SRDS_PLL_PD_S1 : 0b'0
++ *    SerDes 1, PLL1 : 0 - not power down
++ *    SerDes 1, PLL2 : 0 - not poewr down
++ *  HWA_CGA_M1_CLK_SEL[224-226] : 6 - Cluster Group A PLL 2 /2 to FMan
++ *
++ * Serdes 2:
++ *  PLL mapping: 2221
++ *  SRDS_PLL_REF_CLK_SEL_S2 : 0b'00
++ *    SerDes 2, PLL1[162] : 0 - 100MHz for SATA
++ *    SerDes 2, PLL2[163] : 0 - 100MHz for PCIe
++ *  SRDS_PLL_PD_S2 : 0b'00
++ *    SerDes 2, PLL1 : 0 - not power down
++ *    SerDes 2, PLL2 : 0 - not poewr down
++ *  SRDS_DIV_PEX_S2 : 0b'01
++ *    00 - train up to max rate of 8G
++ *    01 - train up to max rate of 5G
++ *    10 - train up to max rate of 2.5G
++ *
++ * DDR clock:
++ * DDR_REFCLK_SEL : 1 - DDRCLK pin provides the reference clock to the DDR PLL
++ *
++ */
++
++#include <../ls1046ardb/ls1046a.rcwi>
++
++SYS_PLL_RAT=6
++MEM_PLL_RAT=21
++CGA_PLL1_RAT=16
++CGA_PLL2_RAT=14
++SRDS_PRTCL_S1=4403
++SRDS_PRTCL_S2=34952
++SRDS_PLL_REF_CLK_SEL_S1=1
++SRDS_PLL_REF_CLK_SEL_S2=0
++DDR_REFCLK_SEL=1
++SRDS_REFCLK_SEL_S1=0
++SRDS_REFCLK_SEL_S2=1
++DDR_FDBK_MULT=2
++PBI_SRC=6
++SB_EN=1
++BOOT_HO=1
++IFC_MODE=64
++HWA_CGA_M1_CLK_SEL=6
++DRAM_LAT=1
++SPI_EXT=0
++UART_BASE=5
++RTC=0
++IRQ_OUT=1
++IRQ_BASE=112
++IFC_GRP_A_EXT=1
++IFC_GRP_F_EXT=1
++IFC_GRP_E1_BASE=1
++IFC_GRP_D_BASE=1
++IFC_GRP_A_BASE=1
++EC1=1
++EC2=1
++EM2=1
++EMI2_DMODE=1
++EMI2_CMODE=1
++USB_DRVVBUS=0
++USB_PWRFAULT=0
++DVDD_VSEL=2
++EVDD_VSEL=0
++IIC2_EXT=2
++SYSCLK_FREQ=600
++HWA_CGA_M2_CLK_SEL=1
++
++.pbi
++// Set the BOOTLOCPTR
++write 0x570600, 0x00000000
++write 0x570604, 0x10000000
++.end
++
++#include <../ls1046ardb/cci_barrier_disable.rcw>
++#include <../ls1046ardb/usb_phy_freq.rcw>
++#include <../ls1046ardb/serdes_sata.rcw>
++#include <../ls1046ardb/a009531.rcw>
++
++.pbi
++// Alt base register
++write 0x570158, 0x00001000
++flush
++.end
++
++.pbi
++// flush PBI data
++write 0x6100c0, 0x000fffff
++.end
+diff --git a/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_qspiboot.rcw b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_qspiboot.rcw
+new file mode 100644
+index 0000000..f0b6302
+--- /dev/null
++++ b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_qspiboot.rcw
+@@ -0,0 +1,122 @@
++/*
++ * LS1046ARDB RCW for SerDes Protocol 0x1133_5559
++ *
++ * 24G configuration -- 2 RGMII + two XFI + 2 SGMII + 3 PCIe + SATA
++ *
++ * Frequencies:
++ *
++ * Sys Clock: 100 MHz
++ * DDR_Refclock: 100 MHz
++ *
++ * Core		-- 1600 MHz (Mul 16)
++ * Platform	-- 600 MHz (Mul 6)
++ * DDR		-- 2100 MT/s (Mul 21)
++ * FMan		-- 700 MHz (CGA2 /2)
++ * XFI		-- 156.25 MHz (10.3125G)
++ * SGMII	-- 100 MHz (5G)
++ * PCIE		-- 100 MHz (5G)
++ * eSDHC	-- 1400 MHz (CGA2 /1)
++ *
++ * Hardware Accelerator Block Cluster Group A Mux Clock:
++ *   FMan        - HWA_CGA_M1_CLK_SEL = 6 - Async mode, CGA PLL 2 /2 is clock
++ *   eSDHC, QSPI - HWA_CGA_M2_CLK_SEL = 1 - Async mode, CGA PLL 2 /1 is clock
++ *
++ * Serdes Lanes vs Slot information
++ *  Serdes1 Lane 0 (D) - XFI9, AQR107 PHY
++ *  Serdes1 Lane 1 (C) - XFI10, SFP cage
++ *  Serdes1 Lane 2 (B) - SGMII5, SGMII1 port
++ *  Serdes1 Lane 3 (A) - SGMII6, SGMII2 port
++ *
++ *  Serdes2 Lane 0 (A) - PCIe1 Gen3 x1, Slot 1, mPCIe
++ *  Serdes2 Lane 1 (B) - PCIe2 Gen3 x1, Slot 2
++ *  Serdes2 Lane 2 (C) - PCIe3 Gen3 x1, Slot 3
++ *  Serdes2 Lane 3 (D) - SATA
++ *
++ * PLL mapping: 2211_2221
++ *
++ * Serdes 1:
++ *  PLL mapping: 2211
++ *
++ *  SRDS_PLL_REF_CLK_SEL_S1 : 0b'01
++ *    SerDes 1, PLL1[160] : 0 - 100MHz for SGMII and PCIe
++ *    SerDes 1, PLL2[161] : 1 - 156.25MHz for XFI
++ *  SRDS_PLL_PD_S1 : 0b'0
++ *    SerDes 1, PLL1 : 0 - not power down
++ *    SerDes 1, PLL2 : 0 - not poewr down
++ *  HWA_CGA_M1_CLK_SEL[224-226] : 6 - Cluster Group A PLL 2 /2 to FMan
++ *
++ * Serdes 2:
++ *  PLL mapping: 2221
++ *  SRDS_PLL_REF_CLK_SEL_S2 : 0b'00
++ *    SerDes 2, PLL1[162] : 0 - 100MHz for SATA
++ *    SerDes 2, PLL2[163] : 0 - 100MHz for PCIe
++ *  SRDS_PLL_PD_S2 : 0b'00
++ *    SerDes 2, PLL1 : 0 - not power down
++ *    SerDes 2, PLL2 : 0 - not poewr down
++ *  SRDS_DIV_PEX_S2 : 0b'01
++ *    00 - train up to max rate of 8G
++ *    01 - train up to max rate of 5G
++ *    10 - train up to max rate of 2.5G
++ *
++ * DDR clock:
++ * DDR_REFCLK_SEL : 1 - DDRCLK pin provides the reference clock to the DDR PLL
++ *
++ */
++
++#include <../ls1046ardb/ls1046a.rcwi>
++
++%littleendian64b=1
++%dont64bswapcrc=1
++
++SYS_PLL_RAT=6
++MEM_PLL_RAT=21
++CGA_PLL1_RAT=16
++CGA_PLL2_RAT=14
++SRDS_PRTCL_S1=4403
++SRDS_PRTCL_S2=34952
++SRDS_PLL_REF_CLK_SEL_S1=1
++SRDS_PLL_REF_CLK_SEL_S2=0
++DDR_REFCLK_SEL=1
++SRDS_REFCLK_SEL_S1=0
++SRDS_REFCLK_SEL_S2=1
++DDR_FDBK_MULT=2
++PBI_SRC=4
++IFC_MODE=37
++HWA_CGA_M1_CLK_SEL=6
++DRAM_LAT=1
++SPI_EXT=0
++UART_BASE=5
++RTC=0
++IRQ_OUT=1
++IRQ_BASE=112
++IFC_GRP_A_EXT=1
++IFC_GRP_F_EXT=1
++IFC_GRP_E1_BASE=1
++IFC_GRP_D_BASE=1
++IFC_GRP_A_BASE=1
++EC1=1
++EC2=1
++EM2=1
++EMI2_DMODE=1
++EMI2_CMODE=1
++USB_DRVVBUS=0
++USB_PWRFAULT=0
++DVDD_VSEL=2
++EVDD_VSEL=0
++IIC2_EXT=1
++SYSCLK_FREQ=600
++HWA_CGA_M2_CLK_SEL=1
++
++.pbi
++write 0x570600, 0x00000000
++write 0x570604, 0x40100000
++.end
++
++/* Modify QSPI flash clock divisor */
++#include <../ls1046ardb/qspi_divisor_32.rcw>
++
++#include <../ls1046ardb/cci_barrier_disable.rcw>
++#include <../ls1046ardb/usb_phy_freq.rcw>
++#include <../ls1046ardb/serdes_sata.rcw>
++#include <../ls1046ardb/a009531.rcw>
++#include <../ls1046ardb/qspi_endianness.rcw>
+diff --git a/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_qspiboot_sben.rcw b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_qspiboot_sben.rcw
+new file mode 100644
+index 0000000..5409c13
+--- /dev/null
++++ b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_qspiboot_sben.rcw
+@@ -0,0 +1,124 @@
++/*
++ * LS1046ARDB RCW for SerDes Protocol 0x1133_5559
++ *
++ * 24G configuration -- 2 RGMII + two XFI + 2 SGMII + 3 PCIe + SATA
++ *
++ * Frequencies:
++ *
++ * Sys Clock: 100 MHz
++ * DDR_Refclock: 100 MHz
++ *
++ * Core		-- 1600 MHz (Mul 16)
++ * Platform	-- 600 MHz (Mul 6)
++ * DDR		-- 2100 MT/s (Mul 21)
++ * FMan		-- 700 MHz (CGA2 /2)
++ * XFI		-- 156.25 MHz (10.3125G)
++ * SGMII	-- 100 MHz (5G)
++ * PCIE		-- 100 MHz (5G)
++ * eSDHC	-- 1400 MHz (CGA2 /1)
++ *
++ * Hardware Accelerator Block Cluster Group A Mux Clock:
++ *   FMan        - HWA_CGA_M1_CLK_SEL = 6 - Async mode, CGA PLL 2 /2 is clock
++ *   eSDHC, QSPI - HWA_CGA_M2_CLK_SEL = 1 - Async mode, CGA PLL 2 /1 is clock
++ *
++ * Serdes Lanes vs Slot information
++ *  Serdes1 Lane 0 (D) - XFI9, AQR107 PHY
++ *  Serdes1 Lane 1 (C) - XFI10, SFP cage
++ *  Serdes1 Lane 2 (B) - SGMII5, SGMII1 port
++ *  Serdes1 Lane 3 (A) - SGMII6, SGMII2 port
++ *
++ *  Serdes2 Lane 0 (A) - PCIe1 Gen3 x1, Slot 1, mPCIe
++ *  Serdes2 Lane 1 (B) - PCIe2 Gen3 x1, Slot 2
++ *  Serdes2 Lane 2 (C) - PCIe3 Gen3 x1, Slot 3
++ *  Serdes2 Lane 3 (D) - SATA
++ *
++ * PLL mapping: 2211_2221
++ *
++ * Serdes 1:
++ *  PLL mapping: 2211
++ *
++ *  SRDS_PLL_REF_CLK_SEL_S1 : 0b'01
++ *    SerDes 1, PLL1[160] : 0 - 100MHz for SGMII and PCIe
++ *    SerDes 1, PLL2[161] : 1 - 156.25MHz for XFI
++ *  SRDS_PLL_PD_S1 : 0b'0
++ *    SerDes 1, PLL1 : 0 - not power down
++ *    SerDes 1, PLL2 : 0 - not poewr down
++ *  HWA_CGA_M1_CLK_SEL[224-226] : 6 - Cluster Group A PLL 2 /2 to FMan
++ *
++ * Serdes 2:
++ *  PLL mapping: 2221
++ *  SRDS_PLL_REF_CLK_SEL_S2 : 0b'00
++ *    SerDes 2, PLL1[162] : 0 - 100MHz for SATA
++ *    SerDes 2, PLL2[163] : 0 - 100MHz for PCIe
++ *  SRDS_PLL_PD_S2 : 0b'00
++ *    SerDes 2, PLL1 : 0 - not power down
++ *    SerDes 2, PLL2 : 0 - not poewr down
++ *  SRDS_DIV_PEX_S2 : 0b'01
++ *    00 - train up to max rate of 8G
++ *    01 - train up to max rate of 5G
++ *    10 - train up to max rate of 2.5G
++ *
++ * DDR clock:
++ * DDR_REFCLK_SEL : 1 - DDRCLK pin provides the reference clock to the DDR PLL
++ *
++ */
++
++#include <../ls1046ardb/ls1046a.rcwi>
++
++%littleendian64b=1
++%dont64bswapcrc=1
++
++SYS_PLL_RAT=6
++MEM_PLL_RAT=21
++CGA_PLL1_RAT=16
++CGA_PLL2_RAT=14
++SRDS_PRTCL_S1=4403
++SRDS_PRTCL_S2=34952
++SRDS_PLL_REF_CLK_SEL_S1=1
++SRDS_PLL_REF_CLK_SEL_S2=0
++DDR_REFCLK_SEL=1
++SRDS_REFCLK_SEL_S1=0
++SRDS_REFCLK_SEL_S2=1
++DDR_FDBK_MULT=2
++PBI_SRC=4
++SB_EN=1
++BOOT_HO=1
++IFC_MODE=37
++HWA_CGA_M1_CLK_SEL=6
++DRAM_LAT=1
++SPI_EXT=0
++UART_BASE=5
++RTC=0
++IRQ_OUT=1
++IRQ_BASE=112
++IFC_GRP_A_EXT=1
++IFC_GRP_F_EXT=1
++IFC_GRP_E1_BASE=1
++IFC_GRP_D_BASE=1
++IFC_GRP_A_BASE=1
++EC1=1
++EC2=1
++EM2=1
++EMI2_DMODE=1
++EMI2_CMODE=1
++USB_DRVVBUS=0
++USB_PWRFAULT=0
++DVDD_VSEL=2
++EVDD_VSEL=0
++IIC2_EXT=1
++SYSCLK_FREQ=600
++HWA_CGA_M2_CLK_SEL=1
++
++.pbi
++// U-boot header address
++write 0xee0200, 0x406c0000
++.end
++
++/* Modify QSPI flash clock divisor */
++#include <../ls1046ardb/qspi_divisor_32.rcw>
++
++#include <../ls1046ardb/cci_barrier_disable.rcw>
++#include <../ls1046ardb/usb_phy_freq.rcw>
++#include <../ls1046ardb/serdes_sata.rcw>
++#include <../ls1046ardb/a009531.rcw>
++#include <../ls1046ardb/qspi_endianness.rcw>
+diff --git a/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_sdboot.rcw b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_sdboot.rcw
+new file mode 100644
+index 0000000..a584731
+--- /dev/null
++++ b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_sdboot.rcw
+@@ -0,0 +1,127 @@
++/*
++ * LS1046ARDB RCW for SerDes Protocol 0x1133_5559
++ *
++ * 24G configuration -- 2 RGMII + two XFI + 2 SGMII + 3 PCIe + SATA
++ *
++ * Frequencies:
++ *
++ * Sys Clock: 100 MHz
++ * DDR_Refclock: 100 MHz
++ *
++ * Core		-- 1600 MHz (Mul 16)
++ * Platform	-- 600 MHz (Mul 6)
++ * DDR		-- 2100 MT/s (Mul 21)
++ * FMan		-- 700 MHz (CGA2 /2)
++ * XFI		-- 156.25 MHz (10.3125G)
++ * SGMII	-- 100 MHz (5G)
++ * PCIE		-- 100 MHz (5G)
++ * eSDHC	-- 1400 MHz (CGA2 /1)
++ *
++ * Hardware Accelerator Block Cluster Group A Mux Clock:
++ *   FMan        - HWA_CGA_M1_CLK_SEL = 6 - Async mode, CGA PLL 2 /2 is clock
++ *   eSDHC, QSPI - HWA_CGA_M2_CLK_SEL = 1 - Async mode, CGA PLL 2 /1 is clock
++ *
++ * Serdes Lanes vs Slot information
++ *  Serdes1 Lane 0 (D) - XFI9, AQR107 PHY
++ *  Serdes1 Lane 1 (C) - XFI10, SFP cage
++ *  Serdes1 Lane 2 (B) - SGMII5, SGMII1 port
++ *  Serdes1 Lane 3 (A) - SGMII6, SGMII2 port
++ *
++ *  Serdes2 Lane 0 (A) - PCIe1 Gen3 x1, Slot 1, mPCIe
++ *  Serdes2 Lane 1 (B) - PCIe2 Gen3 x1, Slot 2
++ *  Serdes2 Lane 2 (C) - PCIe3 Gen3 x1, Slot 3
++ *  Serdes2 Lane 3 (D) - SATA
++ *
++ * PLL mapping: 2211_2221
++ *
++ * Serdes 1:
++ *  PLL mapping: 2211
++ *
++ *  SRDS_PLL_REF_CLK_SEL_S1 : 0b'01
++ *    SerDes 1, PLL1[160] : 0 - 100MHz for SGMII and PCIe
++ *    SerDes 1, PLL2[161] : 1 - 156.25MHz for XFI
++ *  SRDS_PLL_PD_S1 : 0b'0
++ *    SerDes 1, PLL1 : 0 - not power down
++ *    SerDes 1, PLL2 : 0 - not poewr down
++ *  HWA_CGA_M1_CLK_SEL[224-226] : 6 - Cluster Group A PLL 2 /2 to FMan
++ *
++ * Serdes 2:
++ *  PLL mapping: 2221
++ *  SRDS_PLL_REF_CLK_SEL_S2 : 0b'00
++ *    SerDes 2, PLL1[162] : 0 - 100MHz for SATA
++ *    SerDes 2, PLL2[163] : 0 - 100MHz for PCIe
++ *  SRDS_PLL_PD_S2 : 0b'00
++ *    SerDes 2, PLL1 : 0 - not power down
++ *    SerDes 2, PLL2 : 0 - not poewr down
++ *  SRDS_DIV_PEX_S2 : 0b'01
++ *    00 - train up to max rate of 8G
++ *    01 - train up to max rate of 5G
++ *    10 - train up to max rate of 2.5G
++ *
++ * DDR clock:
++ * DDR_REFCLK_SEL : 1 - DDRCLK pin provides the reference clock to the DDR PLL
++ *
++ */
++
++#include <../ls1046ardb/ls1046a.rcwi>
++
++SYS_PLL_RAT=6
++MEM_PLL_RAT=21
++CGA_PLL1_RAT=16
++CGA_PLL2_RAT=14
++SRDS_PRTCL_S1=4403
++SRDS_PRTCL_S2=34952
++SRDS_PLL_REF_CLK_SEL_S1=1
++SRDS_PLL_REF_CLK_SEL_S2=0
++DDR_REFCLK_SEL=1
++SRDS_REFCLK_SEL_S1=0
++SRDS_REFCLK_SEL_S2=1
++DDR_FDBK_MULT=2
++PBI_SRC=6
++IFC_MODE=64
++HWA_CGA_M1_CLK_SEL=6
++DRAM_LAT=1
++SPI_EXT=0
++UART_BASE=5
++RTC=0
++IRQ_OUT=1
++IRQ_BASE=112
++IFC_GRP_A_EXT=1
++IFC_GRP_F_EXT=1
++IFC_GRP_E1_BASE=1
++IFC_GRP_D_BASE=1
++IFC_GRP_A_BASE=1
++EC1=1
++EC2=1
++EM2=1
++EMI2_DMODE=1
++EMI2_CMODE=1
++USB_DRVVBUS=0
++USB_PWRFAULT=0
++DVDD_VSEL=2
++EVDD_VSEL=0
++IIC2_EXT=1
++SYSCLK_FREQ=600
++HWA_CGA_M2_CLK_SEL=1
++
++.pbi
++// Set the BOOTLOCPTR
++write 0x570600, 0x00000000
++write 0x570604, 0x10000000
++.end
++
++#include <../ls1046ardb/cci_barrier_disable.rcw>
++#include <../ls1046ardb/usb_phy_freq.rcw>
++#include <../ls1046ardb/serdes_sata.rcw>
++#include <../ls1046ardb/a009531.rcw>
++
++.pbi
++// Alt base register
++write 0x570158, 0x00001000
++flush
++.end
++
++.pbi
++// flush PBI data
++write 0x6100c0, 0x000fffff
++.end
+diff --git a/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_sdboot_sben.rcw b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_sdboot_sben.rcw
+new file mode 100644
+index 0000000..99faf79
+--- /dev/null
++++ b/ls1046apscbx5/NN_FNSNPPPP_1133_8888/rcw_1600_sdboot_sben.rcw
+@@ -0,0 +1,129 @@
++/*
++ * LS1046ARDB RCW for SerDes Protocol 0x1133_5559
++ *
++ * 24G configuration -- 2 RGMII + two XFI + 2 SGMII + 3 PCIe + SATA
++ *
++ * Frequencies:
++ *
++ * Sys Clock: 100 MHz
++ * DDR_Refclock: 100 MHz
++ *
++ * Core		-- 1600 MHz (Mul 16)
++ * Platform	-- 600 MHz (Mul 6)
++ * DDR		-- 2100 MT/s (Mul 21)
++ * FMan		-- 700 MHz (CGA2 /2)
++ * XFI		-- 156.25 MHz (10.3125G)
++ * SGMII	-- 100 MHz (5G)
++ * PCIE		-- 100 MHz (5G)
++ * eSDHC	-- 1400 MHz (CGA2 /1)
++ *
++ * Hardware Accelerator Block Cluster Group A Mux Clock:
++ *   FMan        - HWA_CGA_M1_CLK_SEL = 6 - Async mode, CGA PLL 2 /2 is clock
++ *   eSDHC, QSPI - HWA_CGA_M2_CLK_SEL = 1 - Async mode, CGA PLL 2 /1 is clock
++ *
++ * Serdes Lanes vs Slot information
++ *  Serdes1 Lane 0 (D) - XFI9, AQR107 PHY
++ *  Serdes1 Lane 1 (C) - XFI10, SFP cage
++ *  Serdes1 Lane 2 (B) - SGMII5, SGMII1 port
++ *  Serdes1 Lane 3 (A) - SGMII6, SGMII2 port
++ *
++ *  Serdes2 Lane 0 (A) - PCIe1 Gen3 x1, Slot 1, mPCIe
++ *  Serdes2 Lane 1 (B) - PCIe2 Gen3 x1, Slot 2
++ *  Serdes2 Lane 2 (C) - PCIe3 Gen3 x1, Slot 3
++ *  Serdes2 Lane 3 (D) - SATA
++ *
++ * PLL mapping: 2211_2221
++ *
++ * Serdes 1:
++ *  PLL mapping: 2211
++ *
++ *  SRDS_PLL_REF_CLK_SEL_S1 : 0b'01
++ *    SerDes 1, PLL1[160] : 0 - 100MHz for SGMII and PCIe
++ *    SerDes 1, PLL2[161] : 1 - 156.25MHz for XFI
++ *  SRDS_PLL_PD_S1 : 0b'0
++ *    SerDes 1, PLL1 : 0 - not power down
++ *    SerDes 1, PLL2 : 0 - not poewr down
++ *  HWA_CGA_M1_CLK_SEL[224-226] : 6 - Cluster Group A PLL 2 /2 to FMan
++ *
++ * Serdes 2:
++ *  PLL mapping: 2221
++ *  SRDS_PLL_REF_CLK_SEL_S2 : 0b'00
++ *    SerDes 2, PLL1[162] : 0 - 100MHz for SATA
++ *    SerDes 2, PLL2[163] : 0 - 100MHz for PCIe
++ *  SRDS_PLL_PD_S2 : 0b'00
++ *    SerDes 2, PLL1 : 0 - not power down
++ *    SerDes 2, PLL2 : 0 - not poewr down
++ *  SRDS_DIV_PEX_S2 : 0b'01
++ *    00 - train up to max rate of 8G
++ *    01 - train up to max rate of 5G
++ *    10 - train up to max rate of 2.5G
++ *
++ * DDR clock:
++ * DDR_REFCLK_SEL : 1 - DDRCLK pin provides the reference clock to the DDR PLL
++ *
++ */
++
++#include <../ls1046ardb/ls1046a.rcwi>
++
++SYS_PLL_RAT=6
++MEM_PLL_RAT=21
++CGA_PLL1_RAT=16
++CGA_PLL2_RAT=14
++SRDS_PRTCL_S1=4403
++SRDS_PRTCL_S2=34952
++SRDS_PLL_REF_CLK_SEL_S1=1
++SRDS_PLL_REF_CLK_SEL_S2=0
++DDR_REFCLK_SEL=1
++SRDS_REFCLK_SEL_S1=0
++SRDS_REFCLK_SEL_S2=1
++DDR_FDBK_MULT=2
++PBI_SRC=6
++SB_EN=1
++BOOT_HO=1
++IFC_MODE=64
++HWA_CGA_M1_CLK_SEL=6
++DRAM_LAT=1
++SPI_EXT=0
++UART_BASE=5
++RTC=0
++IRQ_OUT=1
++IRQ_BASE=112
++IFC_GRP_A_EXT=1
++IFC_GRP_F_EXT=1
++IFC_GRP_E1_BASE=1
++IFC_GRP_D_BASE=1
++IFC_GRP_A_BASE=1
++EC1=1
++EC2=1
++EM2=1
++EMI2_DMODE=1
++EMI2_CMODE=1
++USB_DRVVBUS=0
++USB_PWRFAULT=0
++DVDD_VSEL=2
++EVDD_VSEL=0
++IIC2_EXT=1
++SYSCLK_FREQ=600
++HWA_CGA_M2_CLK_SEL=1
++
++.pbi
++// Set the BOOTLOCPTR
++write 0x570600, 0x00000000
++write 0x570604, 0x10000000
++.end
++
++#include <../ls1046ardb/cci_barrier_disable.rcw>
++#include <../ls1046ardb/usb_phy_freq.rcw>
++#include <../ls1046ardb/serdes_sata.rcw>
++#include <../ls1046ardb/a009531.rcw>
++
++.pbi
++// Alt base register
++write 0x570158, 0x00001000
++flush
++.end
++
++.pbi
++// flush PBI data
++write 0x6100c0, 0x000fffff
++.end
+diff --git a/ls1046apscbx5/README b/ls1046apscbx5/README
+new file mode 100644
+index 0000000..f98ec01
+--- /dev/null
++++ b/ls1046apscbx5/README
+@@ -0,0 +1,84 @@
++The RCW directories names for the LS1046ARDB boards conform to the following
++naming convention:
++
++ab_cdefghij_k_l:
++
++a = 'R' indicates RGMII1@DTSEC3 is supported
++b = 'R' indicates RGMII2@DTSEC4 is supported
++    'N' indicates not available/not used
++
++c = What is available in SerDes1 Lane0
++d = What is available in SerDes1 Lane1
++e = What is available in SerDes1 Lane2
++f = What is available in SerDes1 Lane3
++g = What is available in SerDes2 Lane0
++h = What is available in SerDes2 Lane1
++i = What is available in SerDes2 Lane2
++j = What is available in SerDes2 Lane3
++
++For the Slots (c..j):
++ 'N' is NULL, not available/not used
++ 'P' is PCIe
++ 'X' is XAUI
++ 'S' is SGMII
++ 'Q' if QSGMII
++ 'F' is XFI
++ 'H' is SATA
++ 'A' is AURORA
++
++Serdes1 protocol (k):
++k = 'hex value of serdes1 protocol value'
++
++Serdes2 protocol (l):
++l = 'hex value of serdes2 protocol value'
++
++BIN   Core/Platform/FMan/DDR
++Bin1: 1600MHz/600MHz/700MHz/2100MT/s
++Bin2: 1200MHz/400MHz/500MHz/1600MT/s
++
++Serdes ptotocol:
++================
++NN_FNSNPPPP_1133_8888 means:
++ - Not used on board
++ - Not used on board
++ - XFI9@TGEC1 on board
++ - Not used on board
++ - SGMII5@DTSEC5 on board
++ - Not used on board
++ - PCIe1 on Slot 1
++ - PCIe2 on Slot 2
++ - PCIe3 on Slot 3
++ - PCIe4 on Slot 4
++ - SERDES1 Protocol is 0x1133
++ - SERDES2 Protocol is 0x8888
++
++Files naming convention
++=============================
++rcw_x.rcw
++rcw_x_bootmode.rcw
++rcw_x_specialsetting.rcw
++x = Core frequency
++bootmode = bootmode:qspiboot and so on.
++specialsetting = special setting:
++			sben:Secure boot
++For example,
++	rcw_1600_qspiboot.rcw means rcw for core frequency of 1600MHz with QSPI boot.
++
++For more information please refer to the comments in rcw file.
++
++Errata Workaround Implemented
++=============================
++A-008851:
++	Invalid transmitter/receiver preset values are used in Gen3 equalization
++	phases during link training for RC mode
++	This errata is valid only for PCI gen3.
++	Workaround:
++		write 0x00000001 to MISC_CONTROL_1_OFF
++		write 0x4747 to Lane Equalization Control register for each lane
++
++A-010477:
++	The PCI Express controller may not be able to establish the link at Gen3
++	speed successfully with some Gen3-capable link partner. The link will be
++	down-trained to either Gen1 or Gen2 speed.
++	Workaround:
++		Write 0x00800401 to GEN3 Control Register (GEN3_RELATED_OFF)
+-- 
+2.51.1
+

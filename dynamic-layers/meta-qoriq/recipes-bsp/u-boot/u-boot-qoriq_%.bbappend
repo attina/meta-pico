@@ -16,4 +16,5 @@ python __anonymous () {
     d.appendVar('SRC_URI', ' file://0002-ls1046apscbc-add-config-and-dts-file.patch')
     d.appendVar('SRC_URI', ' file://0003-ls1046apxcp-add-config-and-dts-file.patch')
     d.appendVar('SRC_URI', ' file://0004-picocom-compatible-code-for-pin-mux-of-iic3-iic4.patch')
+    d.appendVar('SRC_URI', ' file://0005-ls1046apscbx5-add-config-and-dts-file.patch')
 }

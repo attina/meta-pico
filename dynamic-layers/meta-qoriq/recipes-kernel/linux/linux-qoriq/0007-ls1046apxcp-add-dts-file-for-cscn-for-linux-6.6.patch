@@ -1,0 +1,574 @@
+From ba2bf429b5088a23805cf020b78bdeb314eed164 Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Fri, 31 Oct 2025 09:07:59 +0800
+Subject: [PATCH 1/2] ls1046apxcp: add dts file for cscn for linux 6.6
+
+
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 37b4e557395a..a780205be35d 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -40,6 +40,9 @@ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscbc-usdpaa.dtb
+ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp.dtb
+ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-sdk.dtb
+ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-usdpaa.dtb
++dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-cscn.dtb
++dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-cscn-sdk.dtb
++dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-cscn-usdpaa.dtb
+ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1088a-qds.dtb
+ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1088a-rdb.dtb
+ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1088a-ten64.dtb
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-cscn-sdk.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-cscn-sdk.dts
+new file mode 100644
+index 000000000000..27500389ad46
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-cscn-sdk.dts
+@@ -0,0 +1,240 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Device Tree file for Picocom LS1046A XCP board.
++ *
++ * Copyright 2025 Picocom, Inc.
++ *
++ * Gavin Gao <attinagaoxu@gmail.com>
++ */
++
++#include "fsl-ls1046a-pxcp-cscn.dts"
++#include "qoriq-qman-portals-sdk.dtsi"
++#include "qoriq-bman-portals-sdk.dtsi"
++
++&bman_fbpr {
++	compatible = "fsl,bman-fbpr";
++	alloc-ranges = <0 0 0x10000 0>;
++};
++&qman_fqd {
++	compatible = "fsl,qman-fqd";
++	alloc-ranges = <0 0 0x10000 0>;
++};
++&qman_pfdr {
++	compatible = "fsl,qman-pfdr";
++	alloc-ranges = <0 0 0x10000 0>;
++};
++
++&soc {
++/delete-property/ dma-coherent;
++
++#include "qoriq-dpaa-eth.dtsi"
++#include "qoriq-fman3-0-6oh.dtsi"
++
++pcie@3400000 {
++	/delete-property/ iommu-map;
++};
++
++pcie@3500000 {
++	/delete-property/ iommu-map;
++};
++
++pcie@3600000 {
++	/delete-property/ iommu-map;
++};
++
++/delete-node/ iommu@9000000;
++};
++
++&fsldpaa {
++	ethernet@0 {
++		status = "disabled";
++	};
++	ethernet@1 {
++		status = "disabled";
++	};
++	ethernet@4 {
++		status = "disabled";
++	};
++	ethernet@6 {
++		status = "disabled";
++	};
++	ethernet@7 {
++		status = "disabled";
++	};
++};
++
++&fman0 {
++	compatible = "fsl,fman", "simple-bus";
++};
++
++&clockgen {
++	dma-coherent;
++};
++
++&scfg {
++	dma-coherent;
++};
++
++&crypto {
++	dma-coherent;
++};
++
++&dcfg {
++	dma-coherent;
++};
++
++&ifc {
++	dma-coherent;
++};
++
++&qspi {
++	dma-coherent;
++};
++
++&esdhc {
++	dma-coherent;
++};
++
++&ddr {
++	dma-coherent;
++};
++
++&tmu {
++	dma-coherent;
++};
++
++&qman {
++	dma-coherent;
++};
++
++&bman {
++	dma-coherent;
++};
++
++&bportals {
++	dma-coherent;
++};
++
++&qportals {
++	dma-coherent;
++};
++
++&dspi {
++	dma-coherent;
++};
++
++&i2c0 {
++	dma-coherent;
++};
++
++&i2c1 {
++	dma-coherent;
++};
++
++&i2c2 {
++	dma-coherent;
++};
++
++&i2c3 {
++	dma-coherent;
++};
++
++&duart0 {
++	dma-coherent;
++};
++
++&duart1 {
++	dma-coherent;
++};
++
++&duart2 {
++	dma-coherent;
++};
++
++&duart3 {
++	dma-coherent;
++};
++
++&gpio0 {
++	dma-coherent;
++};
++
++&gpio1 {
++	dma-coherent;
++};
++
++&gpio2 {
++	dma-coherent;
++};
++
++&gpio3 {
++	dma-coherent;
++};
++
++&lpuart0 {
++	dma-coherent;
++};
++
++&lpuart1 {
++	dma-coherent;
++};
++
++&lpuart2 {
++	dma-coherent;
++};
++
++&lpuart3 {
++	dma-coherent;
++};
++
++&lpuart4 {
++	dma-coherent;
++};
++
++&lpuart5 {
++	dma-coherent;
++};
++
++&ftm_alarm0 {
++	dma-coherent;
++};
++
++&wdog0 {
++	dma-coherent;
++};
++
++&edma0 {
++	dma-coherent;
++};
++
++&sata {
++	dma-coherent;
++};
++
++&qdma {
++	dma-coherent;
++};
++
++&msi1 {
++	dma-coherent;
++};
++
++&msi2 {
++	dma-coherent;
++};
++
++&msi3 {
++	dma-coherent;
++};
++
++&fman0 {
++	dma-coherent;
++};
++
++&ptp_timer0 {
++	dma-coherent;
++};
++
++&fsldpaa {
++	dma-coherent;
++};
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-cscn-usdpaa.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-cscn-usdpaa.dts
+new file mode 100755
+index 000000000000..98fe84ca278f
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-cscn-usdpaa.dts
+@@ -0,0 +1,97 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Device Tree file for Picocom LS1046A XCP board.
++ *
++ * Copyright 2025 Picocom, Inc.
++ *
++ * Gavin Gao <attinagaoxu@gmail.com>
++ */
++
++#include "fsl-ls1046a-pxcp-cscn-sdk.dts"
++
++&soc {
++	bp7: buffer-pool@7 {
++		compatible = "fsl,ls1046a-bpool", "fsl,bpool";
++		fsl,bpid = <7>;
++		fsl,bpool-ethernet-cfg = <0 0 0 192 0 0xdeadbeef>;
++		fsl,bpool-thresholds = <0x400 0xc00 0x0 0x0>;
++		dma-coherent;
++	};
++
++	bp8: buffer-pool@8 {
++		compatible = "fsl,ls1046a-bpool", "fsl,bpool";
++		fsl,bpid = <8>;
++		fsl,bpool-ethernet-cfg = <0 0 0 576 0 0xabbaf00d>;
++		fsl,bpool-thresholds = <0x100 0x300 0x0 0x0>;
++		dma-coherent;
++	};
++
++	bp9: buffer-pool@9 {
++		compatible = "fsl,ls1046a-bpool", "fsl,bpool";
++		fsl,bpid = <9>;
++		fsl,bpool-ethernet-cfg = <0 0 0 2048 0 0xfeedabba>;
++		fsl,bpool-thresholds = <0x100 0x300 0x0 0x0>;
++		dma-coherent;
++	};
++
++	fsl,dpaa {
++		compatible = "fsl,ls1046a", "fsl,dpaa", "simple-bus";
++		dma-coherent;
++
++		ethernet@8 {
++			compatible = "fsl,dpa-ethernet-init";
++			fsl,bman-buffer-pools = <&bp7 &bp8 &bp9>;
++			fsl,qman-frame-queues-rx = <0x5c 1 0x5d 1>;
++			fsl,qman-frame-queues-tx = <0x7c 1 0x7d 1>;
++		};
++
++		dpa-fman0-oh@2 {
++			compatible = "fsl,dpa-oh";
++			/* Define frame queues for the OH port*/
++			/* <OH Rx error, OH Rx default> */
++			fsl,qman-frame-queues-oh = <0x60 1 0x61 1>;
++			fsl,fman-oh-port = <&fman0_oh2>;
++		};
++	};
++
++	pcie@3400000 {
++	       /delete-property/ iommu-map;
++	};
++
++	pcie@3500000 {
++	       /delete-property/ iommu-map;
++	};
++
++	pcie@3600000 {
++	       /delete-property/ iommu-map;
++	};
++
++	/delete-node/ iommu@9000000;
++};
++/ {
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		/* For legacy usdpaa based use-cases, update the size and
++		   alignment parameters. e.g. to allocate 256 MB memory:
++		   size = <0 0x10000000>;
++		   alignment = <0 0x10000000>;
++		*/
++		usdpaa_mem: usdpaa_mem {
++			compatible = "fsl,usdpaa-mem";
++			alloc-ranges = <0 0 0x10000 0>;
++			size = <0 0x1000>;
++			alignment = <0 0x1000>;
++		};
++	};
++};
++
++&fman0 {
++	fman0_oh2: port@83000 {
++		cell-index = <1>;
++		compatible = "fsl,fman-port-oh";
++		reg = <0x83000 0x1000>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-cscn.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-cscn.dts
+new file mode 100644
+index 000000000000..6be6d67eb232
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-pxcp-cscn.dts
+@@ -0,0 +1,195 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Device Tree include file for Picocom LS1046A XCP board.
++ *
++ * Copyright 2025 Picocom, Inc.
++ *
++ * Gavin Gao <attinagaoxu@gmail.com>
++ */
++
++/dts-v1/;
++
++#include "fsl-ls1046a.dtsi"
++
++/ {
++	model = "LS1046A Picocom XCP Board";
++	compatible = "fsl,ls1046a-pscb", "fsl,ls1046a";
++
++	aliases {
++		serial0 = &duart0;
++		serial1 = &duart1;
++		serial2 = &duart2;
++		serial3 = &duart3;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	p3v3_clk: fixedregulator_3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "fixed-supply";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++	};
++};
++
++&duart0 {
++	status = "okay";
++};
++
++&duart1 {
++	status = "okay";
++};
++
++&duart2 {
++	status = "okay";
++};
++
++&duart3 {
++	status = "okay";
++};
++
++&esdhc {
++	mmc-ddr-3_3v;
++	cap-mmc-highspeed;
++	mmc-hs200-1_8v;
++	sd-uhs-sdr104;
++	sd-uhs-sdr50;
++	sd-uhs-sdr25;
++	sd-uhs-sdr12;
++};
++
++&i2c0 {
++	status = "okay";
++
++	temperature-sensor@4c {
++		compatible = "nxp,sa56004";
++		reg = <0x4c>;
++		vcc-supply = <&p3v3_clk>;
++	};
++
++	eeprom@50 {
++		compatible = "atmel,24c64";
++		reg = <0x50>;
++	};
++};
++
++&i2c2 {
++	status = "disabled";
++
++};
++
++&i2c3 {
++	status = "disabled";
++};
++
++&ifc {
++	status = "disabled";
++};
++
++&qspi {
++	status = "okay";
++
++	s25fs512s0: flash@0 {
++		compatible = "jedec,spi-nor";
++		#address-cells = <1>;
++		#size-cells = <1>;
++		spi-max-frequency = <50000000>;
++		spi-rx-bus-width = <1>;
++		spi-tx-bus-width = <1>;
++		reg = <0>;
++	};
++};
++
++&dspi {
++	status = "okay";
++
++	spidev@1 {
++		compatible = "rohm,dh2228fv";
++		reg = <1>;
++		spi-max-frequency = <25000000>;
++		fsl,spi-cs-sck-delay = <15>;
++		fsl,spi-sck-cs-delay = <15>;
++	};
++
++	spidev@2 {
++		compatible = "rohm,dh2228fv";
++		reg = <2>;
++		spi-max-frequency = <25000000>;
++		fsl,spi-cs-sck-delay = <15>;
++		fsl,spi-sck-cs-delay = <15>;
++	};
++};
++
++&usb1 {
++	dr_mode = "otg";
++};
++
++#include "fsl-ls1046-post.dtsi"
++
++&fman0 {
++	ethernet@e4000 {
++		phy-handle = <&rgmii_phy1>;
++		phy-connection-type = "rgmii-id";
++	};
++
++	ethernet@e6000 {
++		phy-handle = <&rgmii_phy2>;
++		phy-connection-type = "rgmii-id";
++	};
++
++	ethernet@e8000 {
++		status = "disabled";
++	};
++
++	ethernet@ea000 {
++		phy-handle = <&sgmii_phy>;
++		phy-connection-type = "sgmii";
++		local-mac-address = [00 01 02 03 04 05];
++	};
++
++	ethernet@f0000 { /* 10GEC1 */
++		fixed-link = <1 1 10000 0 0>;
++		phy-connection-type = "xgmii";
++	};
++
++	ethernet@f2000 { /* 10GEC2 */
++		status = "disabled";
++	};
++
++	mdio@fc000 {
++		sgmii_phy: ethernet-phy@3 {
++			compatible = "ethernet-phy-id4f51.e91a", "ethernet-phy-ieee802.3-c22";
++			reg = <0x3>;
++		};
++
++		rgmii_phy1: ethernet-phy@2 {
++			compatible = "ethernet-phy-id4f51.e91a", "ethernet-phy-ieee802.3-c22";
++			reg = <0x2>;
++			tx-internal-delay-ps = <2000>;
++		};
++
++		rgmii_phy2: ethernet-phy@0 {
++			compatible = "ethernet-phy-id4f51.e91a", "ethernet-phy-ieee802.3-c22";
++			reg = <0x0>;
++			tx-internal-delay-ps = <2000>;
++		};
++	};
++
++	mdio@fd000 {
++		status = "disabled";
++	};
++};
++
++&pcie_ep1 {
++	status = "okay";
++};
++
++&pcie2 {
++	status = "okay";
++};
++
++&pcie3 {
++	status = "okay";
++};
+\ No newline at end of file
+-- 
+2.34.1
+
