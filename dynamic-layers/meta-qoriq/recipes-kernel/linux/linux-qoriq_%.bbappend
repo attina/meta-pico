@@ -18,6 +18,9 @@ SRC_URI += " file://ls1046apscb.cfg \
 SRC_URI:append:ls1046apscb = " file://fsl-ls1046a-pscb.dts \
         file://fsl-ls1046a-pscb-sdk.dts \
         file://fsl-ls1046a-pscb-usdpaa.dts \
+        file://fsl-ls1046a-pscb_mac9.dts \
+        file://fsl-ls1046a-pscb-sdk_mac9.dts \
+        file://fsl-ls1046a-pscb-usdpaa_mac9.dts \
         "
 SRC_URI:append:ls1046apscbc = " file://fsl-ls1046a-pscbc.dts \
         file://fsl-ls1046a-pscbc-sdk.dts \
@@ -26,8 +29,7 @@ SRC_URI:append:ls1046apscbc = " file://fsl-ls1046a-pscbc.dts \
 SRC_URI:append:ls1046apxcp = " file://fsl-ls1046a-pxcp.dts \
         file://fsl-ls1046a-pxcp-sdk.dts \
         file://fsl-ls1046a-pxcp-usdpaa.dts \
-        "
-SRC_URI:append:ls1046apxcp = " file://fsl-ls1046a-pxcp-cscn.dts \
+        file://fsl-ls1046a-pxcp-cscn.dts \
         file://fsl-ls1046a-pxcp-cscn-sdk.dts \
         file://fsl-ls1046a-pxcp-cscn-usdpaa.dts \
         "
@@ -40,9 +42,15 @@ do_configure:append:ls1046apscb() {
     cp ${UNPACKDIR}/fsl-ls1046a-pscb.dts ${S}/arch/arm64/boot/dts/freescale
     cp ${UNPACKDIR}/fsl-ls1046a-pscb-sdk.dts ${S}/arch/arm64/boot/dts/freescale
     cp ${UNPACKDIR}/fsl-ls1046a-pscb-usdpaa.dts ${S}/arch/arm64/boot/dts/freescale
+    cp ${UNPACKDIR}/fsl-ls1046a-pscb_mac9.dts ${S}/arch/arm64/boot/dts/freescale
+    cp ${UNPACKDIR}/fsl-ls1046a-pscb-sdk_mac9.dts ${S}/arch/arm64/boot/dts/freescale
+    cp ${UNPACKDIR}/fsl-ls1046a-pscb-usdpaa_mac9.dts ${S}/arch/arm64/boot/dts/freescale
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscb.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscb-sdk.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscb-usdpaa.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
+    echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscb_mac9.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
+    echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscb-sdk_mac9.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
+    echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscb-usdpaa_mac9.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
 }
 
 do_configure:append:ls1046apscbc() {
