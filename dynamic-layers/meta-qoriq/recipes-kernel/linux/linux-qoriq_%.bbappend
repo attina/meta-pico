@@ -8,6 +8,9 @@ python __anonymous () {
         d.appendVar('SRC_URI', ' file://patch-6.6.52-rt43.patch')
     else:
         raise bb.parse.SkipRecipe("Unsupported version %s" % pv)
+
+    if d.getVar('UNPACKDIR') is None:
+        d.setVar('UNPACKDIR', d.getVar('WORKDIR'))
 }
 
 SRC_URI += " file://ls1046apscb.cfg \
