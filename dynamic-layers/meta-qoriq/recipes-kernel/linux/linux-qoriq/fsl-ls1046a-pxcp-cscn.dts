@@ -1,0 +1,195 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Device Tree include file for Picocom LS1046A XCP board.
+ *
+ * Copyright 2025 Picocom, Inc.
+ *
+ * Gavin Gao <attinagaoxu@gmail.com>
+ */
+
+/dts-v1/;
+
+#include "fsl-ls1046a.dtsi"
+
+/ {
+	model = "LS1046A Picocom XCP Board";
+	compatible = "fsl,ls1046a-pscb", "fsl,ls1046a";
+
+	aliases {
+		serial0 = &duart0;
+		serial1 = &duart1;
+		serial2 = &duart2;
+		serial3 = &duart3;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	p3v3_clk: fixedregulator_3v3 {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-supply";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+	};
+};
+
+&duart0 {
+	status = "okay";
+};
+
+&duart1 {
+	status = "okay";
+};
+
+&duart2 {
+	status = "okay";
+};
+
+&duart3 {
+	status = "okay";
+};
+
+&esdhc {
+	mmc-ddr-3_3v;
+	cap-mmc-highspeed;
+	mmc-hs200-1_8v;
+	sd-uhs-sdr104;
+	sd-uhs-sdr50;
+	sd-uhs-sdr25;
+	sd-uhs-sdr12;
+};
+
+&i2c0 {
+	status = "okay";
+
+	temperature-sensor@4c {
+		compatible = "nxp,sa56004";
+		reg = <0x4c>;
+		vcc-supply = <&p3v3_clk>;
+	};
+
+	eeprom@50 {
+		compatible = "atmel,24c64";
+		reg = <0x50>;
+	};
+};
+
+&i2c2 {
+	status = "disabled";
+
+};
+
+&i2c3 {
+	status = "disabled";
+};
+
+&ifc {
+	status = "disabled";
+};
+
+&qspi {
+	status = "okay";
+
+	s25fs512s0: flash@0 {
+		compatible = "jedec,spi-nor";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		spi-max-frequency = <50000000>;
+		spi-rx-bus-width = <1>;
+		spi-tx-bus-width = <1>;
+		reg = <0>;
+	};
+};
+
+&dspi {
+	status = "okay";
+
+	spidev@1 {
+		compatible = "rohm,dh2228fv";
+		reg = <1>;
+		spi-max-frequency = <25000000>;
+		fsl,spi-cs-sck-delay = <15>;
+		fsl,spi-sck-cs-delay = <15>;
+	};
+
+	spidev@2 {
+		compatible = "rohm,dh2228fv";
+		reg = <2>;
+		spi-max-frequency = <25000000>;
+		fsl,spi-cs-sck-delay = <15>;
+		fsl,spi-sck-cs-delay = <15>;
+	};
+};
+
+&usb1 {
+	dr_mode = "otg";
+};
+
+#include "fsl-ls1046-post.dtsi"
+
+&fman0 {
+	ethernet@e4000 {
+		phy-handle = <&rgmii_phy1>;
+		phy-connection-type = "rgmii-id";
+	};
+
+	ethernet@e6000 {
+		phy-handle = <&rgmii_phy2>;
+		phy-connection-type = "rgmii-id";
+	};
+
+	ethernet@e8000 {
+		status = "disabled";
+	};
+
+	ethernet@ea000 {
+		phy-handle = <&sgmii_phy>;
+		phy-connection-type = "sgmii";
+		local-mac-address = [00 01 02 03 04 05];
+	};
+
+	ethernet@f0000 { /* 10GEC1 */
+		fixed-link = <1 1 10000 0 0>;
+		phy-connection-type = "xgmii";
+	};
+
+	ethernet@f2000 { /* 10GEC2 */
+		status = "disabled";
+	};
+
+	mdio@fc000 {
+		sgmii_phy: ethernet-phy@3 {
+			compatible = "ethernet-phy-id4f51.e91a", "ethernet-phy-ieee802.3-c22";
+			reg = <0x3>;
+		};
+
+		rgmii_phy1: ethernet-phy@2 {
+			compatible = "ethernet-phy-id4f51.e91a", "ethernet-phy-ieee802.3-c22";
+			reg = <0x2>;
+			tx-internal-delay-ps = <2000>;
+		};
+
+		rgmii_phy2: ethernet-phy@0 {
+			compatible = "ethernet-phy-id4f51.e91a", "ethernet-phy-ieee802.3-c22";
+			reg = <0x0>;
+			tx-internal-delay-ps = <2000>;
+		};
+	};
+
+	mdio@fd000 {
+		status = "disabled";
+	};
+};
+
+&pcie_ep1 {
+	status = "okay";
+};
+
+&pcie2 {
+	status = "okay";
+};
+
+&pcie3 {
+	status = "okay";
+};

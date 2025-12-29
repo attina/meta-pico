@@ -1,0 +1,168 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Device Tree Include file for Freescale Layerscape-1046A family SoC.
+ *
+ * Copyright 2016 Freescale Semiconductor, Inc.
+ * Copyright 2019-2020 NXP
+ *
+ * Mingkai Hu <mingkai.hu@nxp.com>
+ */
+
+/dts-v1/;
+
+#include "fsl-ls1046a.dtsi"
+
+/ {
+	model = "LS1046A PSCB (core) Board";
+	compatible = "fsl,ls1046a-pscb", "fsl,ls1046a";
+
+	aliases {
+		serial0 = &duart0;
+		serial1 = &duart1;
+		serial2 = &duart2;
+		serial3 = &duart3;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	p3v3_clk: fixedregulator_3v3 {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-supply";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+	};
+};
+
+&duart0 {
+	status = "okay";
+};
+
+&duart1 {
+	status = "okay";
+};
+
+&esdhc {
+	mmc-ddr-3_3v;
+	cap-mmc-highspeed;
+	mmc-hs200-1_8v;
+	sd-uhs-sdr104;
+	sd-uhs-sdr50;
+	sd-uhs-sdr25;
+	sd-uhs-sdr12;
+};
+
+&i2c0 {
+	status = "okay";
+
+	temperature-sensor@4c {
+		compatible = "nxp,sa56004";
+		reg = <0x4c>;
+		vcc-supply = <&p3v3_clk>;
+	};
+
+	eeprom@50 {
+		compatible = "atmel,24c64";
+		reg = <0x50>;
+	};
+};
+
+&i2c2 {
+	status = "disabled";
+
+};
+
+&i2c3 {
+	status = "disabled";
+};
+
+&ifc {
+	status = "disabled";
+};
+
+&qspi {
+	status = "okay";
+
+	s25fs512s0: flash@0 {
+		compatible = "jedec,spi-nor";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		spi-max-frequency = <50000000>;
+		spi-rx-bus-width = <1>;
+		spi-tx-bus-width = <1>;
+		reg = <0>;
+	};
+};
+
+&dspi {
+	status = "okay";
+
+	spidev@1 {
+		compatible = "rohm,dh2228fv";
+		reg = <1>;
+		spi-max-frequency = <25000000>;
+		fsl,spi-cs-sck-delay = <15>;
+		fsl,spi-sck-cs-delay = <15>;
+	};
+
+	spidev@2 {
+		compatible = "rohm,dh2228fv";
+		reg = <2>;
+		spi-max-frequency = <25000000>;
+		fsl,spi-cs-sck-delay = <15>;
+		fsl,spi-sck-cs-delay = <15>;
+	};
+};
+
+&usb1 {
+	dr_mode = "otg";
+};
+
+#include "fsl-ls1046-post.dtsi"
+
+&fman0 {
+	ethernet@e4000 {
+		status = "disabled";
+	};
+
+	ethernet@e6000 {
+		status = "disabled";
+	};
+
+	ethernet@e8000 {
+		status = "disabled";
+	};
+
+	ethernet@ea000 {
+		phy-handle = <&yt8521_phy>;
+		phy-connection-type = "sgmii";
+		local-mac-address = [00 01 02 03 04 05];
+	};
+
+	ethernet@f0000 {
+		fixed-link = <0 1 10000 0 0>;
+		phy-connection-type = "xgmii";
+	};
+
+	ethernet@f2000 {
+		fixed-link = <0 1 1000 0 0>;
+		phy-connection-type = "sgmii";
+	};
+
+	mdio@fc000 {
+		yt8521_phy: ethernet-phy@1 {
+			/* MotorComm YT8521 */
+			compatible = "ethernet-phy-id0000.011a", "ethernet-phy-ieee802.3-c22";
+			reg = <0x1>;
+		};
+	};
+
+	mdio@fd000 {
+		status = "disabled";
+	};
+};
+
+&pcie1{
+	status = "okay";
+};
