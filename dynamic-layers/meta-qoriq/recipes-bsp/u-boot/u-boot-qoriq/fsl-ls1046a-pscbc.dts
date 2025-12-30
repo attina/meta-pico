@@ -1,0 +1,91 @@
+// SPDX-License-Identifier: GPL-2.0+ OR X11
+/*
+ * Device Tree Include file for Freescale Layerscape-1046A family SoC.
+ *
+ * Copyright 2016, Freescale Semiconductor
+ * Copyright 2020 NXP
+ *
+ * Mingkai Hu <Mingkai.hu@freescale.com>
+ */
+
+/dts-v1/;
+#include "fsl-ls1046a.dtsi"
+
+/ {
+	model = "LS1046A PSCB (core) Board";
+
+	aliases {
+		spi0 = &qspi;
+	};
+
+};
+
+&ifc {
+	status = "disabled";
+};
+
+&qspi {
+	status = "okay";
+
+	s25fs512s0: flash@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "jedec,spi-nor";
+		spi-max-frequency = <50000000>;
+		reg = <0>;
+	};
+};
+
+&sata {
+	status = "okay";
+};
+
+&i2c0 {
+	status = "okay";
+};
+
+&i2c3 {
+	status = "okay";
+};
+
+#include "fsl-ls1046-post.dtsi"
+
+&fman0 {
+	ethernet@e4000 {
+		status = "disabled";
+	};
+
+	ethernet@e6000 {
+		status = "disabled";
+	};
+
+	ethernet@e8000 {
+		status = "disabled";
+	};
+
+	ethernet@ea000 {
+		phy-handle = <&yt8521_phy>;
+		phy-connection-type = "sgmii";
+		status = "okay";
+	};
+
+	ethernet@f0000 { /* 10GEC1 */
+		status = "disabled";
+	};
+
+	ethernet@f2000 { /* 10GEC2 */
+		status = "disabled";
+	};
+
+	mdio@fc000 {
+		yt8521_phy: ethernet-phy@1 {
+			compatible = "ethernet-phy-ieee802.3-c45";
+			interrupts = <0 131 4>;
+			reg = <0x1>;
+		};
+	};
+
+	mdio@fd000 {
+		status = "disabled";
+	};
+};
