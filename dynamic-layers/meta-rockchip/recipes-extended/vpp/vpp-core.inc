@@ -14,7 +14,7 @@ inherit cmake pkgconfig python3-dir python3native
 
 OECMAKE_SOURCEPATH = "${S}/src"
 
-export ARCH ="aarch64"
+export ARCH = "aarch64"
 export OPENSSL_PATH = "${RECIPE_SYSROOT}/usr"
 export DPDK_PATH = "${RECIPE_SYSROOT}/usr"
 
