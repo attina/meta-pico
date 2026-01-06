@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2025 picocom Ltd.
+ *
+ */
+
+#include "rk3399-picocom-u-boot.dtsi"
+#include "rk3399-sdram-lpddr4-100.dtsi"
+
+/ {
+	smbios {
+		compatible = "u-boot,sysinfo-smbios";
+
+		smbios {
+			system {
+				manufacturer = "Picocom";
+				product = "SCB600";
+			};
+
+			baseboard {
+				manufacturer = "Picocom";
+				product = "SCB600";
+			};
+
+			chassis {
+				manufacturer = "Picocom";
+			};
+		};
+	};
+};
