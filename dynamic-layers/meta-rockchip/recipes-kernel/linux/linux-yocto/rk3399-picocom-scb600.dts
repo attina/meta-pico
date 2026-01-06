@@ -1,0 +1,42 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2025 picocom Ltd.
+ *
+ */
+
+/dts-v1/;
+#include "rk3399-picocom.dtsi"
+
+/ {
+	model = "Picocom SCB 600";
+	compatible = "picocom,scb-600", "rockchip,rk3399";
+};
+
+&gmac {
+	phy-supply = <&vcc3v3_sys>;
+	phy-mode = "rgmii";
+	phy-handle = <&lan8840>;
+	clock_in_out = "input";
+
+	assigned-clocks = <&cru SCLK_RMII_SRC>;
+	assigned-clock-parents = <&clkin_gmac>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&rgmii_pins>, <&phy_intb>, <&phy_rstb>;
+	tx_delay = <0x27>;
+	rx_delay = <0x1a>;
+	status = "okay";
+
+	mdio {
+		compatible = "snps,dwmac-mdio";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		lan8840: ethernet-phy@3 {
+			reg = <0x03>;
+			snps,reset-gpio = <&gpio3 RK_PB7 GPIO_ACTIVE_LOW>;
+			snps,reset-active-low;
+			snps,reset-delays-us = <0 10000 50000>;
+			interrupt-parent = <&gpio1>;
+			interrupts = <RK_PC4 IRQ_TYPE_LEVEL_LOW>;
+		};
+	};
+};
