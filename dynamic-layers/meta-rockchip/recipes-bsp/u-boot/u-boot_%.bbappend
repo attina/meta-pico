@@ -19,6 +19,8 @@ SRC_URI:append:scb605 = " file://picocom-scb605_defconfig \
         file://rk3399-picocom-scb605.dts \
         "
 
+SRC_URI:append:rk3576 = " file://0001-rk3576-enable-compress-support.patch"
+
 do_configure:prepend:scb600() {
     cp ${UNPACKDIR}/rk3399-picocom-u-boot.dtsi ${S}/arch/arm/dts
     cp ${UNPACKDIR}/rk3399-picocom-scb600-u-boot.dtsi ${S}/arch/arm/dts

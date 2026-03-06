@@ -1,0 +1,22 @@
+From 091521aa709e36bee636a8e5a82f87b18b9369b4 Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Wed, 28 Jan 2026 10:28:07 +0800
+Subject: [PATCH] rk3576: enable compress support
+
+---
+ configs/generic-rk3576_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/configs/generic-rk3576_defconfig b/configs/generic-rk3576_defconfig
+index 5e25653820c..8e482e189c5 100644
+--- a/configs/generic-rk3576_defconfig
++++ b/configs/generic-rk3576_defconfig
+@@ -48,3 +48,5 @@ CONFIG_USB_GADGET=y
+ CONFIG_USB_GADGET_DOWNLOAD=y
+ CONFIG_USB_FUNCTION_ROCKUSB=y
+ CONFIG_ERRNO_STR=y
++CONFIG_LZ4=y
++CONFIG_LZMA=y
+-- 
+2.52.0
+
