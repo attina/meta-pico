@@ -3,6 +3,10 @@
 export PATH=.:${PATH}
 ./rkdeveloptool --version
 ./rkdeveloptool db boot.bin
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
 for i in {5..1}; do
     printf "Waiting %d seconds...\r" "$i"
     sleep 1
