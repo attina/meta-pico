@@ -2,5 +2,3 @@ define KFEATURE_DESCRIPTION "tweaks for the Forlinx ok3576"
 define KMACHINE rk3576
 define KTYPE standard
 define KARCH arm64
-
-kconf hardware picocom-rockchip-hardware.cfg
