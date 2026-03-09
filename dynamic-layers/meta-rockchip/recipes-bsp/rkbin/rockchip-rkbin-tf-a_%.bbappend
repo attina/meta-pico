@@ -4,5 +4,6 @@ COMPATIBLE_MACHINE:rk3576 = "rk3576"
 
 do_deploy:rk3576() {
 	# Prebuilt TF-A
-	install -m 644 ${S}/bin/rk35/rk3576_bl31_v*.elf ${DEPLOYDIR}/bl31-rk3576.elf
+	install -d ${DEPLOYDIR}/trusted-firmware-a
+	install -m 644 ${S}/bin/rk35/rk3576_bl31_v*.elf ${DEPLOYDIR}/trusted-firmware-a/bl31.elf
 }
