@@ -19,7 +19,9 @@ SRC_URI:append:scb605 = " file://picocom-scb605_defconfig \
         file://rk3399-picocom-scb605.dts \
         "
 
-SRC_URI:append:rk3576 = " file://0001-rk3576-enable-compress-support.patch"
+SRC_URI:append:rk3576 = " file://0001-rk3576-expand-kernel-decompress-space.patch \
+        file://rk3576_defconfig \
+        "
 
 do_configure:prepend:scb600() {
     cp ${UNPACKDIR}/rk3399-picocom-u-boot.dtsi ${S}/arch/arm/dts
@@ -35,6 +37,10 @@ do_configure:prepend:scb600() {
     cp ${UNPACKDIR}/rk3399-picocom.dtsi ${S}/dts/upstream/src/arm64/rockchip
     cp ${UNPACKDIR}/rk3399-picocom-scb600.dts ${S}/dts/upstream/src/arm64/rockchip
     cp ${UNPACKDIR}/picocom-scb600_defconfig ${S}/configs
+}
+
+do_configure:prepend:rk3576() {
+    cp ${UNPACKDIR}/rk3576_defconfig ${S}/configs
 }
 
 ERROR_QA:remove = "patch-status"
