@@ -16,6 +16,7 @@ PREFERRED_PROVIDER_optee-os = "rockchip-rkbin-optee-os"
 
 UBOOT_SUFFIX ?= "img"
 UBOOT_ENTRYPOINT ?= "0x40200000"
+UBOOT_MACHINE ?= "rk3576_defconfig"
 
 TFA_PLATFORM = "rk3576"
 TFA_BUILD_TARGET = "bl31"
