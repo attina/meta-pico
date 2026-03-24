@@ -2,3 +2,7 @@ define KFEATURE_DESCRIPTION "tweaks for the Forlinx ok3576"
 define KMACHINE rk3576
 define KTYPE standard
 define KARCH arm64
+
+patch rk3576/0001-rk3576-sync-code-from-forlinx-linux-v6.1.84-sdk.patch
+patch rk3576/0002-fix-btrfs-build-error.patch
+kconf non-hardware rk3576/ok3576_defconfig
