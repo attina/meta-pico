@@ -1,0 +1,22 @@
+From 6d44e07415e46b66bd989bd09c8a246e9457c627 Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Tue, 24 Mar 2026 22:12:59 +0800
+Subject: [PATCH] rk3576: expand kernel decompress space
+
+
+diff --git a/include/configs/rk3576_common.h b/include/configs/rk3576_common.h
+index 14d1d863609..fef3924bd2d 100644
+--- a/include/configs/rk3576_common.h
++++ b/include/configs/rk3576_common.h
+@@ -25,7 +25,7 @@
+ 	"script_offset_f=0xffe000\0"	\
+ 	"script_size_f=0x2000\0"	\
+ 	"pxefile_addr_r=0x40e00000\0" \
+-	"kernel_addr_r=0x42000000\0" \
++	"kernel_addr_r=0x44000000\0" \
+ 	"kernel_comp_addr_r=0x4a000000\0"	\
+ 	"fdt_addr_r=0x52000000\0"	\
+ 	"fdtoverlay_addr_r=0x52100000\0"	\
+-- 
+2.52.0
+
