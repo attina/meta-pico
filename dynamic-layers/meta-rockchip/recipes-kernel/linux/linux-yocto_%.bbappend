@@ -8,25 +8,16 @@ python __anonymous () {
         d.setVar('UNPACKDIR', d.getVar('WORKDIR'))
 }
 
-#LINUX_VERSION = "6.6.0"
-#KBRANCH = "openEuler-24.03-LTS"
-
-#SRC_URI = "git://atomgit.com/openeuler/rockchip-kernel.git;name=machine;branch=${KBRANCH};protocol=https \
-#           git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.6;destsuffix=${KMETA};protocol=https"
-
-#SRCREV_machine = "5e898a44caa84e70bbc64664b9dc42094b1d8bdb"
-#SRCREV_meta = "45f69741c733e066ed1a12b6025e347e5cd6063e"
-
-#KBUILD_DEFCONFIG = "OK3568-C-linux_defconfig"
+# OK3576 is based on 6.1.84 with forlinx patches
+KBRANCH:rk3576 = "v6.1/standard/preempt-rt/base"
+SRCREV_machine:rk3576 = "4df82ffbb2b0f0b0efb545d1f67e61c987d051c1"
+LINUX_VERSION = "6.1.84"
 
 SRC_URI:append = " file://picocom-kmeta;type=kmeta;name=picocom-kmeta;destsuffix=picocom-kmeta"
 
 SRC_URI:append:rk3399 = " file://rk3399-picocom.dtsi \
         file://rk3399-picocom-scb600.dts \
         file://rk3399-picocom-scb605.dts \
-        "
-
-SRC_URI:append:rk3576 = " file://rk3576-forlinx-ok3576.dts \
         "
 
 do_configure:append:scb600() {
@@ -39,9 +30,7 @@ do_configure:append:scb605() {
     cp ${UNPACKDIR}/rk3399-picocom-scb605.dts ${S}/arch/arm64/boot/dts/rockchip
 }
 
-do_configure:append:ok3576() {
-    cp ${UNPACKDIR}/rk3576-forlinx-ok3576.dts ${S}/arch/arm64/boot/dts/rockchip
-}
-
 SRC_URI:append:rk3399 = " file://picocom-rk3399.scc"
 SRC_URI:append:rk3576 = " file://picocom-rk3576.scc"
+
+INSANE_SKIP:${PN}-src += "buildpaths"
