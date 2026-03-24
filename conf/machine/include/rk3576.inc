@@ -15,7 +15,7 @@ PREFERRED_PROVIDER_trusted-firmware-a = "rockchip-rkbin-tf-a"
 PREFERRED_PROVIDER_optee-os = "rockchip-rkbin-optee-os"
 
 UBOOT_SUFFIX ?= "img"
-UBOOT_ENTRYPOINT ?= "0x40080000"
+UBOOT_ENTRYPOINT ?= "0x40200000"
 
 TFA_PLATFORM = "rk3576"
 TFA_BUILD_TARGET = "bl31"
