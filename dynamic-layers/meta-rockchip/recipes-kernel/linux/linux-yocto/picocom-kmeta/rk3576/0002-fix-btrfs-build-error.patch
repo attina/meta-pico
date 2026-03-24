@@ -1,0 +1,37 @@
+From a4c6af3fcc8486877a26c189a5a57183c6549096 Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Tue, 24 Mar 2026 14:56:43 +0800
+Subject: [PATCH] fix btrfs build error
+
+
+diff --git a/fs/btrfs/print-tree.c b/fs/btrfs/print-tree.c
+index 228eeb04d03d..2338c54fcb14 100644
+--- a/fs/btrfs/print-tree.c
++++ b/fs/btrfs/print-tree.c
+@@ -23,7 +23,7 @@ static const struct root_name_map root_map[] = {
+ 	{ BTRFS_QUOTA_TREE_OBJECTID,		"QUOTA_TREE"		},
+ 	{ BTRFS_UUID_TREE_OBJECTID,		"UUID_TREE"		},
+ 	{ BTRFS_FREE_SPACE_TREE_OBJECTID,	"FREE_SPACE_TREE"	},
+-	{ BTRFS_BLOCK_GROUP_TREE_OBJECTID,	"BLOCK_GROUP_TREE"	},
++	{ BTRFS_BLOCK_GROUP_TREE_OBJECTID,	"BLK_GROUP_TREE"	},
+ 	{ BTRFS_DATA_RELOC_TREE_OBJECTID,	"DATA_RELOC_TREE"	},
+ };
+ 
+diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+index 9f7ffd9ef6fd..dfcbbdefd9b7 100644
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -7947,8 +7947,8 @@ long btrfs_ioctl_send(struct inode *inode, struct btrfs_ioctl_send_args *arg)
+ 	sctx->rbtree_new_refs = RB_ROOT;
+ 	sctx->rbtree_deleted_refs = RB_ROOT;
+ 
+-	sctx->clone_roots = kvcalloc(sizeof(*sctx->clone_roots),
+-				     arg->clone_sources_count + 1,
++	sctx->clone_roots = kvcalloc(arg->clone_sources_count + 1,
++				     sizeof(*sctx->clone_roots),
+ 				     GFP_KERNEL);
+ 	if (!sctx->clone_roots) {
+ 		ret = -ENOMEM;
+-- 
+2.52.0
+
