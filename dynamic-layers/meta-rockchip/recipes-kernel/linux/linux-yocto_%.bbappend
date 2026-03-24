@@ -8,17 +8,6 @@ python __anonymous () {
         d.setVar('UNPACKDIR', d.getVar('WORKDIR'))
 }
 
-#LINUX_VERSION = "6.6.0"
-#KBRANCH = "openEuler-24.03-LTS"
-
-#SRC_URI = "git://atomgit.com/openeuler/rockchip-kernel.git;name=machine;branch=${KBRANCH};protocol=https \
-#           git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.6;destsuffix=${KMETA};protocol=https"
-
-#SRCREV_machine = "5e898a44caa84e70bbc64664b9dc42094b1d8bdb"
-#SRCREV_meta = "45f69741c733e066ed1a12b6025e347e5cd6063e"
-
-#KBUILD_DEFCONFIG = "OK3568-C-linux_defconfig"
-
 SRC_URI:append = " file://picocom-kmeta;type=kmeta;name=picocom-kmeta;destsuffix=picocom-kmeta"
 
 SRC_URI:append:rk3399 = " file://rk3399-picocom.dtsi \
