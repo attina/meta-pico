@@ -10,12 +10,14 @@ require conf/machine/include/arm/armv8a/tune-cortexa72-cortexa53.inc
 require conf/machine/include/rockchip-wic.inc
 
 KBUILD_DEFCONFIG ?= "defconfig"
+KERNEL_DEVICETREE ?= "rockchip/rk3576-evb1-v10.dtb"
 
 PREFERRED_PROVIDER_trusted-firmware-a = "rockchip-rkbin-tf-a"
 PREFERRED_PROVIDER_optee-os = "rockchip-rkbin-optee-os"
 
 UBOOT_SUFFIX ?= "img"
 UBOOT_ENTRYPOINT ?= "0x40200000"
+UBOOT_MACHINE ?= "rk3576_defconfig"
 
 TFA_PLATFORM = "rk3576"
 TFA_BUILD_TARGET = "bl31"
