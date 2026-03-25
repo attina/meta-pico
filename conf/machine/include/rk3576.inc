@@ -10,6 +10,8 @@ require conf/machine/include/arm/armv8a/tune-cortexa72-cortexa53.inc
 require conf/machine/include/rockchip-wic.inc
 
 KBUILD_DEFCONFIG ?= "defconfig"
+KERNEL_DEVICETREE ?= "rockchip/rk3576-evb1-v10.dtb"
+MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
 
 PREFERRED_PROVIDER_trusted-firmware-a = "rockchip-rkbin-tf-a"
 PREFERRED_PROVIDER_optee-os = "rockchip-rkbin-optee-os"
