@@ -1,7 +1,13 @@
 DESCRIPTION = "Python script dpdk"
 LICENSE = "CLOSED"
 SRC_URI = "file://src/dpdk-devbind.py"
-S = "${WORKDIR}/src"
+
+python __anonymous () {
+    if d.getVar('UNPACKDIR') is None:
+        d.setVar('UNPACKDIR', d.getVar('WORKDIR'))
+}
+
+S = "${UNPACKDIR}/src"
 
 do_install() {
     install -d ${D}${bindir}  # Install to /etc in rootfs

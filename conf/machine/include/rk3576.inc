@@ -9,6 +9,8 @@ require conf/machine/include/rockchip-defaults.inc
 require conf/machine/include/arm/armv8a/tune-cortexa72-cortexa53.inc
 require conf/machine/include/rockchip-wic.inc
 
+KERNEL_CLASSES += "kernel-fit-extra-artifacts"
+
 KBUILD_DEFCONFIG ?= "defconfig"
 KERNEL_DEVICETREE ?= "rockchip/rk3576-evb1-v10.dtb"
 MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
