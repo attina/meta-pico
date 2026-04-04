@@ -80,21 +80,21 @@
 	};
 
 	mdio@fc000 {
-		yt8521_phy: ethernet-phy@2 {
+		yt8521_phy: ethernet-phy@3 {
 			compatible = "ethernet-phy-ieee802.3-c22";
 			interrupts = <0 131 4>;
-			reg = <0x2>;
+			reg = <0x3>;
 		};
 
-		rgmii_phy1: ethernet-phy@1 {
+		rgmii_phy1: ethernet-phy@2 {
 			compatible = "ethernet-phy-ieee802.3-c22";
-			reg = <0x1>;
+			reg = <0x2>;
 			tx-internal-delay-ps = <2000>;
 		};
 
-		rgmii_phy2: ethernet-phy@3 {
+		rgmii_phy2: ethernet-phy@4 {
 			compatible = "ethernet-phy-ieee802.3-c22";
-			reg = <0x3>;
+			reg = <0x4>;
 			tx-internal-delay-ps = <2000>;
 		};
 	};
