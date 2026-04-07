@@ -5,7 +5,8 @@ python __anonymous () {
     if pv.startswith("2025.04"):
         d.appendVar('SRC_URI', ' file://0001-picocom-ls1046a-series-board-driver.patch')
     elif pv.startswith("2024.04") or pv.startswith("2023.04") or pv.startswith("2021.04"):
-        d.appendVar('SRC_URI', ' file://0001-picocom-ls1046a-series-board-driver-for-2024.04.patch')
+        d.appendVar('SRC_URI', ' file://0001-picocom-ls1046a-series-board-driver-for-2024.04.patch \
+                                 file://motorcomm-8521-8521s-8531s-support.patch')
     else:
         raise bb.parse.SkipRecipe("Unsupported version %s" % pv)
 
