@@ -1,1 +1,3 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/secure-boot-qoriq:"
+
+QORIQ_SECUREBOOT_SUPPORTED_MACHINES = "${MACHINE}"
