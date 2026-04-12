@@ -9,11 +9,12 @@ require conf/machine/include/rockchip-defaults.inc
 require conf/machine/include/arm/armv8a/tune-cortexa72-cortexa53.inc
 require conf/machine/include/rockchip-wic.inc
 
-KERNEL_CLASSES += "kernel-fit-extra-artifacts"
-
 KBUILD_DEFCONFIG ?= "defconfig"
-KERNEL_DEVICETREE ?= "rockchip/rk3576-evb1-v10.dtb"
+KERNEL_FEATURES:append:rk3568 = " bsp/rockchip/remove-non-rockchip-arch-arm64.scc"
+
 MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
+KERNEL_CLASSES += "kernel-fit-extra-artifacts"
+KERNEL_IMAGETYPE = "Image.gz"
 
 PREFERRED_PROVIDER_trusted-firmware-a = "rockchip-rkbin-tf-a"
 PREFERRED_PROVIDER_optee-os = "rockchip-rkbin-optee-os"
