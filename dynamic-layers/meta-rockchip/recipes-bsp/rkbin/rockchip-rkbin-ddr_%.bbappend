@@ -1,11 +1,7 @@
-SRCREV = "74213af1e952c4683d2e35952507133b61394862"
+include rkbin-common.inc
 
-COMPATIBLE_MACHINE:rk3576 = "rk3576"
+RKBIN_BINVERS:rk3576 ?= "v1.09"
+RKBIN_BINFILE:rk3576 ?= "rk3576_ddr_lp4_2112MHz_lp5_2736MHz_${RKBIN_BINVERS}.bin"
+RKBIN_DEPLOY_FILENAME:rk3576 ?= "ddr-rk3576.bin"
 
-DDRBIN_VERS:rk3576 ?= "v1.09"
-DDRBIN_FILE:rk3576 ?= "rk3576_ddr_lp4_2112MHz_lp5_2736MHz_${DDRBIN_VERS}.bin"
-
-do_deploy:rk3576() {
-	# Prebuilt U-Boot TPL (DDR init)
-	install -m 644 ${S}/bin/rk35/${DDRBIN_FILE} ${DEPLOYDIR}/ddr-rk3576.bin
-}
+DDRBIN_TOOL_SOC:rk3576 ?= "rk3576"
