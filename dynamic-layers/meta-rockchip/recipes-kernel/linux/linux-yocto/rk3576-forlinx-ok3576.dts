@@ -9,6 +9,7 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/input/input.h>
+#include <dt-bindings/soc/rockchip,boot-mode.h>
 #include <dt-bindings/soc/rockchip,vop2.h>
 #include "rk3576.dtsi"
 
@@ -238,6 +239,17 @@
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x2>;
 		clocks = <&cru REFCLKO25M_GMAC1_OUT>;
+	};
+};
+
+&pmu0_grf {
+	reboot-mode {
+		compatible = "syscon-reboot-mode";
+		offset = <0x40>;
+		mode-normal = <BOOT_NORMAL>;
+		mode-loader = <BOOT_BL_DOWNLOAD>;
+		/* BOOT_BROM_DOWNLOAD, checked by Rockchip SPL before U-Boot proper. */
+		mode-maskrom = <0xef08a53c>;
 	};
 };
 
