@@ -20,6 +20,7 @@ SRC_URI:append:scb605 = " file://picocom-scb605_defconfig \
         "
 
 SRC_URI:append:rk3576 = " file://0001-rk3576-expand-kernel-decompress-space.patch \
+        file://0002-rockchip-add-loader-and-maskrom-reset-modes.patch \
         file://rk3576_defconfig \
         "
 

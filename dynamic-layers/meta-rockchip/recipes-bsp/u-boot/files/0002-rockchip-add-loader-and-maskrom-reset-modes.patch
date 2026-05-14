@@ -1,0 +1,123 @@
+From 780fa9bf0377d61ec2c96e4b13d9b0ddcc67c6f8 Mon Sep 17 00:00:00 2001
+From: Gavin Gao <attinagaoxu@gmail.com>
+Date: Wed, 13 May 2026 17:20:00 +0800
+Subject: [PATCH] rockchip: add loader and maskrom reset modes
+
+Rockchip boards use the boot-mode register to request special boot
+paths across reset.  Add the two modes needed for field flashing:
+
+* reset loader: reboot into U-Boot rockusb loader mode
+* reset maskrom: reboot into the BootROM USB download path
+
+Linux can write the same values through syscon-reboot-mode, so this also
+lets U-Boot honor "reboot -m loader" from the kernel side.
+
+Signed-off-by: Gavin Gao <attinagaoxu@gmail.com>
+---
+ arch/arm/mach-rockchip/boot_mode.c |  4 ++++
+ cmd/boot.c                         |  6 +++++-
+ drivers/sysreset/sysreset-uclass.c | 41 ++++++++++++++++++++++++++++++-------
+ 3 files changed, 43 insertions(+), 8 deletions(-)
+
+diff --git a/arch/arm/mach-rockchip/boot_mode.c b/arch/arm/mach-rockchip/boot_mode.c
+index 20c6b42c1e4..f9c102ff11c 100644
+--- a/arch/arm/mach-rockchip/boot_mode.c
++++ b/arch/arm/mach-rockchip/boot_mode.c
+@@ -106,6 +106,10 @@ int setup_boot_mode(void)
+ 		debug("%s: enter UMS!\n", __func__);
+ 		env_set("preboot", "setenv preboot; ums mmc 0");
+ 		break;
++	case BOOT_LOADER:
++		debug("%s: enter Rockusb loader!\n", __func__);
++		env_set("preboot", "setenv preboot; rockusb 0 mmc 0");
++		break;
+ 	}
+ 
+ 	return 0;
+diff --git a/cmd/boot.c b/cmd/boot.c
+index c60345b0190..18894c9e3cf 100644
+--- a/cmd/boot.c
++++ b/cmd/boot.c
+@@ -61,7 +61,11 @@ U_BOOT_CMD(
+ 	reset, 2, 0,	do_reset,
+ 	"Perform RESET of the CPU",
+ 	"- cold boot without level specifier\n"
+-	"reset -w - warm reset if implemented"
++	"reset -w - warm reset if implemented\n"
++#if defined(CONFIG_ARCH_ROCKCHIP) && (CONFIG_ROCKCHIP_BOOT_MODE_REG != 0)
++	"reset loader - reset into Rockusb loader mode\n"
++	"reset maskrom - reset into maskrom download mode"
++#endif
+ );
+ 
+ #ifdef CONFIG_CMD_POWEROFF
+diff --git a/drivers/sysreset/sysreset-uclass.c b/drivers/sysreset/sysreset-uclass.c
+index 1ba91cc9606..9dbd537eab1 100644
+--- a/drivers/sysreset/sysreset-uclass.c
++++ b/drivers/sysreset/sysreset-uclass.c
+@@ -14,8 +14,14 @@
+ #include <dm/root.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
++#include <linux/string.h>
+ #include <asm/global_data.h>
+ 
++#if defined(CONFIG_ARCH_ROCKCHIP) && (CONFIG_ROCKCHIP_BOOT_MODE_REG != 0)
++#include <asm/io.h>
++#include <asm/arch-rockchip/boot_mode.h>
++#endif
++
+ int sysreset_request(struct udevice *dev, enum sysreset_t type)
+ {
+ 	struct sysreset_ops *ops = sysreset_get_ops(dev);
+@@ -115,6 +121,23 @@ void reset_cpu(void)
+ }
+ 
+ #if IS_ENABLED(CONFIG_SYSRESET_CMD_RESET)
++#if defined(CONFIG_ARCH_ROCKCHIP) && (CONFIG_ROCKCHIP_BOOT_MODE_REG != 0)
++static int rockchip_set_reset_mode(const char *mode)
++{
++	if (!strcmp(mode, "loader")) {
++		writel(BOOT_LOADER, CONFIG_ROCKCHIP_BOOT_MODE_REG);
++		return 0;
++	}
++
++	if (!strcmp(mode, "maskrom")) {
++		writel(BOOT_BROM_DOWNLOAD, CONFIG_ROCKCHIP_BOOT_MODE_REG);
++		return 0;
++	}
++
++	return -EINVAL;
++}
++#endif
++
+ int do_reset(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
+ {
+ 	enum sysreset_t reset_type = SYSRESET_COLD;
+@@ -123,11 +146,19 @@ int do_reset(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
+ 	if (argc > 2)
+ 		return CMD_RET_USAGE;
+ 
+-	if (argc == 2 && argv[1][0] == '-' && argv[1][1] == 'w') {
+-		reset_type = SYSRESET_WARM;
+-	}
+-
+-	printf("resetting ...\n");
++	if (argc == 2) {
++		if (argv[1][0] == '-' && argv[1][1] == 'w') {
++			reset_type = SYSRESET_WARM;
++#if defined(CONFIG_ARCH_ROCKCHIP) && (CONFIG_ROCKCHIP_BOOT_MODE_REG != 0)
++		} else if (!rockchip_set_reset_mode(argv[1])) {
++			reset_type = SYSRESET_COLD;
++#endif
++		} else {
++			return CMD_RET_USAGE;
++		}
++	}
++
++	printf("resetting ...\n");
+ 	mdelay(100);
+ 
+ 	sysreset_walk_halt(reset_type);
+-- 
+2.52.0
