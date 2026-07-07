@@ -25,6 +25,9 @@ SRC_URI:append:ls1046apscb = " file://fsl-ls1046a-pscb.dts \
 SRC_URI:append:ls1046apscbc = " file://fsl-ls1046a-pscbc.dts \
         file://fsl-ls1046a-pscbc-sdk.dts \
         file://fsl-ls1046a-pscbc-usdpaa.dts \
+        file://fsl-ls1046a-pscbc-puyu2.dts \
+        file://fsl-ls1046a-pscbc-puyu2-sdk.dts \
+        file://fsl-ls1046a-pscbc-puyu2-usdpaa.dts \
         "
 SRC_URI:append:ls1046apxcp = " file://fsl-ls1046a-pxcp.dts \
         file://fsl-ls1046a-pxcp-sdk.dts \
@@ -60,6 +63,13 @@ do_configure:append:ls1046apscbc() {
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscbc.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscbc-sdk.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscbc-usdpaa.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
+    # for puyu2 peripheral board
+    cp ${UNPACKDIR}/fsl-ls1046a-pscbc-puyu2.dts ${S}/arch/arm64/boot/dts/freescale
+    cp ${UNPACKDIR}/fsl-ls1046a-pscbc-puyu2-sdk.dts ${S}/arch/arm64/boot/dts/freescale
+    cp ${UNPACKDIR}/fsl-ls1046a-pscbc-puyu2-usdpaa.dts ${S}/arch/arm64/boot/dts/freescale
+    echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscbc-puyu2.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
+    echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscbc-puyu2-sdk.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
+    echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pscbc-puyu2-usdpaa.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
 }
 
 do_configure:append:ls1046apxcp() {
