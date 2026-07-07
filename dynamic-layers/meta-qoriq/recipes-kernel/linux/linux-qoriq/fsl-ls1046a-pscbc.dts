@@ -153,7 +153,7 @@
 	mdio@fc000 {
 		yt8521_phy: ethernet-phy@1 {
 			/* MotorComm YT8521 */
-			compatible = "ethernet-phy-id0000.011a", "ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-id0000.011a", "ethernet-phy-id4f51.e91a", "ethernet-phy-ieee802.3-c22";
 			reg = <0x1>;
 		};
 	};
