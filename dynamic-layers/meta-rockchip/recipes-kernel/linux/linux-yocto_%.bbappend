@@ -16,6 +16,7 @@ SRC_URI:append:rk3399 = " file://rk3399-picocom.dtsi \
         "
 
 SRC_URI:append:rk3576 = " file://rk3576-forlinx-ok3576.dts \
+        file://rk3576-picocom-rk3576acp.dts \
         "
 
 do_configure:append:scb600() {
@@ -30,6 +31,10 @@ do_configure:append:scb605() {
 
 do_configure:append:ok3576() {
     cp ${UNPACKDIR}/rk3576-forlinx-ok3576.dts ${S}/arch/arm64/boot/dts/rockchip
+}
+
+do_configure:append:rk3576acp() {
+    cp ${UNPACKDIR}/rk3576-picocom-rk3576acp.dts ${S}/arch/arm64/boot/dts/rockchip
 }
 
 SRC_URI:append:rk3399 = " file://picocom-rk3399.scc"
