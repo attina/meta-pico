@@ -15,7 +15,7 @@
 
 / {
 	model = "Forlinx OK3576-C Board";
-	compatible = "rockchip,OK3576-C", "rockchip,rk3576";
+	compatible = "forlinx,ok3576c", "rockchip,rk3576";
 
 	aliases {
 		ethernet0 = &gmac0;
@@ -78,10 +78,6 @@
 			gpios = <&gpio0 RK_PB4 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "heartbeat";
 		};
-	};
-
-	test-power {
-		status = "okay";
 	};
 
 	vcc12v_dcin: vcc12v-dcin {
@@ -272,6 +268,11 @@
 
 &uart0 {
 	pinctrl-0 = <&uart0m0_xfer>;
+	status = "okay";
+};
+
+&saradc {
+	vref-supply = <&vcc_1v8_s0>;
 	status = "okay";
 };
 
