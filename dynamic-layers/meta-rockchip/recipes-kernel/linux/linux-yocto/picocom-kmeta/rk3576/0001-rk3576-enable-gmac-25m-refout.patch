@@ -1,134 +1,75 @@
 From: Gavin Gao <attinagaoxu@gmail.com>
-Subject: [PATCH] rk3576: Enable GMAC 25M refout clock
+Subject: [PATCH] net: phy: motorcomm: enable optional PHY input clock
 
-Carry the upstream-submitted RK3576 GMAC 25 MHz reference output support
-as a single BSP patch for easier Yocto maintenance.
+The common ethernet PHY binding already describes a single optional
+external input clock for PHYs using the "clocks" property. Some SoCs,
+such as Rockchip RK3576, provide the PHY reference clock from the CRU
+instead of a fixed crystal.
 
-This combines the following upstream-submitted changes:
-- dt-bindings: net: rockchip-dwmac: Add 25M refout clock
-- arm64: dts: rockchip: Add RK3576 GMAC 25M refout clocks
-- net: stmmac: dwmac-rk: Enable RGMII 25M refout clock
+Enable the optional clock during probe so boards can describe the CRU as
+the clock provider and the Motorcomm PHY as the clock consumer. This
+keeps the clock ownership out of the MAC driver and lets the clock
+framework keep the PHY reference clock enabled while the PHY device is
+bound.
 
-Upstream submission:
-Link: https://lore.kernel.org/netdev/20260727021048.3375444-1-attinagaoxu@gmail.com/
-
-Tested on a PicoCOM RK3576 ACP board with a Motorcomm YT8521 PHY.
-The GMAC 25 MHz reference clock output remains active and Ethernet works.
+This is needed on a PicoCOM RK3576 ACP board using a Motorcomm YT8521
+PHY, where the RK3576 REFCLKO25M_GMAC0/1_OUT clock otherwise turns off
+as an unused clock after boot.
 
 Signed-off-by: Gavin Gao <attinagaoxu@gmail.com>
 ---
-diff --git a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-index 0ac7c4b47d6b..074ac274f2e0 100644
---- a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-@@ -81,6 +81,7 @@ properties:
-         - pclk_mac
-         - clk_mac_ref
-         - clk_mac_refout
-+        - clk_mac_25m_refout
-         - clk_mac_speed
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index b49897500a59..cbc2047a67cd 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -6,6 +6,7 @@
+  * Author: Frank <Frank.Sae@motor-comm.com>
+  */
  
-   clock_in_out:
-diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-index 70e67d4dccb8..f1125c2f88ab 100644
---- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-@@ -1692,10 +1692,10 @@ gmac0: ethernet@2a220000 {
- 			reg = <0x0 0x2a220000 0x0 0x10000>;
- 			clocks = <&cru CLK_GMAC0_125M_SRC>, <&cru CLK_GMAC0_RMII_CRU>,
- 				 <&cru PCLK_GMAC0>, <&cru ACLK_GMAC0>,
--				 <&cru CLK_GMAC0_PTP_REF>;
-+				 <&cru CLK_GMAC0_PTP_REF>, <&cru REFCLKO25M_GMAC0_OUT>;
- 			clock-names = "stmmaceth", "clk_mac_ref",
- 				      "pclk_mac", "aclk_mac",
--				      "ptp_ref";
-+				      "ptp_ref", "clk_mac_25m_refout";
- 			interrupts = <GIC_SPI 293 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 298 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "macirq", "eth_wake_irq";
-@@ -1739,10 +1739,10 @@ gmac1: ethernet@2a230000 {
- 			reg = <0x0 0x2a230000 0x0 0x10000>;
- 			clocks = <&cru CLK_GMAC1_125M_SRC>, <&cru CLK_GMAC1_RMII_CRU>,
- 				 <&cru PCLK_GMAC1>, <&cru ACLK_GMAC1>,
--				 <&cru CLK_GMAC1_PTP_REF>;
-+				 <&cru CLK_GMAC1_PTP_REF>, <&cru REFCLKO25M_GMAC1_OUT>;
- 			clock-names = "stmmaceth", "clk_mac_ref",
- 				      "pclk_mac", "aclk_mac",
--				      "ptp_ref";
-+				      "ptp_ref", "clk_mac_25m_refout";
- 			interrupts = <GIC_SPI 301 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 306 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "macirq", "eth_wake_irq";
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 643578266dfc..5e7e5e8f8d62 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -81,6 +81,7 @@ struct rk_priv_data {
- 	struct clk_bulk_data *clks;
- 	int num_clks;
- 	struct clk *clk_phy;
-+	struct clk *clk_mac_25m_refout;
- 
- 	struct reset_control *phy_reset;
- 
-@@ -1419,6 +1420,24 @@ static int rk_gmac_clk_init(struct plat_stmmacenet_data *plat)
- 		clk_set_rate(bsp_priv->clk_phy, 50000000);
- 	}
- 
-+	if (!bsp_priv->clock_input && phy_interface_mode_is_rgmii(phy_iface)) {
-+		bsp_priv->clk_mac_25m_refout =
-+			devm_clk_get_optional(dev, "clk_mac_25m_refout");
-+		if (IS_ERR(bsp_priv->clk_mac_25m_refout)) {
-+			ret = PTR_ERR(bsp_priv->clk_mac_25m_refout);
-+			return dev_err_probe(dev, ret,
-+					     "Cannot get 25M refout clock\n");
-+		}
-+
-+		if (bsp_priv->clk_mac_25m_refout) {
-+			ret = clk_set_rate(bsp_priv->clk_mac_25m_refout,
-+					   25000000);
-+			if (ret)
-+				return dev_err_probe(dev, ret,
-+						     "Cannot set 25M refout clock rate\n");
-+		}
-+	}
-+
++#include <linux/clk.h>
+ #include <linux/etherdevice.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -1039,6 +1040,19 @@ static int yt8531_set_ds(struct phy_device *phydev)
  	return 0;
  }
  
-@@ -1433,9 +1452,13 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
- 			if (ret)
- 				return ret;
- 
-+			ret = clk_prepare_enable(bsp_priv->clk_mac_25m_refout);
-+			if (ret)
-+				goto err_disable_clks;
++static int ytphy_probe_ext_clk(struct phy_device *phydev)
++{
++	struct device *dev = &phydev->mdio.dev;
++	struct clk *clk;
 +
- 			ret = clk_prepare_enable(bsp_priv->clk_phy);
- 			if (ret)
--				return ret;
-+				goto err_disable_25m_refout;
- 
- 			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection)
- 				bsp_priv->ops->set_clock_selection(bsp_priv,
-@@ -1454,12 +1477,20 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
- 			clk_bulk_disable_unprepare(bsp_priv->num_clks,
- 						   bsp_priv->clks);
- 			clk_disable_unprepare(bsp_priv->clk_phy);
-+			clk_disable_unprepare(bsp_priv->clk_mac_25m_refout);
- 
- 			bsp_priv->clk_enabled = false;
- 		}
- 	}
- 
- 	return 0;
++	clk = devm_clk_get_optional_enabled(dev, NULL);
++	if (IS_ERR(clk))
++		return dev_err_probe(dev, PTR_ERR(clk),
++				     "failed to enable PHY clock\n");
 +
-+err_disable_25m_refout:
-+	clk_disable_unprepare(bsp_priv->clk_mac_25m_refout);
-+err_disable_clks:
-+	clk_bulk_disable_unprepare(bsp_priv->num_clks, bsp_priv->clks);
++	return 0;
++}
 +
-+	return ret;
- }
+ /**
+  * yt8521_probe() - read chip config then set suitable polling_mode
+  * @phydev: a pointer to a &struct phy_device
+@@ -1061,6 +1075,10 @@ static int yt8521_probe(struct phy_device *phydev)
  
- static int phy_power_on(struct rk_priv_data *bsp_priv, bool enable)
+ 	phydev->priv = priv;
+ 
++	ret = ytphy_probe_ext_clk(phydev);
++	if (ret)
++		return ret;
++
+ 	chip_config = ytphy_read_ext_with_lock(phydev, YT8521_CHIP_CONFIG_REG);
+ 	if (chip_config < 0)
+ 		return chip_config;
+@@ -1168,6 +1186,11 @@ static int yt8531_probe(struct phy_device *phydev)
+ 	struct device_node *node = phydev->mdio.dev.of_node;
+ 	u16 mask, val;
+ 	u32 freq;
++	int ret;
++
++	ret = ytphy_probe_ext_clk(phydev);
++	if (ret)
++		return ret;
+ 
+ 	if (of_property_read_u32(node, "motorcomm,clk-out-frequency-hz", &freq))
+ 		freq = YTPHY_DTS_OUTPUT_CLK_DIS;
