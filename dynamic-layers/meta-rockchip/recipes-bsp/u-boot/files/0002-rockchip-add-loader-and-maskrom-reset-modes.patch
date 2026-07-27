@@ -12,6 +12,7 @@ paths across reset.  Add the two modes needed for field flashing:
 Linux can write the same values through syscon-reboot-mode, so this also
 lets U-Boot honor "reboot -m loader" from the kernel side.
 
+Upstream-Status: Pending
 Signed-off-by: Gavin Gao <attinagaoxu@gmail.com>
 ---
  arch/arm/mach-rockchip/boot_mode.c |  4 ++++

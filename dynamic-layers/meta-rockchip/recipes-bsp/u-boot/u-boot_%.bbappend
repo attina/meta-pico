@@ -43,5 +43,3 @@ do_configure:prepend:scb600() {
 do_configure:prepend:rk3576() {
     cp ${UNPACKDIR}/rk3576_defconfig ${S}/configs
 }
-
-ERROR_QA:remove = "patch-status"

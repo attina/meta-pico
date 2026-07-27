@@ -3,7 +3,12 @@ From: Gavin Gao <attinagaoxu@gmail.com>
 Date: Tue, 24 Mar 2026 22:12:59 +0800
 Subject: [PATCH] rk3576: expand kernel decompress space
 
+Move kernel_addr_r higher to leave more room for decompressing large
+kernels on RK3576 boards.
 
+Upstream-Status: Inappropriate [RK3576 BSP memory layout]
+Signed-off-by: Gavin Gao <attinagaoxu@gmail.com>
+---
 diff --git a/include/configs/rk3576_common.h b/include/configs/rk3576_common.h
 index 14d1d863609..fef3924bd2d 100644
 --- a/include/configs/rk3576_common.h
@@ -19,4 +24,3 @@ index 14d1d863609..fef3924bd2d 100644
  	"fdtoverlay_addr_r=0x52100000\0"	\
 -- 
 2.52.0
-
