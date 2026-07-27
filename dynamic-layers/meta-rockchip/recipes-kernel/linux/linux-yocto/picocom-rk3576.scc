@@ -3,4 +3,5 @@ define KMACHINE rk3576
 define KTYPE standard
 define KARCH arm64
 
+patch rk3576/0001-rk3576-enable-gmac-25m-refout.patch
 kconf hardware rk3576/picocom-ok3576-hardware.cfg

@@ -208,10 +208,6 @@
 		     &eth0m0_rgmii_clk
 		     &eth0m0_rgmii_bus
 		     &ethm0_clk0_25m_out>;
-	assigned-clocks = <&cru REFCLKO25M_GMAC0_OUT>;
-	assigned-clock-rates = <25000000>;
-	assigned-clock-parents = <&cru PLL_CPLL>;
-	protected-clocks = <&cru REFCLKO25M_GMAC0_OUT>;
 	snps,reset-gpio = <&gpio2 RK_PB3 GPIO_ACTIVE_LOW>;
 	snps,reset-active-low;
 	snps,reset-delays-us = <0 20000 100000>;
@@ -230,10 +226,6 @@
 		     &eth1m0_rgmii_clk
 		     &eth1m0_rgmii_bus
 		     &ethm0_clk1_25m_out>;
-	assigned-clocks = <&cru REFCLKO25M_GMAC1_OUT>;
-	assigned-clock-rates = <25000000>;
-	assigned-clock-parents = <&cru PLL_CPLL>;
-	protected-clocks = <&cru REFCLKO25M_GMAC1_OUT>;
 	snps,reset-gpio = <&gpio2 RK_PB4 GPIO_ACTIVE_LOW>;
 	snps,reset-active-low;
 	snps,reset-delays-us = <0 20000 100000>;
