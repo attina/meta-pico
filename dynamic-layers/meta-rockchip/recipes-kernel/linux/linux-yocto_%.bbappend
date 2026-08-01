@@ -39,3 +39,4 @@ do_configure:append:rk3576acp() {
 
 SRC_URI:append:rk3399 = " file://picocom-rk3399.scc"
 SRC_URI:append:rk3576 = " file://picocom-rk3576.scc"
+SRC_URI:append:rk3576acp = " file://picocom-rk3576acp.scc"

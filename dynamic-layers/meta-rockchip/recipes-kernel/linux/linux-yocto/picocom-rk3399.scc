@@ -3,4 +3,6 @@ define KMACHINE rk3399
 define KTYPE standard
 define KARCH arm64
 
-kconf hardware rk3399/picocom-rockchip-hardware.cfg
+patch common/802-uio.patch
+kconf hardware common/uio.cfg
+kconf hardware rk3399/picocom-rk3399-hardware.cfg

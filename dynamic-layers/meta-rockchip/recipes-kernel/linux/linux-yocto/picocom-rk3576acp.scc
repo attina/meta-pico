@@ -1,0 +1,7 @@
+define KFEATURE_DESCRIPTION "tweaks for the Picocom rk3576acp board"
+define KMACHINE rk3576
+define KTYPE standard
+define KARCH arm64
+
+patch common/802-uio.patch
+kconf hardware common/uio.cfg

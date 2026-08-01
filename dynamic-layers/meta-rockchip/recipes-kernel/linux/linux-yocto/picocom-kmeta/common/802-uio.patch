@@ -1,0 +1,78 @@
+Upstream-Status: Inappropriate [platform-specific]
+
+Index: linux-6.6.73/drivers/uio/uio_pci_generic.c
+===================================================================
+--- linux-6.6.73.orig/drivers/uio/uio_pci_generic.c
++++ linux-6.6.73/drivers/uio/uio_pci_generic.c
+@@ -19,10 +19,12 @@
+  */
+ 
+ #include <linux/device.h>
++#include <linux/dma-mapping.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include <linux/slab.h>
+ #include <linux/uio_driver.h>
++#include <linux/sizes.h>
+ 
+ #define DRIVER_VERSION	"0.01.0"
+ #define DRIVER_AUTHOR	"Michael S. Tsirkin <mst@redhat.com>"
+@@ -31,7 +33,11 @@
+ struct uio_pci_generic_dev {
+ 	struct uio_info info;
+ 	struct pci_dev *pdev;
++	struct uio_info cma_info;
++	void *cma_vaddr;
+ };
++#define PCI_VENDOR_PICOCOM      0x1EC4
++#define CMA_BUF_SIZE            SZ_32M
+ 
+ static inline struct uio_pci_generic_dev *
+ to_uio_pci_generic_dev(struct uio_info *info)
+@@ -43,6 +49,12 @@ static int release(struct uio_info *info
+ {
+ 	struct uio_pci_generic_dev *gdev = to_uio_pci_generic_dev(info);
+ 
++	if (gdev->cma_vaddr) {
++		uio_unregister_device(&gdev->cma_info);
++		dma_free_coherent(&gdev->pdev->dev, CMA_BUF_SIZE, gdev->cma_vaddr, gdev->cma_info.mem[0].addr);
++		gdev->cma_vaddr = NULL;
++	}
++
+ 	/*
+ 	 * This driver is insecure when used with devices doing DMA, but some
+ 	 * people (mis)use it with such devices.
+@@ -133,6 +145,33 @@ static int probe(struct pci_dev *pdev,
+ 		++uiomem;
+ 	}
+ 
++	dev_info(&pdev->dev, "pcie device:%x,%x dma mask=0x%llx\n", pdev->vendor, pdev->device, dma_get_mask(&pdev->dev));
++	if (PCI_VENDOR_PICOCOM == pdev->vendor) {
++		gdev->cma_vaddr = dma_alloc_coherent(&pdev->dev, CMA_BUF_SIZE, &gdev->cma_info.mem[0].addr, GFP_KERNEL);
++		if (!gdev->cma_vaddr) {
++			dev_err(&pdev->dev, "%s: Failed to allocate cma memory\n", __func__);
++			return -ENOMEM;
++		}
++
++		gdev->cma_info.name = "rk3399 uio";
++		gdev->cma_info.version = "802";
++		gdev->cma_info.irq = UIO_IRQ_NONE;
++
++		gdev->cma_info.mem[0].memtype = UIO_MEM_PHYS;
++		gdev->cma_info.mem[0].size = CMA_BUF_SIZE;
++		gdev->cma_info.mem[0].offs = 0;
++		gdev->cma_info.mem[0].name = "desc";
++
++		if (uio_register_device(&pdev->dev, &gdev->cma_info)) {
++			dev_err(&pdev->dev, "%s: uio register error!\n", __func__);
++			dma_free_coherent(&pdev->dev, CMA_BUF_SIZE, gdev->cma_vaddr, gdev->cma_info.mem[0].addr);
++			gdev->cma_vaddr = NULL;
++			return -ENODEV;
++		}
++		dev_info(&pdev->dev, "picocom pcie device:%x,%x allocate cma at 0x%llx,%u\n",
++			 pdev->vendor, pdev->device, gdev->cma_info.mem[0].addr, CMA_BUF_SIZE);
++	}
++
+ 	return devm_uio_register_device(&pdev->dev, &gdev->info);
+ }
+ 
