@@ -156,6 +156,9 @@
 
 	sdio_pwrseq: sdio-pwrseq {
 		compatible = "mmc-pwrseq-simple";
+		pinctrl-names = "default";
+		pinctrl-0 = <&wifi_poweren_gpio>;
+		post-power-on-delay-ms = <200>;
 		reset-gpios = <&gpio1 RK_PC6 GPIO_ACTIVE_LOW>;
 	};
 };
@@ -763,14 +766,18 @@
 &sdio {
 	#address-cells = <1>;
 	#size-cells = <0>;
+	bus-width = <4>;
 	cap-sd-highspeed;
 	cap-sdio-irq;
 	disable-wp;
 	keep-power-in-suspend;
+	max-frequency = <200000000>;
 	mmc-pwrseq = <&sdio_pwrseq>;
 	no-mmc;
 	no-sd;
 	non-removable;
+	pinctrl-names = "default";
+	pinctrl-0 = <&sdmmc1m0_bus4 &sdmmc1m0_clk &sdmmc1m0_cmd>;
 	sd-uhs-sdr104;
 	status = "okay";
 
@@ -789,6 +796,10 @@
 	wifi {
 		wifi_wake_host: wifi-wake-host {
 			rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_down>;
+		};
+
+		wifi_poweren_gpio: wifi-poweren-gpio {
+			rockchip,pins = <1 RK_PC6 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 
