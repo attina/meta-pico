@@ -4,7 +4,7 @@ MAINTAINER = "Gavin Gao <attinagaoxu@gmail.com>"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = ""
 
-S = "${WORKDIR}/sources"
+S = "${UNPACKDIR}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
