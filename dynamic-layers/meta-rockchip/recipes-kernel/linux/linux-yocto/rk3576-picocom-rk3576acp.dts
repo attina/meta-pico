@@ -771,14 +771,14 @@
 	cap-sdio-irq;
 	disable-wp;
 	keep-power-in-suspend;
-	max-frequency = <200000000>;
+	max-frequency = <100000000>;
 	mmc-pwrseq = <&sdio_pwrseq>;
 	no-mmc;
 	no-sd;
 	non-removable;
 	pinctrl-names = "default";
 	pinctrl-0 = <&sdmmc1m0_bus4 &sdmmc1m0_clk &sdmmc1m0_cmd>;
-	sd-uhs-sdr104;
+	sd-uhs-sdr50;
 	status = "okay";
 
 	ap6256: wifi@1 {
@@ -846,6 +846,24 @@
 
 &uart9 {
 	pinctrl-0 = <&uart9m2_xfer>;
+	status = "okay";
+};
+
+&u2phy0 {
+	status = "okay";
+};
+
+&u2phy1 {
+	status = "okay";
+};
+
+&u2phy0_otg {
+	rockchip,typec-vbus-det;
+	status = "okay";
+};
+
+&u2phy1_otg {
+	phy-supply = <&vcc_5v0_usbhost>;
 	status = "okay";
 };
 
