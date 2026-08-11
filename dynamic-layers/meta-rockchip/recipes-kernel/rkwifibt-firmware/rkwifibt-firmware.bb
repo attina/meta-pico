@@ -2,19 +2,22 @@ SUMMARY = "Rockchip WiFi firmware files from rkwifibt"
 SECTION = "kernel"
 LICENSE = "CLOSED"
 
-SRCREV = "b61a1e8499a4f1956ef417cbcfaa6c2cf805ce08"
+SRCREV = "2db7beca9637cc25f6bb6ce73a4d59cb0d0ffa68"
 SRC_URI = "git://github.com/attina/rkwifibt.git;protocol=https;branch=develop"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 RKWIFIBT_FIRMWARE_MODULE ?= ""
 RKWIFIBT_FIRMWARE_MODULE[doc] = "rkwifibt WiFi module name, for example AP6256 or CYW4373."
+RKWIFIBT_FIRMWARE_BOARD_TYPE ?= ""
+RKWIFIBT_FIRMWARE_BOARD_TYPE[doc] = "Optional brcmfmac board type used for board-specific firmware symlinks."
 
 python do_install() {
     import os
     import shutil
 
     module = d.getVar("RKWIFIBT_FIRMWARE_MODULE")
+    board_type = d.getVar("RKWIFIBT_FIRMWARE_BOARD_TYPE")
     s = d.getVar("S")
     destdir = os.path.join(
         d.getVar("D"),
@@ -40,6 +43,7 @@ python do_install() {
             "source": "firmware/broadcom/AP6256/wifi",
             "firmware": "fw_bcm43456c5_ag.bin",
             "nvram": "nvram_ap6256.txt",
+            "clm": "brcmfmac43456-sdio.clm_blob",
             "target": "brcmfmac43456-sdio",
         },
         "AP6275S": {
@@ -142,6 +146,15 @@ python do_install() {
             os.path.join(srcdir, fw["clm"]),
             os.path.join(destdir, fw["target"] + ".clm_blob"),
         )
+
+    if board_type:
+        for suffix in ("bin", "txt", "clm_blob"):
+            filename = fw["target"] + "." + suffix
+            board_filename = fw["target"] + "." + board_type + "." + suffix
+            target = os.path.join(destdir, filename)
+            board_target = os.path.join(destdir, board_filename)
+            if os.path.exists(target):
+                os.symlink(filename, board_target)
 }
 
 FILES:${PN} = "${nonarch_base_libdir}/firmware/brcm/*"
