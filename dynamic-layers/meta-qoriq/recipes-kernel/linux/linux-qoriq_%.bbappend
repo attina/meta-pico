@@ -35,6 +35,7 @@ SRC_URI:append:ls1046apxcp = " file://fsl-ls1046a-pxcp.dts \
         file://fsl-ls1046a-pxcp-cscn.dts \
         file://fsl-ls1046a-pxcp-cscn-sdk.dts \
         file://fsl-ls1046a-pxcp-cscn-usdpaa.dts \
+        file://fsl-ls1046a-pxcp-xwyy-sdk.dts \
         "
 SRC_URI:append:ls1046apscbx5 = " file://fsl-ls1046a-pscbx5.dts \
         file://fsl-ls1046a-pscbx5-sdk.dts \
@@ -79,12 +80,14 @@ do_configure:append:ls1046apxcp() {
     cp ${UNPACKDIR}/fsl-ls1046a-pxcp-cscn.dts ${S}/arch/arm64/boot/dts/freescale
     cp ${UNPACKDIR}/fsl-ls1046a-pxcp-cscn-sdk.dts ${S}/arch/arm64/boot/dts/freescale
     cp ${UNPACKDIR}/fsl-ls1046a-pxcp-cscn-usdpaa.dts ${S}/arch/arm64/boot/dts/freescale
+    cp ${UNPACKDIR}/fsl-ls1046a-pxcp-xwyy-sdk.dts ${S}/arch/arm64/boot/dts/freescale
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-sdk.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-usdpaa.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-cscn.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-cscn-sdk.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
     echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-cscn-usdpaa.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
+    echo "dtb-\$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1046a-pxcp-xwyy-sdk.dtb" >> ${S}/arch/arm64/boot/dts/freescale/Makefile
 }
 
 do_configure:append:ls1046apscbx5() {
