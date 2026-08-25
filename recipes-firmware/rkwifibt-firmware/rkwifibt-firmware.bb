@@ -155,6 +155,17 @@ python do_install() {
             board_target = os.path.join(destdir, board_filename)
             if os.path.exists(target):
                 os.symlink(filename, board_target)
+
+    # BCMDHD's firmware auto-selection expects the vendor filenames.
+    # Keep these compatibility links with the firmware package, rather than
+    # creating them from a WiFi driver recipe.
+    if module == "AP6256":
+        board_suffix = "." + board_type if board_type else ""
+        board_target = fw["target"] + board_suffix
+        os.symlink(board_target + ".bin",
+                   os.path.join(destdir, "fw_bcm43456c5_ag.bin"))
+        os.symlink(board_target + ".clm_blob",
+                   os.path.join(destdir, "clm_bcm43456c5_ag.blob"))
 }
 
 FILES:${PN} = "${nonarch_base_libdir}/firmware/brcm/*"
