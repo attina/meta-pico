@@ -7,6 +7,10 @@ SRC_URI = "git://github.com/attina/rkwifibt.git;protocol=https;branch=develop"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
+# rk-hciattach is a small standalone utility and is built without debug
+# information; do not create a useless -dbg package containing build paths.
+INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
+
 RKWIFIBT_FIRMWARE_MODULE ?= ""
 RKWIFIBT_FIRMWARE_MODULE[doc] = "rkwifibt WiFi module name, for example AP6256 or CYW4373."
 RKWIFIBT_FIRMWARE_BOARD_TYPE ?= ""
@@ -166,6 +170,32 @@ python do_install() {
                    os.path.join(destdir, "fw_bcm43456c5_ag.bin"))
         os.symlink(board_target + ".clm_blob",
                    os.path.join(destdir, "clm_bcm43456c5_ag.blob"))
+
+    hciattach_destdir = os.path.join(d.getVar("D"),
+                                     d.getVar("bindir").lstrip("/"))
+    os.makedirs(hciattach_destdir, exist_ok=True)
+    shutil.copyfile(
+        os.path.join(s, "tools", "rk-hciattach", "rk_hciattach"),
+        os.path.join(hciattach_destdir, "rk-hciattach"),
+    )
+    os.chmod(os.path.join(hciattach_destdir, "rk-hciattach"), 0o755)
 }
 
 FILES:${PN} = "${nonarch_base_libdir}/firmware/brcm/*"
+
+# Rockchip's Broadcom UART attach utility is kept in the same upstream
+# repository as the firmware, but is packaged separately from the firmware.
+PACKAGES =+ "rk-hciattach"
+
+do_compile() {
+    # The upstream Makefile's default target has a typo: it depends on
+    # rk_hciattach while the actual link target is rtk_hciattach.
+    oe_runmake -C ${S}/tools/rk-hciattach rtk_hciattach \
+        CC="${CC} ${LDFLAGS}" \
+        CFLAGS="${CFLAGS} -D_GNU_SOURCE -g0 \
+            -fdebug-prefix-map=${WORKDIR}=. \
+            -ffile-prefix-map=${WORKDIR}=. \
+            -fmacro-prefix-map=${WORKDIR}=."
+}
+
+FILES:rk-hciattach = "${bindir}/rk-hciattach"
