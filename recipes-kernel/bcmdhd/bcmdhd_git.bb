@@ -55,13 +55,8 @@ do_install() {
 
     install -d ${D}${sysconfdir}/modprobe.d
     install -d ${D}${sysconfdir}/modules-load.d
-    install -d ${D}${nonarch_base_libdir}/firmware/brcm
     install -m 0644 ${UNPACKDIR}/config.txt ${D}${sysconfdir}/bcmdhd-ap6256-config.txt
     printf '%s\n' bcmdhd > ${D}${sysconfdir}/modules-load.d/bcmdhd.conf
-    ln -sf brcmfmac43456-sdio.picocom,rk3576acp.bin \
-        ${D}${nonarch_base_libdir}/firmware/brcm/fw_bcm43456c5_ag.bin
-    ln -sf brcmfmac43456-sdio.picocom,rk3576acp.clm_blob \
-        ${D}${nonarch_base_libdir}/firmware/brcm/clm_bcm43456c5_ag.blob
     cat > ${D}${sysconfdir}/modprobe.d/bcmdhd-ap6256.conf <<'EOF'
 blacklist brcmfmac
 blacklist brcmutil
@@ -73,8 +68,6 @@ FILES:${PN} += " \
     ${nonarch_base_libdir}/modules/${KERNEL_VERSION}/extra/bcmdhd.ko \
     ${sysconfdir}/modprobe.d/bcmdhd-ap6256.conf \
     ${sysconfdir}/modules-load.d/bcmdhd.conf \
-    ${nonarch_base_libdir}/firmware/brcm/fw_bcm43456c5_ag.bin \
-    ${nonarch_base_libdir}/firmware/brcm/clm_bcm43456c5_ag.blob \
     ${sysconfdir}/bcmdhd-ap6256-config.txt \
 "
 
