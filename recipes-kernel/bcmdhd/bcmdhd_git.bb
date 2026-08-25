@@ -16,7 +16,8 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 PV = "1.0+git${SRCPV}"
 SRCREV = "a57fb69f427cdea9f18ac91d65df67c0d5572935"
 SRC_URI = "git://github.com/attina/broadcom-bcmdhd.git;protocol=https;branch=users/gavin/kernel-6.18 \
-           file://config.txt"
+           file://config.txt \
+           file://wifi-mac.conf"
 
 EXTRA_OEMAKE += " \
     KBUILD_ABS_SRCTREE=0 \
@@ -55,7 +56,10 @@ do_install() {
 
     install -d ${D}${sysconfdir}/modprobe.d
     install -d ${D}${sysconfdir}/modules-load.d
+    install -d ${D}${sysconfdir}/NetworkManager/conf.d
     install -m 0644 ${UNPACKDIR}/config.txt ${D}${sysconfdir}/bcmdhd-ap6256-config.txt
+    install -m 0644 ${UNPACKDIR}/wifi-mac.conf \
+        ${D}${sysconfdir}/NetworkManager/conf.d/wifi-mac.conf
     printf '%s\n' bcmdhd > ${D}${sysconfdir}/modules-load.d/bcmdhd.conf
     cat > ${D}${sysconfdir}/modprobe.d/bcmdhd-ap6256.conf <<'EOF'
 blacklist brcmfmac
@@ -68,6 +72,7 @@ FILES:${PN} += " \
     ${nonarch_base_libdir}/modules/${KERNEL_VERSION}/extra/bcmdhd.ko \
     ${sysconfdir}/modprobe.d/bcmdhd-ap6256.conf \
     ${sysconfdir}/modules-load.d/bcmdhd.conf \
+    ${sysconfdir}/NetworkManager/conf.d/wifi-mac.conf \
     ${sysconfdir}/bcmdhd-ap6256-config.txt \
 "
 
