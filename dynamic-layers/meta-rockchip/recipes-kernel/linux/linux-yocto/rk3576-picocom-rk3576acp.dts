@@ -149,9 +149,25 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&usb_host_pwren>;
 		regulator-name = "vcc_5v0_usbhost";
+		regulator-always-on;
+		regulator-boot-on;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&vcc5v0_device>;
+	};
+
+	vbat_wl: regulator-vbat-wl {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio0 RK_PD1 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&wifi_pwren_gpio>;
+		regulator-name = "vbat_wl_1t1r";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		vin-supply = <&vcc_3v3_s3>;
 	};
 
 	sdio_pwrseq: sdio-pwrseq {
@@ -160,6 +176,26 @@
 		pinctrl-0 = <&wifi_poweren_gpio>;
 		post-power-on-delay-ms = <200>;
 		reset-gpios = <&gpio1 RK_PC6 GPIO_ACTIVE_LOW>;
+	};
+
+	/* BCMDHD platform data. WIFI_REG_ON remains owned by vbat_wl/pwrseq. */
+	bcmdhd_wlan: bcmdhd-wlan {
+		status = "okay";
+		compatible = "android,bcmdhd_wlan";
+		pinctrl-names = "default";
+		pinctrl-0 = <&wifi_wake_host>;
+		gpio_wl_host_wake = <&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>;
+	};
+
+	wireless_bluetooth: wireless-bluetooth {
+		status = "okay";
+		compatible = "bluetooth-platdata";
+		uart_rts_gpios = <&gpio1 RK_PC2 GPIO_ACTIVE_LOW>;
+		pinctrl-names = "default", "rts_gpio";
+		pinctrl-0 = <&uart4m1_rtsn>;
+		pinctrl-1 = <&uart4_gpios>;
+		BT,wake_gpio = <&gpio1 RK_PD4 GPIO_ACTIVE_HIGH>;
+		BT,wake_host_irq = <&gpio0 RK_PB1 GPIO_ACTIVE_HIGH>;
 	};
 };
 
@@ -632,9 +668,11 @@
 			data-role = "dual";
 			/* fusb302 supports PD Rev 2.0 Ver 1.2 */
 			pd-revision = /bits/ 8 <0x2 0x0 0x1 0x2>;
-			power-role = "source";
+			power-role = "dual";
 			source-pdos = <PDO_FIXED(5000, 2000,
 						 PDO_FIXED_USB_COMM | PDO_FIXED_DATA_SWAP)>;
+			sink-pdos = <PDO_FIXED(5000, 2000, PDO_FIXED_USB_COMM | PDO_FIXED_DATA_SWAP)>;
+			op-sink-microwatt = <10000000>;
 
 			altmodes {
 				displayport {
@@ -769,37 +807,41 @@
 	bus-width = <4>;
 	cap-sd-highspeed;
 	cap-sdio-irq;
+	sd-uhs-sdr104;
 	disable-wp;
+	enable-sdio-wakeup;
 	keep-power-in-suspend;
-	max-frequency = <100000000>;
+	max-frequency = <200000000>;
 	mmc-pwrseq = <&sdio_pwrseq>;
 	no-mmc;
 	no-sd;
 	non-removable;
 	pinctrl-names = "default";
 	pinctrl-0 = <&sdmmc1m0_bus4 &sdmmc1m0_clk &sdmmc1m0_cmd>;
-	sd-uhs-sdr50;
 	status = "okay";
+	vmmc-supply = <&vbat_wl>;
+	wakeup-source;
 
-	ap6256: wifi@1 {
-		compatible = "brcm,bcm43456-fmac", "brcm,bcm4329-fmac";
-		reg = <1>;
-		interrupt-parent = <&gpio0>;
-		interrupts = <RK_PB0 IRQ_TYPE_LEVEL_HIGH>;
-		interrupt-names = "host-wake";
-		pinctrl-names = "default";
-		pinctrl-0 = <&wifi_wake_host>;
-	};
 };
 
 &pinctrl {
 	wifi {
+		wifi_pwren_gpio: wifi-pwren-gpio {
+			rockchip,pins = <0 RK_PD1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
 		wifi_wake_host: wifi-wake-host {
 			rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_down>;
 		};
 
 		wifi_poweren_gpio: wifi-poweren-gpio {
 			rockchip,pins = <1 RK_PC6 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
+	};
+
+	wireless-bluetooth {
+		uart4_gpios: uart4-gpios {
+			rockchip,pins = <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
@@ -878,7 +920,7 @@
 &usb_drd0_dwc3 {
 	usb-role-switch;
 	dr_mode = "otg";
-	vbus-supply = <&vcc_5v0_typec0>;
+	maximum-speed = "high-speed"; 
 	status = "okay";
 
 	ports {
