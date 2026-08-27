@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Picocom <support@picocom.com>
+Date: Thu, 27 Aug 2026 16:00:00 +0800
+Subject: [PATCH] tools: create_pbl: remove unused file_size variable
+
+The file size is calculated and decremented in add_cpy_cmd(), but never
+read. GCC 15 diagnoses this as -Wunused-but-set-variable, and qoriq-atf
+builds with -Werror.
+
+Upstream-Status: Inappropriate [local compatibility fix]
+---
+ tools/nxp/create_pbl/create_pbl.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/tools/nxp/create_pbl/create_pbl.c b/tools/nxp/create_pbl/create_pbl.c
+index c277e391a..8281affab 100644
+--- a/tools/nxp/create_pbl/create_pbl.c
++++ b/tools/nxp/create_pbl/create_pbl.c
+@@ -616,1 +616,0 @@
+-	int file_size;
+@@ -631,1 +630,0 @@
+-	file_size = get_filesize(pblimg.sec_imgnm);
+@@ -682,1 +680,0 @@
+-		file_size -= MAX_PBI_DATA_LEN_BYTE;
+-- 
+2.43.0

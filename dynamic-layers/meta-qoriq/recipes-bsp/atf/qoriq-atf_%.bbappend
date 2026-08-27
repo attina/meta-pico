@@ -3,6 +3,7 @@ include qoriq-atf.inc
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " file://0001-picocom-ls1046apscb-patch-for-atf-2.8.patch \
+		file://0005-create-pbl-remove-unused-file-size.patch \
 		file://0002-ls1046apscbc-add-board-init-code.patch \
 		file://0003-ls1046apxcp-add-board-init-code.patch \
 		file://0004-ls1046apscbx5-add-board-init-code.patch \
