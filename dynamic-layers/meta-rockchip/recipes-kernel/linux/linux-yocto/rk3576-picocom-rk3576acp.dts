@@ -149,8 +149,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&usb_host_pwren>;
 		regulator-name = "vcc_5v0_usbhost";
-		regulator-always-on;
-		regulator-boot-on;
+		startup-delay-us = <100000>;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&vcc5v0_device>;
