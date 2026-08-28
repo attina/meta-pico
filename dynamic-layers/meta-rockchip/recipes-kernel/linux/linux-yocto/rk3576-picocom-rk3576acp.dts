@@ -913,6 +913,10 @@
 	status = "okay";
 };
 
+&combphy1_psu {
+	status = "okay";
+};
+
 &pcie0 {
 	status = "okay";
 };
@@ -945,10 +949,6 @@
 
 &usb_drd1_dwc3 {
 	dr_mode = "host";
-	maximum-speed = "high-speed";
-	phys = <&u2phy1_otg>;
-	phy-names = "usb2-phy";
-	vbus-supply = <&vcc_5v0_usbhost>;
 	status = "okay";
 };
 
