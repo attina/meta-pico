@@ -14,6 +14,7 @@ python __anonymous () {
 }
 
 SRC_URI += " file://ls1046apscb.cfg \
+        file://0001-sdk-fman-map-1000basex-to-sgmii-basex.patch \
         "
 SRC_URI:append:ls1046apscb = " file://fsl-ls1046a-pscb.dts \
         file://fsl-ls1046a-pscb-sdk.dts \
