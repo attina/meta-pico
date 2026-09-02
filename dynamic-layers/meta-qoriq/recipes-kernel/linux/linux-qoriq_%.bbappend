@@ -101,3 +101,5 @@ do_configure:append:ls1046apscbx5() {
 }
 
 DELTA_KERNEL_DEFCONFIG += "ls1046apscb.cfg"
+
+KERNEL_DEBUG_TIMESTAMPS = "1"
