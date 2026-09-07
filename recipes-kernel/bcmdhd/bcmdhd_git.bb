@@ -14,7 +14,7 @@ COMPATIBLE_MACHINE = "rk3576"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 PV = "1.0+git${SRCPV}"
-SRCREV = "a57fb69f427cdea9f18ac91d65df67c0d5572935"
+SRCREV = "f2e8c4e33515370ea8ebb1260cb82b7ae7a0ab2e"
 SRC_URI = "git://github.com/attina/broadcom-bcmdhd.git;protocol=https;branch=users/gavin/kernel-6.18 \
            file://config.txt \
            file://wifi-mac.conf"
