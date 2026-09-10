@@ -49,6 +49,10 @@ python do_install() {
             "nvram": "nvram_ap6256.txt",
             "clm": "brcmfmac43456-sdio.clm_blob",
             "target": "brcmfmac43456-sdio",
+            "bt": {
+                "source": "firmware/broadcom/AP6256/bt",
+                "firmware": "BCM4345C5.hcd",
+            },
         },
         "AP6275S": {
             "source": "firmware/broadcom/AP6275S/wifi",
@@ -149,6 +153,13 @@ python do_install() {
         shutil.copyfile(
             os.path.join(srcdir, fw["clm"]),
             os.path.join(destdir, fw["target"] + ".clm_blob"),
+        )
+
+    bt = fw.get("bt")
+    if bt:
+        shutil.copyfile(
+            os.path.join(s, bt["source"], bt["firmware"]),
+            os.path.join(destdir, bt["firmware"]),
         )
 
     if board_type:
