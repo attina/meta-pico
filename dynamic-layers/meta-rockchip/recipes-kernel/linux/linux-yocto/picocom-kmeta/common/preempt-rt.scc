@@ -1,0 +1,3 @@
+define KFEATURE_DESCRIPTION "Enable PREEMPT_RT full real-time preemption"
+
+kconf non-hardware preempt-rt.cfg
